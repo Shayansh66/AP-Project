@@ -1,36 +1,36 @@
-package models;
-import com.fasterxml.jackson.annotation.jsonproperty;
+package main.java.com.example.server.models;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
 public class Job {  
-    @jsonproperty ("id")
+    @JsonProperty ("id")
     private String id;
 
-    @jsonproperty ("title")
+    @JsonProperty ("title")
     private String title;
     
-    @jsonproperty ("companyname")
+    @JsonProperty ("companyname")
     private String companyname;
 
-    @jsonproperty ("workplace")
+    @JsonProperty ("workplace")
     private String workplace;
 
-    @jsonproperty ("isworking")
+    @JsonProperty ("isworking")
     private boolean isworking;
 
-    @jsonproperty ("worktype")
+    @JsonProperty ("worktype")
     private Worktype worktype;
 
-    @jsonproperty ("jobtype")
+    @JsonProperty ("jobtype")
     private Jobtype jobtype;
 
-    @jsonproperty ("startdate")
+    @JsonProperty ("startdate")
     private Date startdate;
 
-    @jsonproperty ("enddate")
+    @JsonProperty ("enddate")
     private Date enddate;
 
-    @jsonproperty ("description")
+    @JsonProperty ("description")
     private String description;
 
     

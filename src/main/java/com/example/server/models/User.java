@@ -1,5 +1,6 @@
-package models;
-import com.fasterxml.jackson.annotation.jsonproperty;
+package main.java.com.example.server.models;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 
@@ -13,19 +14,19 @@ import com.fasterxml.jackson.annotation.jsonproperty;
 
 
 public class User {
-    @jsonproperty ("id")
+    @JsonProperty ("id")
     private String id;
 
-    @jsonproperty ("name")
+    @JsonProperty ("name")
     private String  name;
 
-    @jsonproperty ("lastname")
+    @JsonProperty ("lastname")
     private String lastname;
 
-    @jsonproperty ("additinolname")
+    @JsonProperty ("additinolname")
     private String additionalname;
 
-    @jsonproperty ("headtitle")
+    @JsonProperty ("headtitle")
     private String  headtitle;
 
     

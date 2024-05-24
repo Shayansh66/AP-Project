@@ -1,4 +1,6 @@
-import models.Skill;
+package main.java.com.example.server.models;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Education {
     @JsonProperty("id")

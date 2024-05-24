@@ -1,15 +1,15 @@
-package models;
-import com.fasterxml.jackson.annotation.jsonproperty;
+package main.java.com.example.server.models;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Location {
-    @jsonproperty ("id")
+    @JsonProperty ("id")
     private String id;
 
 
-    @jsonproperty ("country")
+    @JsonProperty ("country")
     private String country;
 
-    @jsonproperty ("city")
+    @JsonProperty ("city")
     private String city;
 
 

@@ -1,13 +1,14 @@
-package models;
-import com.fasterxml.jackson.annotation.jsonproperty;
+package main.java.com.example.server.models;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Skill {
     
-    @jsonproperty ("id")
+    @JsonProperty ("id")
     private String id;
 
-    @jsonproperty ("explaintion")
+    @JsonProperty ("explaintion")
     private String explaination;
 
 
