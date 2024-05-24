@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 
-
-
 public class User {
+
     @JsonProperty ("id")
     private String id;
 
