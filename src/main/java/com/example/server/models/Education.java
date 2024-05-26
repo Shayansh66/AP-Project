@@ -2,7 +2,12 @@ package main.java.com.example.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
+
+
 public class Education {
+
     @JsonProperty("id")
     private String id;
 
@@ -13,10 +18,10 @@ public class Education {
     private String studyField;
 
     @JsonProperty("startDate")
-    private String startDate;
+    private Timestamp startDate;
 
     @JsonProperty("endDate")
-    private String endDate;
+    private Timestamp endDate;
 
     @JsonProperty("grade")
     private float grade;
@@ -34,12 +39,9 @@ public class Education {
     private boolean notifyChanges;
 
 
-    public Education() {
-    }
-
-
-    public Education(String id, String institutionName, String studyField, String startDate, String endDate,
-                     float grade, String descriptionOfActivities, String description, Skill[] skills, boolean notifyChanges) {
+    // constructors
+    public Education(String id, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
+    float grade, String descriptionOfActivities, String description, Skill[] skills, boolean notifyChanges) {
         this.id = id;
         this.institutionName = institutionName;
         this.studyField = studyField;
@@ -51,6 +53,10 @@ public class Education {
         this.skills = skills;
         this.notifyChanges = notifyChanges;
     }
+    
+    public Education() {
+    }
+
 
     // Getters and Setters
     public String getId() {
@@ -77,19 +83,19 @@ public class Education {
         this.studyField = studyField;
     }
 
-    public String getStartDate() {
+    public Timestamp getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Timestamp getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Timestamp endDate) {
         this.endDate = endDate;
     }
 
@@ -132,4 +138,14 @@ public class Education {
     public void setNotifyChanges(boolean notifyChanges) {
         this.notifyChanges = notifyChanges;
     }
+
+    
+    @Override
+    public String toString() {
+        return "Education [id=" + id + ", institutionName=" + institutionName + ", studyField=" + studyField
+                + ", startDate=" + startDate + ", endDate=" + endDate + ", grade=" + grade
+                + ", descriptionOfActivities=" + descriptionOfActivities + ", description=" + description + ", skills="
+                + Arrays.toString(skills) + ", notifyChanges=" + notifyChanges + "]";
+    }
+    
 }

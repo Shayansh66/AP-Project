@@ -2,7 +2,7 @@ package main.java.com.example.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 public class Post {
@@ -23,10 +23,11 @@ public class Post {
     private int commentNumber;
 
     @JsonProperty ("createDate")
-    private Date createDate;
+    private Timestamp createDate;
+
 
     // constructors
-    public Post(String id, String writterid, String content, int lineNumber, int commentNumber, Date createDate) {
+    public Post(String id, String writterid, String content, int lineNumber, int commentNumber, Timestamp createDate) {
         this.id = id;
         this.writterid = writterid;
         this.content = content;
@@ -39,7 +40,7 @@ public class Post {
     }
 
 
-    // getter and setters
+    // accessor and mutators
     public String getId() {
         return id;
     }
@@ -80,11 +81,11 @@ public class Post {
         this.commentNumber = commentNumber;
     }
 
-    public Date getCreateDate() {
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
 

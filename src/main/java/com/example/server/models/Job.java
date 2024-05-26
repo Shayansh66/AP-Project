@@ -1,8 +1,12 @@
 package main.java.com.example.server.models;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Date;
 
-public class Job {  
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.sql.Timestamp;
+
+
+public class Job {
+
     @JsonProperty ("id")
     private String id;
 
@@ -25,10 +29,10 @@ public class Job {
     private Jobtype jobtype;
 
     @JsonProperty ("startdate")
-    private Date startdate;
+    private Timestamp startDate;
 
     @JsonProperty ("enddate")
-    private Date enddate;
+    private Timestamp enddate;
 
     @JsonProperty ("description")
     private String description;
@@ -59,9 +63,4 @@ public class Job {
         voluntary
     }
 
-
-
-  public static void main(String[] args) {
-    
-  }  
 }
