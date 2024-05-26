@@ -36,31 +36,24 @@ public class Job {
 
     @JsonProperty ("description")
     private String description;
-
     
+}
 
 
+enum Worktype {
+    inPlace,
+    hybrid,
+    Telecommuting
+}
 
-
-
-
-
-    public enum Worktype {
-        inPlace,
-        hybrid,
-        Telecommuting
-    }
-
-    public enum Jobtype {
-        fulltime,
-        parttime,
-        self_Employment,
-        freelnce,
-        contracting,
-        internship,
-        paidintern,
-        seasonal,
-        voluntary
-    }
-
+enum Jobtype {
+    fulltime,
+    parttime,
+    self_Employment,
+    freelnce,
+    contracting,
+    internship,
+    paidintern,
+    seasonal,
+    voluntary
 }
