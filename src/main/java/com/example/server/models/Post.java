@@ -16,8 +16,8 @@ public class Post {
     @JsonProperty ("content")
     private String content;
 
-    @JsonProperty ("lineNumber")
-    private int lineNumber;
+    @JsonProperty ("liKeNumber")
+    private int liKeNumber;
 
     @JsonProperty ("commentNumber")
     private int commentNumber;
@@ -27,11 +27,11 @@ public class Post {
 
 
     // constructors
-    public Post(String id, String writterid, String content, int lineNumber, int commentNumber, Timestamp createDate) {
+    public Post(String id, String writterid, String content, int likeNumber, int commentNumber, Timestamp createDate) {
         this.id = id;
         this.writterid = writterid;
         this.content = content;
-        this.lineNumber = lineNumber;
+        this.liKeNumber = likeNumber;
         this.commentNumber = commentNumber;
         this.createDate = createDate;
     }
@@ -65,12 +65,12 @@ public class Post {
         this.content = content;
     }
 
-    public int getLineNumber() {
-        return lineNumber;
+    public int getLiKeNumber() {
+        return liKeNumber;
     }
 
-    public void setLineNumber(int lineNumber) {
-        this.lineNumber = lineNumber;
+    public void setLiKeNumber(int likeNumber) {
+        this.liKeNumber = likeNumber;
     }
 
     public int getCommentNumber() {
@@ -95,7 +95,7 @@ public class Post {
         return  "Post [id=" + id +
                 ", writterid=" + writterid +
                 ", content=" + content +
-                ", lineNumber=" + lineNumber +
+                ", likeNumber=" + liKeNumber +
                 ", commentNumber=" + commentNumber +
                 ", createDate=" + createDate +
                 "]";
