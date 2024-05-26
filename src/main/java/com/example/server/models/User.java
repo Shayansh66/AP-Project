@@ -20,6 +20,12 @@ public class User {
     @JsonProperty ("headtitle")
     private String  headtitle;
 
+    @JsonProperty ("country")
+    private String country;
+
+    @JsonProperty ("city")
+    private String city;
+
 
     // constructors
     public User(String id, String firstName, String lastname, String additionalname, String headtitle) {
