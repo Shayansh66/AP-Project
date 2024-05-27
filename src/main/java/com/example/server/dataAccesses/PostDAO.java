@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 public class PostDAO {
@@ -28,6 +29,7 @@ public class PostDAO {
 
     public void savePost(Post post) throws SQLException {
         PreparedStatement statement = null;
+
         try {
             if (post instanceof Comment comment) {
                 statement = theConnection.prepareStatement("INSERT INTO posts (writterid, content, relatedpostid) VALUES (?, ?, ?);");
@@ -44,17 +46,22 @@ public class PostDAO {
                 statement.close();
             }
         }
+
     }
 
     public void updatePost(Post post) throws SQLException {
         PreparedStatement statement = null;
+
         try {
             if (post instanceof Comment comment) {
-                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?, relatedpostid = ?;");
+                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?, relatedpostid = ? WHERE postid = ?;");
                 statement.setInt(5, comment.getRelatedPostid());
+                statement.setInt(6, comment.getId());
             }
+
             else {
-                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?;");
+                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ? WHERE postid = ?;");
+                statement.setInt(5, post.getId());
             }
             statement.setInt(1, post.getWritterid());
             statement.setString(2, post.getContent());
@@ -66,6 +73,7 @@ public class PostDAO {
                 statement.close();
             }
         }
+
     }
 
     public void deletePost(String id) throws SQLException {
@@ -86,10 +94,12 @@ public class PostDAO {
     }
 
     public Post getPost(String id) throws SQLException {
+
         var ID = Integer.parseInt(id);
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE id = ?;");
         statement.setInt(1, ID);
         ResultSet resultset = statement.executeQuery();
+
         if (resultset.next()) {
             var writterid = resultset.getInt("writterid");
             var content = resultset.getString("content");
@@ -99,13 +109,111 @@ public class PostDAO {
             var relatedPostid = resultset.getInt("relatedpostid");
 
             if (relatedPostid != -1) {    // it is a Comment
-                return new Comment(ID, writterid, content, likenumber, commentnumber, timestamp, relatedPostid);
+                return new Comment(ID, writterid, content, likenumber, commentnumber, relatedPostid, timestamp);
             }
             else {  // it is a Post
                 return new Post(ID, writterid, content, likenumber, commentnumber, timestamp);
             }
         }
         return null;
+
+    }
+
+    public ArrayList<Post> getPosts() throws SQLException {
+        ArrayList<Post> list = new ArrayList< >();
+
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            var id = resultSet.getInt("id");
+            var writterid = resultSet.getInt("writterid");
+            var content = resultSet.getString("content");
+            var likenumber = resultSet.getInt("likenumber");
+            var commentnumber = resultSet.getInt("commentnumber");
+            var relatedPostid = resultSet.getInt("relatedPostid");
+            var createdate = resultSet.getTimestamp("createdate");
+
+            if (relatedPostid != -1) {  // it is a Comment
+                list.add(new Comment(id, writterid, content, likenumber, commentnumber, relatedPostid, createdate));
+            }
+            else {  // it is a Post
+                list.add(new Post(id, writterid, content, likenumber, commentnumber, createdate));
+            }
+        }
+
+        return list;
+    }
+    
+    public ArrayList<Post> getPosts(String userid) throws SQLException {
+        ArrayList<Post> list = new ArrayList< >();
+        var ID = Integer.parseInt(userid);
+
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ?");
+        statement.setInt(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            var id = resultSet.getInt("id");
+            var content = resultSet.getString("content");
+            var likenumber = resultSet.getInt("likenumber");
+            var commentnumber = resultSet.getInt("commentnumber");
+            var relatedPostid = resultSet.getInt("relatedPostid");
+            var createdate = resultSet.getTimestamp("createdate");
+
+            if (relatedPostid != -1) {  // it is a Comment
+                list.add(new Comment(id, ID, content, likenumber, commentnumber, relatedPostid, createdate));
+            }
+            else {  // it is a Post
+                list.add(new Post(id, ID, content, likenumber, commentnumber, createdate));
+            }
+        }
+
+        return list;
+    }
+
+    public ArrayList<Post> getComments(String userid) throws SQLException {
+        ArrayList<Post> list = new ArrayList< >();
+        var ID = Integer.parseInt(userid);
+
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ? WHERE relatedpost != -1");
+        statement.setInt(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            var id = resultSet.getInt("id");
+            var content = resultSet.getString("content");
+            var likenumber = resultSet.getInt("likenumber");
+            var commentnumber = resultSet.getInt("commentnumber");
+            var relatedPostid = resultSet.getInt("relatedPostid");
+            var createdate = resultSet.getTimestamp("createdate");
+
+            list.add(new Comment(id, ID, content, likenumber, commentnumber, relatedPostid, createdate));
+        }
+
+        return list;
+    }
+
+    public ArrayList<Comment> getCommentsByPostID(String postid) throws SQLException {
+        ArrayList<Comment> list = new ArrayList< >();
+        var ID = Integer.parseInt(postid);
+
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE relatedpost = ?");
+        statement.setInt(1, ID);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            var id = resultSet.getInt("id");
+            var content = resultSet.getString("content");
+            var likenumber = resultSet.getInt("likenumber");
+            var commentnumber = resultSet.getInt("commentnumber");
+            var relatedPostid = resultSet.getInt("relatedPostid");
+            var createdate = resultSet.getTimestamp("createdate");
+
+            list.add(new Comment(id, ID, content, likenumber, commentnumber, relatedPostid, createdate));
+        }
+
+        return list;
     }
     
 }
