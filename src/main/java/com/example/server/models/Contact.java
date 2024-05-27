@@ -34,9 +34,6 @@ public class Contact {
     @JsonProperty ("birthdayvisibility")
     private visibility birthdayvisibility;
 
-    @JsonProperty ("meOnSocialMedia")
-    private SocialMedia meSocialMedia;
-
     enum visibility{
         me, 
         myContacts,
@@ -141,14 +138,6 @@ public class Contact {
 
     public void setBirthdayvisibility(visibility birthdayvisibility) {
         this.birthdayvisibility = birthdayvisibility;
-    }
-    
-    public SocialMedia getMeSocialMedia() {
-        return meSocialMedia;
-    }
-
-    public void setMeSocialMedia(SocialMedia meSocialMedia) {
-        this.meSocialMedia = meSocialMedia;
     }
     
 

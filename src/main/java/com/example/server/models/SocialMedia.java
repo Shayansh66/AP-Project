@@ -8,10 +8,16 @@ public class SocialMedia {
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty ("Application")
-    private application Application;
+    @JsonProperty ("userid")
+    private int userid;
 
-    private enum application {
+    @JsonProperty ("Application")
+    private Application Application;
+
+    @JsonProperty ("contactid")
+    private String contactid;
+
+    private enum Application {
         Telegram,
         WhatsApp,
         Skype,
@@ -20,9 +26,11 @@ public class SocialMedia {
 
 
     // constructors
-    public SocialMedia(int id, application application) {
+    public SocialMedia(int id, int userid, Application application, String contactid) {
         this.id = id;
+        this.userid = userid;
         Application = application;
+        this.contactid = contactid;
     }
 
     public SocialMedia() {
@@ -39,12 +47,28 @@ public class SocialMedia {
         this.id = id;
     }
 
-    public application getApplication() {
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public Application getApplication() {
         return Application;
     }
 
-    public void setApplication(application application) {
+    public void setApplication(Application application) {
         Application = application;
+    }
+
+    public String getContactid() {
+        return contactid;
+    }
+
+    public void setContactid(String contactid) {
+        this.contactid = contactid;
     }
 
 
