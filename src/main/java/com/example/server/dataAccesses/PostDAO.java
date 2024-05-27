@@ -25,11 +25,11 @@ public class PostDAO {
 
 
     public void savePost(Post post) throws SQLException {
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         try {
             if (post instanceof Comment comment) {
                 statement = theConnection.prepareStatement("INSERT INTO posts (writterid, content, relatedpostid) VALUES (?, ?, ?);");
-                statement.setString(3, comment.getRelatedPostid());
+                statement.setInt(3, comment.getRelatedPostid());
             }
             else { // post is instance of Post
                 statement = theConnection.prepareStatement("INSERT INTO posts (writterid, content) VALUES (?, ?);");
@@ -45,7 +45,7 @@ public class PostDAO {
     }
 
     public void updatePost(Post post) throws SQLException {
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         try {
             if (post instanceof Comment comment) {
                 statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?, relatedpostid = ?;");
@@ -103,6 +103,7 @@ public class PostDAO {
                 return new Post(ID, writterid, content, likenumber, commentnumber, timestamp);
             }
         }
+        return null;
     }
     
 }
