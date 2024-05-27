@@ -11,6 +11,9 @@ public class Education {
     @JsonProperty("id")
     private int id;
 
+    @JsonProperty ("personid")
+    private int personid;
+
     @JsonProperty("institutionName")
     private String institutionName;
 
@@ -40,9 +43,10 @@ public class Education {
 
 
     // constructors
-    public Education(int id, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
+    public Education(int id, int personid, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
     float grade, String descriptionOfActivities, String description, Skill[] skills, boolean notifyChanges) {
         this.id = id;
+        this.personid = personid;
         this.institutionName = institutionName;
         this.studyField = studyField;
         this.startDate = startDate;
@@ -66,6 +70,14 @@ public class Education {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getPersonid() {
+        return personid;
+    }
+
+    public void setPersonid(int personid) {
+        this.personid = personid;
     }
 
     public String getInstitutionName() {

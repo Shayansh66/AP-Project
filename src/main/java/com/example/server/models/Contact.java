@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Contact {
 
     @JsonProperty ("id")
-    private int id ;
+    private int id;
 
     @JsonProperty ("userid")
     private int userid;
@@ -18,8 +18,12 @@ public class Contact {
 
     @JsonProperty ("email")
     private String email;
-    @JsonProperty ("phonenumbers")
-    private String phonenumbers;
+
+    @JsonProperty ("phonenumber")
+    private String phonenumber;
+
+    @JsonProperty ("PhoneType")
+    private PhoneType phoneType;
 
     @JsonProperty ("address")
     private String addres;
@@ -40,15 +44,22 @@ public class Contact {
         everyBody
     }
 
+    enum PhoneType {
+        Home,
+        Mobile,
+        Work
+    }
+
 
     // constructors
-    public Contact(int id, int userid, String profilelink, String email, String phonenumbers, String addres,
+    public Contact(int id, int userid, String profilelink, String email, String phonenumber, PhoneType phoneType, String addres,
             LocalDate birthday, visibility birthdayvisibility) {
         this.id = id;
         this.userid = userid;
         this.profilelink = profilelink;
         this.email = email;
-        this.phonenumbers = phonenumbers;
+        this.phonenumber = phonenumber;
+        this.phoneType = phoneType;
         this.addres = addres;
         this.birthday = birthday;
         this.birthdayvisibility = birthdayvisibility;
@@ -92,12 +103,20 @@ public class Contact {
         this.email = email;
     }
     
-    public String getPhonenumbers() {
-        return phonenumbers;
+    public String getPhonenumber() {
+        return phonenumber;
     }
 
-    public void setPhonenumbers(String phonenumbers) {
-        this.phonenumbers = phonenumbers;
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public PhoneType getPhoneType() {
+        return phoneType;
+    }
+
+    public void setPhoneType(PhoneType phoneType) {
+        this.phoneType = phoneType;
     }
     
     public String getAddres() {
@@ -124,11 +143,19 @@ public class Contact {
         this.birthdayvisibility = birthdayvisibility;
     }
     
+    public SocialMedia getMeSocialMedia() {
+        return meSocialMedia;
+    }
+
+    public void setMeSocialMedia(SocialMedia meSocialMedia) {
+        this.meSocialMedia = meSocialMedia;
+    }
     
+
     @Override
     public String toString() {
         return "Contact [id=" + id + ", userid=" + userid + ", profilelink=" + profilelink + ", email=" + email
-                + ", phonenumbers=" + phonenumbers + ", addres=" + addres + ", birthday=" + birthday
+                + ", phonenumber=" + phonenumber + ", addres=" + addres + ", birthday=" + birthday
                 + ", birthdayvisibility=" + birthdayvisibility + "]";
     }
     
