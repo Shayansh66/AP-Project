@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class Certifications {
 
     @JsonProperty("id")
@@ -32,14 +33,7 @@ public class Certifications {
     private String[] skills;
     
     
-
-    @Override
-    public String toString() {
-        return "Certifications [id=" + id + ", userId=" + userId + ", name=" + name + ", institution=" + institution
-                + ", issueDate=" + issueDate + ", creditId=" + creditId + ", refrenceWebsite=" + refrenceWebsite
-                + ", skills=" + Arrays.toString(skills) + "]";
-    }
-
+    // constructors
     public Certifications(int id, int userId, String name, String institution, LocalDate issueDate, String creditId,
             String refrenceWebsite, String[] skills) {
         this.id = id;
@@ -53,8 +47,11 @@ public class Certifications {
     }
 
     public Certifications() {
+
     }
 
+
+    // accessor and mutators
     public int getId() {
         return id;
     }
@@ -120,5 +117,11 @@ public class Certifications {
     }
     
 
+    @Override
+    public String toString() {
+        return "Certifications [id=" + id + ", userId=" + userId + ", name=" + name + ", institution=" + institution
+                + ", issueDate=" + issueDate + ", creditId=" + creditId + ", refrenceWebsite=" + refrenceWebsite
+                + ", skills=" + Arrays.toString(skills) + "]";
+    }
 
 }

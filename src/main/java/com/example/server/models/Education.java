@@ -1,15 +1,15 @@
 package main.java.com.example.server.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.sql.Timestamp;
 import java.util.Arrays;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Education {
 
     @JsonProperty("id")
-    private String id;
+    private int id;
 
     @JsonProperty("institutionName")
     private String institutionName;
@@ -40,7 +40,7 @@ public class Education {
 
 
     // constructors
-    public Education(String id, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
+    public Education(int id, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
     float grade, String descriptionOfActivities, String description, Skill[] skills, boolean notifyChanges) {
         this.id = id;
         this.institutionName = institutionName;
@@ -55,15 +55,16 @@ public class Education {
     }
     
     public Education() {
+        
     }
 
 
     // Getters and Setters
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,6 +1,5 @@
 package main.java.com.example.server.models;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -19,6 +18,19 @@ public class SocialMedia {
         Instagram
     }
 
+
+    // constructors
+    public SocialMedia(int id, application application) {
+        this.id = id;
+        Application = application;
+    }
+
+    public SocialMedia() {
+
+    }
+
+
+    // accessor and mutators
     public int getId() {
         return id;
     }
@@ -35,18 +47,10 @@ public class SocialMedia {
         Application = application;
     }
 
-    public SocialMedia(int id, application application) {
-        this.id = id;
-        Application = application;
-    }
-
-    public SocialMedia() {
-    }
 
     @Override
     public String toString() {
         return "SocialMedia [id=" + id + ", Application=" + Application + "]";
     }
-    
     
 }

@@ -2,7 +2,9 @@ package main.java.com.example.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class Profession {
+
     @JsonProperty ("id")
     private int id;
 
@@ -11,7 +13,21 @@ public class Profession {
 
     @JsonProperty ("text")
     private String text;
+    
 
+    // constructors
+    public Profession(int id, int userId, String text) {
+        this.id = id;
+        this.userId = userId;
+        this.text = text;
+    }
+
+    public Profession() {
+
+    }
+
+    
+    // accessor and mutators
     public int getId() {
         return id;
     }
@@ -36,21 +52,10 @@ public class Profession {
         this.text = text;
     }
 
-    public Profession(int id, int userId, String text) {
-        this.id = id;
-        this.userId = userId;
-        this.text = text;
-    }
-
-    public Profession() {
-    }
 
     @Override
     public String toString() {
         return "Profession [id=" + id + ", userId=" + userId + ", text=" + text + "]";
     }
-    
-
-    
     
 }

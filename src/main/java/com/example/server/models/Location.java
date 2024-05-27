@@ -1,22 +1,36 @@
 package main.java.com.example.server.models;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class Location {
     @JsonProperty ("id")
-    private String id;
-
+    private int id;
 
     @JsonProperty ("country")
     private String country;
 
     @JsonProperty ("city")
     private String city;
+    
+    
+    // constructors
+    public Location(int id, String country, String city) {
+        this.id = id;
+        this.country = country;
+        this.city = city;
+    }
 
-    public String getId() {
+    public Location() {
+
+    }
+    
+    // accessor and mutators
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -36,23 +50,10 @@ public class Location {
         this.city = city;
     }
 
-    public Location(String id, String country, String city) {
-        this.id = id;
-        this.country = country;
-        this.city = city;
-    }
-
-    public Location() {
-    }
 
     @Override
     public String toString() {
         return "Location [id=" + id + ", country=" + country + ", city=" + city + "]";
     }
 
-    
-
-
-
-     
 }

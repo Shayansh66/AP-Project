@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class Job {
 
     @JsonProperty ("id")
-    private String id;
+    private int id;
 
     @JsonProperty ("title")
     private String title;
@@ -37,7 +37,8 @@ public class Job {
     @JsonProperty ("description")
     private String description;
     
-     enum Jobtype {
+    
+    enum Jobtype {
         fulltime,
         parttime,
         self_Employment,
@@ -48,116 +49,16 @@ public class Job {
         seasonal,
         voluntary
     }
-
-
-     enum Worktype {
+    
+    enum Worktype {
         inPlace,
         hybrid,
         Telecommuting
     }
 
 
-    public String getId() {
-        return id;
-    }
-
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    public String getTitle() {
-        return title;
-    }
-
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public String getCompanyname() {
-        return companyname;
-    }
-
-
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname;
-    }
-
-
-    public String getWorkplace() {
-        return workplace;
-    }
-
-
-    public void setWorkplace(String workplace) {
-        this.workplace = workplace;
-    }
-
-
-    public boolean isIsworking() {
-        return isworking;
-    }
-
-
-    public void setIsworking(boolean isworking) {
-        this.isworking = isworking;
-    }
-
-
-    public Worktype getWorktype() {
-        return worktype;
-    }
-
-
-    public void setWorktype(Worktype worktype) {
-        this.worktype = worktype;
-    }
-
-
-    public Jobtype getJobtype() {
-        return jobtype;
-    }
-
-
-    public void setJobtype(Jobtype jobtype) {
-        this.jobtype = jobtype;
-    }
-
-
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-
-    public Timestamp getEnddate() {
-        return enddate;
-    }
-
-
-    public void setEnddate(Timestamp enddate) {
-        this.enddate = enddate;
-    }
-
-
-    public String getDescription() {
-        return description;
-    }
-
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-    public Job(String id, String title, String companyname, String workplace, boolean isworking, Worktype worktype,
+    // constructors
+    public Job(int id, String title, String companyname, String workplace, boolean isworking, Worktype worktype,
             Jobtype jobtype, Timestamp startDate, Timestamp enddate, String description) {
         this.id = id;
         this.title = title;
@@ -173,6 +74,89 @@ public class Job {
 
 
     public Job() {
+
+    }
+
+
+    // accessor and mutators
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCompanyname() {
+        return companyname;
+    }
+
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname;
+    }
+
+    public String getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(String workplace) {
+        this.workplace = workplace;
+    }
+
+    public boolean isIsworking() {
+        return isworking;
+    }
+
+    public void setIsworking(boolean isworking) {
+        this.isworking = isworking;
+    }
+
+    public Worktype getWorktype() {
+        return worktype;
+    }
+
+    public void setWorktype(Worktype worktype) {
+        this.worktype = worktype;
+    }
+
+    public Jobtype getJobtype() {
+        return jobtype;
+    }
+
+    public void setJobtype(Jobtype jobtype) {
+        this.jobtype = jobtype;
+    }
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+    public Timestamp getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(Timestamp enddate) {
+        this.enddate = enddate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 
@@ -182,7 +166,6 @@ public class Job {
                 + ", isworking=" + isworking + ", worktype=" + worktype + ", jobtype=" + jobtype + ", startDate="
                 + startDate + ", enddate=" + enddate + ", description=" + description + "]";
     }
-    
     
 }
 

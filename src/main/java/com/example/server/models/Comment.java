@@ -1,19 +1,19 @@
 package main.java.com.example.server.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Comment extends Post {
     
     @JsonProperty ("relatedPost")
-    private String relatedPostid;
+    private int relatedPostid;
 
 
     // constructors
-    public Comment(String id, String writterid, String content, int likeNumber, int commentNumber, Timestamp createDate,
-            String relatedPost) {
+    public Comment(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate,
+            int relatedPost) {
         super(id, writterid, content, likeNumber, commentNumber, createDate);
         this.relatedPostid = relatedPost;
     }
@@ -23,13 +23,14 @@ public class Comment extends Post {
 
 
     // accessor and mutators
-    public String getRelatedPostid() {
+    public int getRelatedPostid() {
         return relatedPostid;
     }
 
-    public void setRelatedPostid(String relatedPost) {
+    public void setRelatedPostid(int relatedPost) {
         this.relatedPostid = relatedPost;
     }
+    
 
     @Override
     public String toString() {

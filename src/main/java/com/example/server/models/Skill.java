@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Skill {
     
     @JsonProperty ("id")
-    private String id;
+    private int id;
 
     @JsonProperty ("explaintion")
     private String explaination;
 
     
     // constructors
-    public Skill(String id, String explaination) {
+    public Skill(int id, String explaination) {
         this.id = id;
         this.explaination = explaination;
     }
@@ -23,11 +23,11 @@ public class Skill {
 
     
     // accessor and mutators
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

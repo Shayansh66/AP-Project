@@ -1,17 +1,17 @@
 package main.java.com.example.server.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Post {
 
     @JsonProperty ("id")
-    private String id;
+    private int id;
 
     @JsonProperty ("writterid")
-    private String writterid;
+    private int writterid;
 
     @JsonProperty ("content")
     private String content;
@@ -27,7 +27,7 @@ public class Post {
 
 
     // constructors
-    public Post(String id, String writterid, String content, int likeNumber, int commentNumber, Timestamp createDate) {
+    public Post(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate) {
         this.id = id;
         this.writterid = writterid;
         this.content = content;
@@ -41,19 +41,19 @@ public class Post {
 
 
     // accessor and mutators
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getWritterid() {
+    public int getWritterid() {
         return writterid;
     }
 
-    public void setWritterid(String writterid) {
+    public void setWritterid(int writterid) {
         this.writterid = writterid;
     }
 
@@ -100,7 +100,5 @@ public class Post {
                 ", createDate=" + createDate +
                 "]";
     }
-
-    
 
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+
 public class Contact {
 
     @JsonProperty ("id")
@@ -17,37 +18,30 @@ public class Contact {
 
     @JsonProperty ("email")
     private String email;
-     @JsonProperty ("phonenumbers")
-     private String phonenumbers;
+    @JsonProperty ("phonenumbers")
+    private String phonenumbers;
 
-     @JsonProperty ("address")
-     private String addres;
+    @JsonProperty ("address")
+    private String addres;
 
-     @JsonProperty ("birthday")
-     private LocalDate birthday;
+    @JsonProperty ("birthday")
+    private LocalDate birthday;
 
-     @JsonProperty ("birthdayvisibility")
-     private visibility birthdayvisibility;
-     @JsonProperty ("meOnSocialMedia")
-     private SocialMedia meSocialMedia;
+    @JsonProperty ("birthdayvisibility")
+    private visibility birthdayvisibility;
 
-     
-    
+    @JsonProperty ("meOnSocialMedia")
+    private SocialMedia meSocialMedia;
 
-     @Override
-    public String toString() {
-        return "Contact [id=" + id + ", userid=" + userid + ", profilelink=" + profilelink + ", email=" + email
-                + ", phonenumbers=" + phonenumbers + ", addres=" + addres + ", birthday=" + birthday
-                + ", birthdayvisibility=" + birthdayvisibility + "]";
+    enum visibility{
+        me, 
+        myContacts,
+        myNetwork,
+        everyBody
     }
 
 
-
-    public Contact() {
-    }
-
-
-
+    // constructors
     public Contact(int id, int userid, String profilelink, String email, String phonenumbers, String addres,
             LocalDate birthday, visibility birthdayvisibility) {
         this.id = id;
@@ -60,108 +54,82 @@ public class Contact {
         this.birthdayvisibility = birthdayvisibility;
     }
 
+    public Contact() {
+        
+    }
 
-
-    enum visibility{
-        me, 
-        myContacts,
-        myNetwork,
-        everyBody
-     }
-
-
-
+    
+    // accessor and mutators
     public int getId() {
         return id;
     }
-
-
 
     public void setId(int id) {
         this.id = id;
     }
 
-
-
     public int getUserid() {
         return userid;
     }
 
-
-
     public void setUserid(int userid) {
         this.userid = userid;
     }
-
-
-
+    
     public String getProfilelink() {
         return profilelink;
     }
-
-
-
+    
     public void setProfilelink(String profilelink) {
         this.profilelink = profilelink;
     }
-
-
-
+    
     public String getEmail() {
         return email;
     }
-
-
-
+    
     public void setEmail(String email) {
         this.email = email;
     }
-
-
-
+    
     public String getPhonenumbers() {
         return phonenumbers;
     }
 
-
-
     public void setPhonenumbers(String phonenumbers) {
         this.phonenumbers = phonenumbers;
     }
-
-
-
+    
     public String getAddres() {
         return addres;
     }
 
-
-
     public void setAddres(String addres) {
         this.addres = addres;
     }
-
-
-
+    
     public LocalDate getBirthday() {
         return birthday;
     }
-
-
-
+    
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
-
-
-
+    
     public visibility getBirthdayvisibility() {
         return birthdayvisibility;
     }
 
-
-
     public void setBirthdayvisibility(visibility birthdayvisibility) {
         this.birthdayvisibility = birthdayvisibility;
     }
+    
+    
+    @Override
+    public String toString() {
+        return "Contact [id=" + id + ", userid=" + userid + ", profilelink=" + profilelink + ", email=" + email
+                + ", phonenumbers=" + phonenumbers + ", addres=" + addres + ", birthday=" + birthday
+                + ", birthdayvisibility=" + birthdayvisibility + "]";
+    }
+    
 }

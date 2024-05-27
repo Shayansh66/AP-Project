@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import main.java.com.example.server.models.Job.Jobtype;
 import main.java.com.example.server.models.Job.Worktype;
 
+
 public class JobPosition {
+
     @JsonProperty ("id")
     private int id;
 
@@ -30,6 +32,26 @@ public class JobPosition {
     @JsonProperty ("descreption")
     private String descreption;
 
+
+    // constructors
+    public JobPosition(int id, int creatorId, String title, String companyName, Worktype worktpye, Jobtype jobType,
+            String profession, String descreption) {
+        this.id = id;
+        this.creatorId = creatorId;
+        this.title = title;
+        this.companyName = companyName;
+        this.worktpye = worktpye;
+        this.jobType = jobType;
+        this.profession = profession;
+        this.descreption = descreption;
+    }
+
+    public JobPosition() {
+        
+    }
+
+    
+    // accessor and mutators
     public int getId() {
         return id;
     }
@@ -94,20 +116,6 @@ public class JobPosition {
         this.descreption = descreption;
     }
 
-    public JobPosition(int id, int creatorId, String title, String companyName, Worktype worktpye, Jobtype jobType,
-            String profession, String descreption) {
-        this.id = id;
-        this.creatorId = creatorId;
-        this.title = title;
-        this.companyName = companyName;
-        this.worktpye = worktpye;
-        this.jobType = jobType;
-        this.profession = profession;
-        this.descreption = descreption;
-    }
-
-    public JobPosition() {
-    }
 
     @Override
     public String toString() {
@@ -115,8 +123,5 @@ public class JobPosition {
                 + companyName + ", worktpye=" + worktpye + ", jobType=" + jobType + ", profession=" + profession
                 + ", descreption=" + descreption + "]";
     }
-
-    
-
 
 }
