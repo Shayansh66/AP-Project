@@ -5,6 +5,8 @@ import main.java.com.example.server.models.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 public class UserDAO {
@@ -17,49 +19,126 @@ public class UserDAO {
     }
 
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users (id PRIMARY KEY AUTO_INCREMENT, firstname VARCHAR(20), lastname VARCHAR(40), additionalname VARCHAR(40), headtitle VARCHAR(220), countrey VARCHAR(60), city VARCHAR(60), createdate TIMESTAMP DEFAULT NOW())");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users (id PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255) NOT NULL, password VARCHAR(35), firstname VARCHAR(20), lastname VARCHAR(40), additionalname VARCHAR(40), headtitle VARCHAR(220), countrey VARCHAR(60), city VARCHAR(60), requiredjob VARCHAR(35), createdate TIMESTAMP DEFAULT NOW());");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE users AUTO_INCREMENT = 20000000");
         statement.executeUpdate();
     }
 
     public void saveUser(User user) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO users (firstname, lastname, additionalname, headtitle, country, city) VALUES (?, ?, ?, ?, ?, ?)");
-        statement.setString(1, user.getFirstName());
-        statement.setString(2, user.getLastname());
-        statement.setString(3, user.getAdditionalname());
-        statement.setString(4, user.getHeadtitle());
-        statement.setString(5, user.getCountry());
-        statement.setString(6, user.getCity());
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO users (eamil, password, firstname, lastname, additionalname, headtitle, country, city, requiredjob) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        statement.setString(1, user.getEmail());
+        statement.setString(2, user.getPassword());
+        statement.setString(3, user.getFirstName());
+        statement.setString(4, user.getLastname());
+        statement.setString(5, user.getAdditionalname());
+        statement.setString(6, user.getHeadtitle());
+        statement.setString(7, user.getCountry());
+        statement.setString(8, user.getCity());
+        statement.setString(9, user.getRequiredJob());
         statement.executeUpdate();
     }
 
     public void updateUser(User user) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE users SET firstname = ?, lastname = ?, additionalname = ?, headtitle = ?, country = ?, city = ? WHERE userid = ?");
-        statement.setString(1, user.getFirstName());
-        statement.setString(2, user.getLastname());
-        statement.setString(3, user.getAdditionalname());
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE users SET password = ?, firstname = ?, lastname = ?, additionalname = ?, headtitle = ?, country = ?, city = ?, requiredjob = ? WHERE userid = ?;");
+        statement.setString(1, user.getPassword());
+        statement.setString(2, user.getFirstName());
+        statement.setString(3, user.getLastname());
         statement.setString(4, user.getAdditionalname());
-        statement.setString(5, user.getCountry());
-        statement.setString(6, user.getCity());
-        statement.setInt(7, user.getId());
+        statement.setString(5, user.getAdditionalname());
+        statement.setString(6, user.getCountry());
+        statement.setString(7, user.getCity());
+        statement.setString(8, user.getRequiredJob());
+        statement.setInt(9, user.getId());
         statement.executeUpdate();
     }
 
     public void deleteUser(User user) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE userid = ?");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE userid = ?;");
         statement.setInt(1, user.getId());
         statement.executeUpdate();
     }
     
     public void deleteUser(int id) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE userid = ?");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE userid = ?;");
         statement.setInt(1, id);
         statement.executeUpdate();
     }
     
     public void deleteUsers() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users;");
         statement.executeUpdate();
     }
+
+    public User getUser(String userid) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE id = ?;");
+        statement.setInt(1, Integer.parseInt(userid));
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setEmail(resultSet.getString("email"));
+            user.setPassword(resultSet.getString("password"));
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setLastname(resultSet.getString("lastname"));
+            user.setAdditionalname(resultSet.getString("additionalname"));
+            user.setHeadtitle(resultSet.getString("headtitle"));
+            user.setCountry(resultSet.getString("country"));
+            user.setCity(resultSet.getString("city"));
+            user.setRequiredJob(resultSet.getString("requiredjob"));
+            return user;
+        }
+
+        return null;
+    }
+
+    public User getUser(String userid, String password) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE password = ? AND id = ?;");
+        statement.setString(1, password);
+        statement.setInt(2, Integer.parseInt(userid));
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setEmail(resultSet.getString("email"));
+            user.setPassword(resultSet.getString("password"));
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setLastname(resultSet.getString("lastname"));
+            user.setAdditionalname(resultSet.getString("additionalname"));
+            user.setHeadtitle(resultSet.getString("headtitle"));
+            user.setCountry(resultSet.getString("country"));
+            user.setCity(resultSet.getString("city"));
+            user.setRequiredJob(resultSet.getString("requiredjob"));
+            return user;
+        }
+
+        return null;
+    }
+
+    public ArrayList<User> getUsers() throws SQLException {
+        ArrayList<User> list = new ArrayList< >();
+
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users;");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setEmail(resultSet.getString("email"));
+            user.setPassword(resultSet.getString("password"));
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setLastname(resultSet.getString("lastname"));
+            user.setAdditionalname(resultSet.getString("additionalname"));
+            user.setHeadtitle(resultSet.getString("headtitle"));
+            user.setCountry(resultSet.getString("country"));
+            user.setCity(resultSet.getString("city"));
+            user.setRequiredJob(resultSet.getString("requiredjob"));
+            list.add(user);
+        }
+
+        return list;
+    }
+    
 }
