@@ -10,6 +10,9 @@ public class Job {
     @JsonProperty ("id")
     private int id;
 
+    @JsonProperty ("userid")
+    private int userid;
+
     @JsonProperty ("title")
     private String title;
     
@@ -23,10 +26,10 @@ public class Job {
     private boolean isworking;
 
     @JsonProperty ("worktype")
-    private Worktype worktype;
+    private String worktype;
 
     @JsonProperty ("jobtype")
-    private Jobtype jobtype;
+    private String jobtype;
 
     @JsonProperty ("startdate")
     private Timestamp startDate;
@@ -36,31 +39,16 @@ public class Job {
 
     @JsonProperty ("description")
     private String description;
-    
-    
-    enum Jobtype {
-        fulltime,
-        parttime,
-        self_Employment,
-        freelnce,
-        contracting,
-        internship,
-        paidintern,
-        seasonal,
-        voluntary
-    }
-    
-    enum Worktype {
-        inPlace,
-        hybrid,
-        Telecommuting
-    }
 
+    @JsonProperty ("notifyChanges")
+    private boolean notifyChanges;
+    
 
     // constructors
-    public Job(int id, String title, String companyname, String workplace, boolean isworking, Worktype worktype,
-            Jobtype jobtype, Timestamp startDate, Timestamp enddate, String description) {
+    public Job(int id, int userid, String title, String companyname, String workplace, boolean isworking, String worktype,
+            String jobtype, Timestamp startDate, Timestamp enddate, String description, boolean notifyChanges) {
         this.id = id;
+        this.userid = userid;
         this.title = title;
         this.companyname = companyname;
         this.workplace = workplace;
@@ -70,6 +58,7 @@ public class Job {
         this.startDate = startDate;
         this.enddate = enddate;
         this.description = description;
+        this.notifyChanges = notifyChanges;
     }
 
 
@@ -85,6 +74,14 @@ public class Job {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
     public String getTitle() {
@@ -119,19 +116,19 @@ public class Job {
         this.isworking = isworking;
     }
 
-    public Worktype getWorktype() {
+    public String getWorktype() {
         return worktype;
     }
 
-    public void setWorktype(Worktype worktype) {
+    public void setWorktype(String worktype) {
         this.worktype = worktype;
     }
 
-    public Jobtype getJobtype() {
+    public String getJobtype() {
         return jobtype;
     }
 
-    public void setJobtype(Jobtype jobtype) {
+    public void setJobtype(String jobtype) {
         this.jobtype = jobtype;
     }
 
@@ -159,12 +156,21 @@ public class Job {
         this.description = description;
     }
 
+    public boolean isNotifyChanges() {
+        return notifyChanges;
+    }
+
+    public void setNotifyChanges(boolean notifyChanges) {
+        this.notifyChanges = notifyChanges;
+    }
+
 
     @Override
     public String toString() {
-        return "Job [id=" + id + ", title=" + title + ", companyname=" + companyname + ", workplace=" + workplace
-                + ", isworking=" + isworking + ", worktype=" + worktype + ", jobtype=" + jobtype + ", startDate="
-                + startDate + ", enddate=" + enddate + ", description=" + description + "]";
+        return "Job [id=" + id + ", userid=" + userid + ", title=" + title + ", companyname=" + companyname
+                + ", workplace=" + workplace + ", isworking=" + isworking + ", worktype=" + worktype + ", jobtype="
+                + jobtype + ", startDate=" + startDate + ", enddate=" + enddate + ", description=" + description
+                + ", notifyChanges=" + notifyChanges + "]";
     }
     
 }
