@@ -21,6 +21,8 @@ public class PostDAO {
     public void createPostTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS posts (id INT PRIMARY KEY AUTO_INCREMENT, writterid INT NOT NULL, content VARCHAR(3000), likenumber INT DEFAULT 0, commentnumber INT DEFAULT 0, relatedpostid INT DEFAULT -1, createdate TIMESTAMP DEFAULT NOW(), CONSTRAINT fk_writterid FOREIGN KEY (writterid) REFERENCES users(id), CONSTRAINT fk_relatedpost FOREIGN KEY (relatedpostid) REFERENCES posts(id));");
         statement.executeUpdate();
+        statement = theConnection.prepareStatement("ALTER TABLE posts AUTO_INCREMENT = 60000000");
+        statement.executeUpdate();
     }
 
 
