@@ -37,23 +37,153 @@ public class Job {
     @JsonProperty ("description")
     private String description;
     
+    private enum Jobtype {
+        fulltime,
+        parttime,
+        self_Employment,
+        freelnce,
+        contracting,
+        internship,
+        paidintern,
+        seasonal,
+        voluntary
+    }
+
+
+    private enum Worktype {
+        inPlace,
+        hybrid,
+        Telecommuting
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public String getCompanyname() {
+        return companyname;
+    }
+
+
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname;
+    }
+
+
+    public String getWorkplace() {
+        return workplace;
+    }
+
+
+    public void setWorkplace(String workplace) {
+        this.workplace = workplace;
+    }
+
+
+    public boolean isIsworking() {
+        return isworking;
+    }
+
+
+    public void setIsworking(boolean isworking) {
+        this.isworking = isworking;
+    }
+
+
+    public Worktype getWorktype() {
+        return worktype;
+    }
+
+
+    public void setWorktype(Worktype worktype) {
+        this.worktype = worktype;
+    }
+
+
+    public Jobtype getJobtype() {
+        return jobtype;
+    }
+
+
+    public void setJobtype(Jobtype jobtype) {
+        this.jobtype = jobtype;
+    }
+
+
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+
+
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+
+
+    public Timestamp getEnddate() {
+        return enddate;
+    }
+
+
+    public void setEnddate(Timestamp enddate) {
+        this.enddate = enddate;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public Job(String id, String title, String companyname, String workplace, boolean isworking, Worktype worktype,
+            Jobtype jobtype, Timestamp startDate, Timestamp enddate, String description) {
+        this.id = id;
+        this.title = title;
+        this.companyname = companyname;
+        this.workplace = workplace;
+        this.isworking = isworking;
+        this.worktype = worktype;
+        this.jobtype = jobtype;
+        this.startDate = startDate;
+        this.enddate = enddate;
+        this.description = description;
+    }
+
+
+    public Job() {
+    }
+
+
+    @Override
+    public String toString() {
+        return "Job [id=" + id + ", title=" + title + ", companyname=" + companyname + ", workplace=" + workplace
+                + ", isworking=" + isworking + ", worktype=" + worktype + ", jobtype=" + jobtype + ", startDate="
+                + startDate + ", enddate=" + enddate + ", description=" + description + "]";
+    }
+    
+    
 }
 
 
-enum Worktype {
-    inPlace,
-    hybrid,
-    Telecommuting
-}
-
-enum Jobtype {
-    fulltime,
-    parttime,
-    self_Employment,
-    freelnce,
-    contracting,
-    internship,
-    paidintern,
-    seasonal,
-    voluntary
-}

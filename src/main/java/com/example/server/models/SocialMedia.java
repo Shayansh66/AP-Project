@@ -18,4 +18,35 @@ public class SocialMedia {
         Skype,
         Instagram
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public application getApplication() {
+        return Application;
+    }
+
+    public void setApplication(application application) {
+        Application = application;
+    }
+
+    public SocialMedia(int id, application application) {
+        this.id = id;
+        Application = application;
+    }
+
+    public SocialMedia() {
+    }
+
+    @Override
+    public String toString() {
+        return "SocialMedia [id=" + id + ", Application=" + Application + "]";
+    }
+    
+    
 }
