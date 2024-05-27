@@ -8,6 +8,12 @@ public class User {
     @JsonProperty ("id")
     private int id;
 
+    @JsonProperty ("email")
+    private String email;
+
+    @JsonProperty ("password")
+    private String password;
+
     @JsonProperty ("firstName")
     private String  firstName;
 
@@ -26,17 +32,33 @@ public class User {
     @JsonProperty ("city")
     private String city;
 
+    @JsonProperty ("requiredJob")
+    private RequiredJob requiredJob;
+
+    private enum RequiredJob {
+        NewJob,
+        Servises,
+        None
+    }
+
 
     // constructors
-    public User(int id, String firstName, String lastname, String additionalname, String headtitle) {
+    public User(int id, String email, String password, String firstName, String lastname, String additionalname, String headtitle,
+            String country, String city, RequiredJob requiredJob) {
         this.id = id;
+        this.email = email;
+        this.password = password;
         this.firstName = firstName;
         this.lastname = lastname;
         this.additionalname = additionalname;
         this.headtitle = headtitle;
+        this.country = country;
+        this.city = city;
+        this.requiredJob = requiredJob;
     }
 
     public User() {
+        
     }
 
 
@@ -47,6 +69,22 @@ public class User {
     
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     public String getFirstName() {
@@ -96,8 +134,16 @@ public class User {
     public void setCity(String city) {
         this.city = city;
     }
+
+    public RequiredJob getRequiredJob() {
+        return requiredJob;
+    }
+
+    public void setRequiredJob(RequiredJob requiredJob) {
+        this.requiredJob = requiredJob;
+    }
     
-    
+
     @Override
     public String toString() {
         return "User [id=" + id + ", name=" + firstName + ", lastname=" + lastname + ", additionalname=" + additionalname
