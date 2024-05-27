@@ -28,6 +28,9 @@ public class Contact {
 
      @JsonProperty ("birthdayvisibility")
      private visibility birthdayvisibility;
+     @JsonProperty ("meOnSocialMedia")
+     private SocialMedia meSocialMedia;
+
      
     
 
