@@ -22,7 +22,7 @@ public class PostDAO {
     public void createPostTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS posts (id INT PRIMARY KEY AUTO_INCREMENT, writterid INT NOT NULL, content VARCHAR(3000), likenumber INT DEFAULT 0, commentnumber INT DEFAULT 0, relatedpostid INT DEFAULT -1, createdate TIMESTAMP DEFAULT NOW(), CONSTRAINT fk_writterid FOREIGN KEY (writterid) REFERENCES users(id), CONSTRAINT fk_relatedpost FOREIGN KEY (relatedpostid) REFERENCES posts(id));");
         statement.executeUpdate();
-        statement = theConnection.prepareStatement("ALTER TABLE posts AUTO_INCREMENT = 60000000");
+        statement = theConnection.prepareStatement("ALTER TABLE posts AUTO_INCREMENT = 60000000;");
         statement.executeUpdate();
     }
 
@@ -122,7 +122,7 @@ public class PostDAO {
     public ArrayList<Post> getPosts() throws SQLException {
         ArrayList<Post> list = new ArrayList< >();
 
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts;");
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
@@ -149,7 +149,7 @@ public class PostDAO {
         ArrayList<Post> list = new ArrayList< >();
         var ID = Integer.parseInt(userid);
 
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ?");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ?;");
         statement.setInt(1, ID);
         ResultSet resultSet = statement.executeQuery();
 
@@ -176,7 +176,7 @@ public class PostDAO {
         ArrayList<Post> list = new ArrayList< >();
         var ID = Integer.parseInt(userid);
 
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ? WHERE relatedpost != -1");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ? WHERE relatedpost != -1;");
         statement.setInt(1, ID);
         ResultSet resultSet = statement.executeQuery();
 
@@ -198,7 +198,7 @@ public class PostDAO {
         ArrayList<Comment> list = new ArrayList< >();
         var ID = Integer.parseInt(postid);
 
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE relatedpost = ?");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE relatedpost = ?;");
         statement.setInt(1, ID);
         ResultSet resultSet = statement.executeQuery();
 

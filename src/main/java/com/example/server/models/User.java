@@ -33,18 +33,12 @@ public class User {
     private String city;
 
     @JsonProperty ("requiredJob")
-    private RequiredJob requiredJob;
-
-    private enum RequiredJob {
-        NewJob,
-        Servises,
-        None
-    }
+    private String requiredJob;
 
 
     // constructors
     public User(int id, String email, String password, String firstName, String lastname, String additionalname, String headtitle,
-            String country, String city, RequiredJob requiredJob) {
+            String country, String city, String requiredJob) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -135,19 +129,20 @@ public class User {
         this.city = city;
     }
 
-    public RequiredJob getRequiredJob() {
+    public String getRequiredJob() {
         return requiredJob;
     }
 
-    public void setRequiredJob(RequiredJob requiredJob) {
+    public void setRequiredJob(String requiredJob) {
         this.requiredJob = requiredJob;
     }
-    
 
+    
     @Override
     public String toString() {
-        return "User [id=" + id + ", name=" + firstName + ", lastname=" + lastname + ", additionalname=" + additionalname
-                + ", headtitle=" + headtitle + "]";
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
+                + ", lastname=" + lastname + ", additionalname=" + additionalname + ", headtitle=" + headtitle
+                + ", country=" + country + ", city=" + city + ", requiredJob=" + requiredJob + "]";
     }
     
 }
