@@ -12,5 +12,5 @@ import java.util.Date;
 
 
 public class PostController {
-    
+    private final PostDAO postDAO;
 }

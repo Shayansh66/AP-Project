@@ -25,15 +25,21 @@ public class Post {
     @JsonProperty ("createDate")
     private Timestamp createDate;
 
+    @JsonProperty ("relatedGroupId")
+    private int relatedGroupId;
+
+
 
     // constructors
-    public Post(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate) {
+    public Post(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate , int relatedGroupId) {
         this.id = id;
         this.writterid = writterid;
         this.content = content;
         this.liKeNumber = likeNumber;
         this.commentNumber = commentNumber;
         this.createDate = createDate;
+        this.relatedGroupId = relatedGroupId;
+
     }
 
     public Post() {
@@ -88,17 +94,22 @@ public class Post {
     public void setCreateDate(Timestamp createDate) {
         this.createDate = createDate;
     }
-
     
+
+    public int getRelatedGroupId() {
+        return relatedGroupId;
+    }
+
+    public void setRelatedGroupId(int relatedGroupId) {
+        this.relatedGroupId = relatedGroupId;
+    }
+
     @Override
     public String toString() {
-        return  "Post [id=" + id +
-                ", writterid=" + writterid +
-                ", content=" + content +
-                ", likeNumber=" + liKeNumber +
-                ", commentNumber=" + commentNumber +
-                ", createDate=" + createDate +
-                "]";
+        return "Post [id=" + id + ", writterid=" + writterid + ", content=" + content + ", liKeNumber=" + liKeNumber
+                + ", commentNumber=" + commentNumber + ", createDate=" + createDate + ", relatedGroupId="
+                + relatedGroupId + "]";
     }
+    
 
 }
