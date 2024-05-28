@@ -16,8 +16,8 @@ public class Job {
     @JsonProperty ("title")
     private String title;
     
-    @JsonProperty ("companyname")
-    private String companyname;
+    @JsonProperty ("companyName")
+    private String companyName;
 
     @JsonProperty ("workplace")
     private String workplace;
@@ -25,11 +25,11 @@ public class Job {
     @JsonProperty ("isworking")
     private boolean isworking;
 
-    @JsonProperty ("worktype")
-    private String worktype;
+    @JsonProperty ("workType")
+    private String workType;
 
-    @JsonProperty ("jobtype")
-    private String jobtype;
+    @JsonProperty ("jobType")
+    private String jobType;
 
     @JsonProperty ("startdate")
     private Timestamp startDate;
@@ -50,9 +50,9 @@ public class Job {
 
     @Override
     public String toString() {
-        return "Job [id=" + id + ", userid=" + userid + ", title=" + title + ", companyname=" + companyname
-                + ", workplace=" + workplace + ", isworking=" + isworking + ", worktype=" + worktype + ", jobtype="
-                + jobtype + ", startDate=" + startDate + ", enddate=" + enddate + ", description=" + description
+        return "Job [id=" + id + ", userid=" + userid + ", title=" + title + ", companyname=" + companyName
+                + ", workplace=" + workplace + ", isworking=" + isworking + ", worktype=" + workType + ", jobtype="
+                + jobType + ", startDate=" + startDate + ", enddate=" + enddate + ", description=" + description
                 + ", notifyChanges=" + notifyChanges + "]";
     }
 
@@ -90,11 +90,11 @@ public class Job {
     public void setTitle(String title) {
         this.title = title;
     }
-    public String getCompanyname() {
-        return companyname;
+    public String getCompanyName() {
+        return companyName;
     }
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname;
+    public void setCompanyName(String companyname) {
+        this.companyName = companyname;
     }
     public String getWorkplace() {
         return workplace;
@@ -108,17 +108,17 @@ public class Job {
     public void setIsworking(boolean isworking) {
         this.isworking = isworking;
     }
-    public String getWorktype() {
-        return worktype;
+    public String getWorkType() {
+        return workType;
     }
-    public void setWorktype(String worktype) {
-        this.worktype = worktype;
+    public void setWorkType(String worktype) {
+        this.workType = worktype;
     }
-    public String getJobtype() {
-        return jobtype;
+    public String getJobType() {
+        return jobType;
     }
-    public void setJobtype(String jobtype) {
-        this.jobtype = jobtype;
+    public void setJobType(String jobtype) {
+        this.jobType = jobtype;
     }
     public Timestamp getStartDate() {
         return startDate;
