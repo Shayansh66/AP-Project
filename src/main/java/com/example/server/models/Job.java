@@ -43,126 +43,9 @@ public class Job {
     @JsonProperty ("notifyChanges")
     private boolean notifyChanges;
     
-
-    // constructors
-    public Job(int id, int userid, String title, String companyname, String workplace, boolean isworking, String worktype,
-            String jobtype, Timestamp startDate, Timestamp enddate, String description, boolean notifyChanges) {
-        this.id = id;
-        this.userid = userid;
-        this.title = title;
-        this.companyname = companyname;
-        this.workplace = workplace;
-        this.isworking = isworking;
-        this.worktype = worktype;
-        this.jobtype = jobtype;
-        this.startDate = startDate;
-        this.enddate = enddate;
-        this.description = description;
-        this.notifyChanges = notifyChanges;
-    }
+    
 
 
-    public Job() {
-
-    }
-
-
-    // accessor and mutators
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserid() {
-        return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCompanyname() {
-        return companyname;
-    }
-
-    public void setCompanyname(String companyname) {
-        this.companyname = companyname;
-    }
-
-    public String getWorkplace() {
-        return workplace;
-    }
-
-    public void setWorkplace(String workplace) {
-        this.workplace = workplace;
-    }
-
-    public boolean isIsworking() {
-        return isworking;
-    }
-
-    public void setIsworking(boolean isworking) {
-        this.isworking = isworking;
-    }
-
-    public String getWorktype() {
-        return worktype;
-    }
-
-    public void setWorktype(String worktype) {
-        this.worktype = worktype;
-    }
-
-    public String getJobtype() {
-        return jobtype;
-    }
-
-    public void setJobtype(String jobtype) {
-        this.jobtype = jobtype;
-    }
-
-    public Timestamp getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Timestamp startDate) {
-        this.startDate = startDate;
-    }
-
-    public Timestamp getEnddate() {
-        return enddate;
-    }
-
-    public void setEnddate(Timestamp enddate) {
-        this.enddate = enddate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isNotifyChanges() {
-        return notifyChanges;
-    }
-
-    public void setNotifyChanges(boolean notifyChanges) {
-        this.notifyChanges = notifyChanges;
-    }
 
 
     @Override
@@ -172,6 +55,96 @@ public class Job {
                 + jobtype + ", startDate=" + startDate + ", enddate=" + enddate + ", description=" + description
                 + ", notifyChanges=" + notifyChanges + "]";
     }
+
+    enum WorkType {
+        inPlace,
+        hybrid,
+        telecommuting
+    }
+    enum JobType {
+        fullTime,
+        partTime,
+        selfEmployment,
+        frelance,
+        Contracting,
+        internship,
+        paidintern,
+        seasonal,
+        voluantary
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getUserid() {
+        return userid;
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getCompanyname() {
+        return companyname;
+    }
+    public void setCompanyname(String companyname) {
+        this.companyname = companyname;
+    }
+    public String getWorkplace() {
+        return workplace;
+    }
+    public void setWorkplace(String workplace) {
+        this.workplace = workplace;
+    }
+    public boolean isIsworking() {
+        return isworking;
+    }
+    public void setIsworking(boolean isworking) {
+        this.isworking = isworking;
+    }
+    public String getWorktype() {
+        return worktype;
+    }
+    public void setWorktype(String worktype) {
+        this.worktype = worktype;
+    }
+    public String getJobtype() {
+        return jobtype;
+    }
+    public void setJobtype(String jobtype) {
+        this.jobtype = jobtype;
+    }
+    public Timestamp getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(Timestamp startDate) {
+        this.startDate = startDate;
+    }
+    public Timestamp getEnddate() {
+        return enddate;
+    }
+    public void setEnddate(Timestamp enddate) {
+        this.enddate = enddate;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public boolean isNotifyChanges() {
+        return notifyChanges;
+    }
+    public void setNotifyChanges(boolean notifyChanges) {
+        this.notifyChanges = notifyChanges;
+    }
+
     
 }
 

@@ -2,8 +2,8 @@ package main.java.com.example.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import main.java.com.example.server.models.Job.Jobtype;
-import main.java.com.example.server.models.Job.Worktype;
+import main.java.com.example.server.models.Job.JobType;
+import main.java.com.example.server.models.Job.WorkType;
 
 
 public class JobPosition {
@@ -21,10 +21,10 @@ public class JobPosition {
     private String companyName;
 
     @JsonProperty ("worktype")
-    private Worktype worktpye;
+    private WorkType worktpye;
 
     @JsonProperty ("jobType")
-    private Jobtype jobType;
+    private JobType jobType;
 
     @JsonProperty ("profession")
     private String profession;
@@ -34,7 +34,7 @@ public class JobPosition {
 
 
     // constructors
-    public JobPosition(int id, int creatorId, String title, String companyName, Worktype worktpye, Jobtype jobType,
+    public JobPosition(int id, int creatorId, String title, String companyName, WorkType worktpye, JobType jobType,
             String profession, String descreption) {
         this.id = id;
         this.creatorId = creatorId;
@@ -84,19 +84,19 @@ public class JobPosition {
         this.companyName = companyName;
     }
 
-    public Worktype getWorktpye() {
+    public WorkType getWorktpye() {
         return worktpye;
     }
 
-    public void setWorktpye(Worktype worktpye) {
+    public void setWorktpye(WorkType worktpye) {
         this.worktpye = worktpye;
     }
 
-    public Jobtype getJobType() {
+    public JobType getJobType() {
         return jobType;
     }
 
-    public void setJobType(Jobtype jobType) {
+    public void setJobType(JobType jobType) {
         this.jobType = jobType;
     }
 
