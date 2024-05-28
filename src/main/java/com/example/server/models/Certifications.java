@@ -1,7 +1,6 @@
 package main.java.com.example.server.models;
 
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,29 +20,29 @@ public class Certifications {
     private String institution;
 
     @JsonProperty("issueDate")
-    private LocalDate issueDate;
+    private Timestamp issueDate;
+
+    @JsonProperty ("expireDate")
+    private Timestamp expireDate;
 
     @JsonProperty ("creditId")
     private String creditId;
 
     @JsonProperty ("refrenceWebiste")
     private String refrenceWebsite;
-
-    @JsonProperty ("skills")
-    private String[] skills;
     
     
     // constructors
-    public Certifications(int id, int userId, String name, String institution, LocalDate issueDate, String creditId,
-            String refrenceWebsite, String[] skills) {
+    public Certifications(int id, int userId, String name, String institution, Timestamp issueDate, Timestamp expireDate, String creditId,
+            String refrenceWebsite) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.institution = institution;
         this.issueDate = issueDate;
+        this.expireDate = expireDate;
         this.creditId = creditId;
         this.refrenceWebsite = refrenceWebsite;
-        this.skills = skills;
     }
 
     public Certifications() {
@@ -84,11 +83,11 @@ public class Certifications {
         this.institution = institution;
     }
 
-    public LocalDate getIssueDate() {
+    public Timestamp getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(LocalDate issueDate) {
+    public void setIssueDate(Timestamp issueDate) {
         this.issueDate = issueDate;
     }
 
@@ -108,20 +107,20 @@ public class Certifications {
         this.refrenceWebsite = refrenceWebsite;
     }
 
-    public String[] getSkills() {
-        return skills;
+    public Timestamp getExpireDate() {
+        return expireDate;
     }
 
-    public void setSkills(String[] skills) {
-        this.skills = skills;
+    public void setExpireDate(Timestamp expireDate) {
+        this.expireDate = expireDate;
     }
-    
+
 
     @Override
     public String toString() {
         return "Certifications [id=" + id + ", userId=" + userId + ", name=" + name + ", institution=" + institution
-                + ", issueDate=" + issueDate + ", creditId=" + creditId + ", refrenceWebsite=" + refrenceWebsite
-                + ", skills=" + Arrays.toString(skills) + "]";
+                + ", issueDate=" + issueDate + ", expireDate=" + expireDate + ", creditId=" + creditId
+                + ", refrenceWebsite=" + refrenceWebsite + "]";
     }
 
 }
