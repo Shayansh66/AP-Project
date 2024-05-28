@@ -12,7 +12,7 @@ public class User {
     private String email;
 
     @JsonProperty ("password")
-    private String password;
+    private int password;
 
     @JsonProperty ("firstName")
     private String  firstName;
@@ -37,7 +37,7 @@ public class User {
 
 
     // constructors
-    public User(int id, String email, String password, String firstName, String lastname, String additionalname, String headtitle,
+    public User(int id, String email, int password, String firstName, String lastname, String additionalname, String headtitle,
             String country, String city, String requiredJob) {
         this.id = id;
         this.email = email;
@@ -73,11 +73,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public int getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(int password) {
         this.password = password;
     }
     

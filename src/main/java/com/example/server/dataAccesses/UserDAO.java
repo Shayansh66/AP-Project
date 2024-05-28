@@ -19,7 +19,7 @@ public class UserDAO {
     }
 
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users (id PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255) NOT NULL, password VARCHAR(35), firstname VARCHAR(20), lastname VARCHAR(40), additionalname VARCHAR(40), headtitle VARCHAR(220), countrey VARCHAR(60), city VARCHAR(60), requiredjob VARCHAR(35), createdate TIMESTAMP DEFAULT NOW());");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users (id PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255) NOT NULL, password INT, firstname VARCHAR(20), lastname VARCHAR(40), additionalname VARCHAR(40), headtitle VARCHAR(220), countrey VARCHAR(60), city VARCHAR(60), requiredjob VARCHAR(35), createdate TIMESTAMP DEFAULT NOW());");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE users AUTO_INCREMENT = 20000000");
         statement.executeUpdate();
@@ -28,7 +28,7 @@ public class UserDAO {
     public void saveUser(User user) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO users (eamil, password, firstname, lastname, additionalname, headtitle, country, city, requiredjob) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
         statement.setString(1, user.getEmail());
-        statement.setString(2, user.getPassword());
+        statement.setInt(2, user.getPassword());
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastname());
         statement.setString(5, user.getAdditionalname());
@@ -41,7 +41,7 @@ public class UserDAO {
 
     public void updateUser(User user) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("UPDATE users SET password = ?, firstname = ?, lastname = ?, additionalname = ?, headtitle = ?, country = ?, city = ?, requiredjob = ? WHERE userid = ?;");
-        statement.setString(1, user.getPassword());
+        statement.setInt(1, user.getPassword());
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getLastname());
         statement.setString(4, user.getAdditionalname());
@@ -79,7 +79,7 @@ public class UserDAO {
             User user = new User();
             user.setId(resultSet.getInt("id"));
             user.setEmail(resultSet.getString("email"));
-            user.setPassword(resultSet.getString("password"));
+            user.setPassword(resultSet.getInt("password"));
             user.setFirstName(resultSet.getString("firstname"));
             user.setLastname(resultSet.getString("lastname"));
             user.setAdditionalname(resultSet.getString("additionalname"));
@@ -103,7 +103,7 @@ public class UserDAO {
             User user = new User();
             user.setId(resultSet.getInt("id"));
             user.setEmail(resultSet.getString("email"));
-            user.setPassword(resultSet.getString("password"));
+            user.setPassword(resultSet.getInt("password"));
             user.setFirstName(resultSet.getString("firstname"));
             user.setLastname(resultSet.getString("lastname"));
             user.setAdditionalname(resultSet.getString("additionalname"));
@@ -127,7 +127,7 @@ public class UserDAO {
             User user = new User();
             user.setId(resultSet.getInt("id"));
             user.setEmail(resultSet.getString("email"));
-            user.setPassword(resultSet.getString("password"));
+            user.setPassword(resultSet.getInt("password"));
             user.setFirstName(resultSet.getString("firstname"));
             user.setLastname(resultSet.getString("lastname"));
             user.setAdditionalname(resultSet.getString("additionalname"));
