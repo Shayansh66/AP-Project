@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 
@@ -66,6 +67,71 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
+    public Certifications getCertification(String id) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE id = ?");
+        statement.setInt(1, Integer.parseInt(id));
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            Certifications certification = new Certifications();
+            certification.setId(resultSet.getInt("id"));
+            certification.setUserId(resultSet.getInt("userid"));
+            certification.setName(resultSet.getString("name"));
+            certification.setInstitution(resultSet.getString("instutation"));
+            certification.setIssueDate(resultSet.getTimestamp("issuedate"));
+            certification.setExpireDate(resultSet.getTimestamp("expiredate"));
+            certification.setCreditId(resultSet.getString("creditid"));
+            certification.setRefrenceWebsite(resultSet.getString("refrencewebsite"));
+            return certification;
+        }
+
+        return null;
+    }
+
+    public ArrayList<Certifications> getCertifications() throws SQLException {
+        ArrayList<Certifications> list = new ArrayList< >();
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Certifications certification = new Certifications();
+            certification.setId(resultSet.getInt("id"));
+            certification.setUserId(resultSet.getInt("userid"));
+            certification.setName(resultSet.getString("name"));
+            certification.setInstitution(resultSet.getString("instutation"));
+            certification.setIssueDate(resultSet.getTimestamp("issuedate"));
+            certification.setExpireDate(resultSet.getTimestamp("expiredate"));
+            certification.setCreditId(resultSet.getString("creditid"));
+            certification.setRefrenceWebsite(resultSet.getString("refrencewebsite"));
+            list.add(certification);
+        }
+
+        return list;
+    }
     
+    public ArrayList<Certifications> getCertificationsByUserID(String userid) throws SQLException {
+        ArrayList<Certifications> list = new ArrayList< >();
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE userid = ?");
+        statement.setInt(1, Integer.parseInt(userid));
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Certifications certification = new Certifications();
+            certification.setId(resultSet.getInt("id"));
+            certification.setUserId(resultSet.getInt("userid"));
+            certification.setName(resultSet.getString("name"));
+            certification.setInstitution(resultSet.getString("instutation"));
+            certification.setIssueDate(resultSet.getTimestamp("issuedate"));
+            certification.setExpireDate(resultSet.getTimestamp("expiredate"));
+            certification.setCreditId(resultSet.getString("creditid"));
+            certification.setRefrenceWebsite(resultSet.getString("refrencewebsite"));
+            list.add(certification);
+        }
+
+        return list;
+    }
+
+
+
     
 }
