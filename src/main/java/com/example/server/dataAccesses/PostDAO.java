@@ -20,7 +20,7 @@ public class PostDAO {
     }
 
     public void createPostTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS posts (id INT PRIMARY KEY AUTO_INCREMENT, writterid INT NOT NULL, content VARCHAR(3000), likenumber INT DEFAULT 0, commentnumber INT DEFAULT 0, relatedpostid INT DEFAULT -1, createdate TIMESTAMP DEFAULT NOW(), CONSTRAINT fk_writterid FOREIGN KEY (writterid) REFERENCES users(id), CONSTRAINT fk_relatedpost FOREIGN KEY (relatedpostid) REFERENCES posts(id));");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS posts (id INT PRIMARY KEY AUTO_INCREMENT, writterid INT NOT NULL, content VARCHAR(3000), likenumber INT DEFAULT 0, commentnumber INT DEFAULT 0, createdate TIMESTAMP DEFAULT NOW(), relatedgroupid INT DEFAULT NULL, relatedpostid INT DEFAULT -1, CONSTRAINT fk_writterid FOREIGN KEY (writterid) REFERENCES users(id), CONSTRAINT fk_relatedpost FOREIGN KEY (relatedpostid) REFERENCES posts(id));");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE posts AUTO_INCREMENT = 60000000;");
         statement.executeUpdate();
@@ -32,14 +32,15 @@ public class PostDAO {
 
         try {
             if (post instanceof Comment comment) {
-                statement = theConnection.prepareStatement("INSERT INTO posts (writterid, content, relatedpostid) VALUES (?, ?, ?);");
-                statement.setInt(3, comment.getRelatedPostid());
+                statement = theConnection.prepareStatement("INSERT INTO posts (writterid, content, relatedgroupid, relatedpostid) VALUES (?, ?, ?, ?);");
+                statement.setInt(4, comment.getRelatedPostid());
             }
             else { // post is instance of Post
                 statement = theConnection.prepareStatement("INSERT INTO posts (writterid, content) VALUES (?, ?);");
             }
             statement.setInt(1, post.getWritterid());
             statement.setString(2, post.getContent());
+            statement.setInt(3, post.getRelatedGroupId());
             statement.executeUpdate();
         } finally {
             if (statement != null) {
@@ -54,19 +55,20 @@ public class PostDAO {
 
         try {
             if (post instanceof Comment comment) {
-                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?, relatedpostid = ? WHERE postid = ?;");
-                statement.setInt(5, comment.getRelatedPostid());
-                statement.setInt(6, comment.getId());
+                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?, relatedgroupid = ?, relatedpostid = ? WHERE postid = ?;");
+                statement.setInt(6, comment.getRelatedPostid());
+                statement.setInt(7, comment.getId());
             }
 
             else {
-                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ? WHERE postid = ?;");
-                statement.setInt(5, post.getId());
+                statement = theConnection.prepareStatement("UPTADE posts SET writterid = ?, content = ?, likenumber = ?, commentnumber = ?, relatedgroupid = ?, WHERE postid = ?;");
+                statement.setInt(6, post.getId());
             }
             statement.setInt(1, post.getWritterid());
             statement.setString(2, post.getContent());
             statement.setInt(3, post.getLiKeNumber());
             statement.setInt(4, post.getCommentNumber());
+            statement.setInt(5, post.getRelatedGroupId());
             statement.executeUpdate();
         } finally {
             if (statement != null) {
@@ -105,14 +107,15 @@ public class PostDAO {
             var content = resultset.getString("content");
             var likenumber = resultset.getInt("likenumber");
             var commentnumber = resultset.getInt("commentnumber");
-            var timestamp = resultset.getTimestamp("createdate");
+            var createdate = resultset.getTimestamp("createdate");
+            var relatedGroupId = resultset.getInt("relatedgroupid");
             var relatedPostid = resultset.getInt("relatedpostid");
 
             if (relatedPostid != -1) {    // it is a Comment
-                return new Comment(ID, writterid, content, likenumber, commentnumber, relatedPostid, timestamp);
+                return new Comment(ID, writterid, content, likenumber, commentnumber, createdate, relatedGroupId, relatedPostid);
             }
             else {  // it is a Post
-                return new Post(ID, writterid, content, likenumber, commentnumber, timestamp);
+                return new Post(ID, writterid, content, likenumber, commentnumber, createdate, relatedGroupId);
             }
         }
         return null;
@@ -131,14 +134,15 @@ public class PostDAO {
             var content = resultSet.getString("content");
             var likenumber = resultSet.getInt("likenumber");
             var commentnumber = resultSet.getInt("commentnumber");
-            var relatedPostid = resultSet.getInt("relatedPostid");
             var createdate = resultSet.getTimestamp("createdate");
+            var relatedGroupId = resultSet.getInt("relatedgroupid");
+            var relatedPostid = resultSet.getInt("relatedPostid");
 
             if (relatedPostid != -1) {  // it is a Comment
-                list.add(new Comment(id, writterid, content, likenumber, commentnumber, relatedPostid, createdate));
+                list.add(new Comment(id, writterid, content, likenumber, commentnumber, createdate, relatedGroupId, relatedPostid));
             }
             else {  // it is a Post
-                list.add(new Post(id, writterid, content, likenumber, commentnumber, createdate));
+                list.add(new Post(id, writterid, content, likenumber, commentnumber, createdate, relatedGroupId));
             }
         }
 
@@ -158,14 +162,15 @@ public class PostDAO {
             var content = resultSet.getString("content");
             var likenumber = resultSet.getInt("likenumber");
             var commentnumber = resultSet.getInt("commentnumber");
-            var relatedPostid = resultSet.getInt("relatedPostid");
             var createdate = resultSet.getTimestamp("createdate");
+            var relatedGroupId = resultSet.getInt("relatedgroupid");
+            var relatedPostid = resultSet.getInt("relatedPostid");
 
             if (relatedPostid != -1) {  // it is a Comment
-                list.add(new Comment(id, ID, content, likenumber, commentnumber, relatedPostid, createdate));
+                list.add(new Comment(id, ID, content, likenumber, commentnumber, createdate, relatedGroupId, relatedPostid));
             }
             else {  // it is a Post
-                list.add(new Post(id, ID, content, likenumber, commentnumber, createdate));
+                list.add(new Post(id, ID, content, likenumber, commentnumber, createdate, relatedGroupId));
             }
         }
 
@@ -185,10 +190,11 @@ public class PostDAO {
             var content = resultSet.getString("content");
             var likenumber = resultSet.getInt("likenumber");
             var commentnumber = resultSet.getInt("commentnumber");
-            var relatedPostid = resultSet.getInt("relatedPostid");
             var createdate = resultSet.getTimestamp("createdate");
+            var relatedGroupId = resultSet.getInt("relatedgroupid");
+            var relatedPostid = resultSet.getInt("relatedPostid");
 
-            list.add(new Comment(id, ID, content, likenumber, commentnumber, relatedPostid, createdate));
+            list.add(new Comment(id, ID, content, likenumber, commentnumber, createdate, relatedGroupId, relatedPostid));
         }
 
         return list;
@@ -207,10 +213,11 @@ public class PostDAO {
             var content = resultSet.getString("content");
             var likenumber = resultSet.getInt("likenumber");
             var commentnumber = resultSet.getInt("commentnumber");
-            var relatedPostid = resultSet.getInt("relatedPostid");
             var createdate = resultSet.getTimestamp("createdate");
+            var relatedGroupId = resultSet.getInt("relatedgroupid");
+            var relatedPostid = resultSet.getInt("relatedPostid");
 
-            list.add(new Comment(id, ID, content, likenumber, commentnumber, relatedPostid, createdate));
+            list.add(new Comment(id, ID, content, likenumber, commentnumber, createdate, relatedGroupId, relatedPostid));
         }
 
         return list;

@@ -12,9 +12,9 @@ public class Comment extends Post {
 
 
     // constructors
-    public Comment(int id, int writterid, String content, int likeNumber, int commentNumber, int relatedPost, Timestamp createDate , int relatedGroupId) {
-        super(id, writterid, content, likeNumber, commentNumber, createDate , relatedGroupId );
-        this.relatedPostid = relatedPost;
+    public Comment(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate, int relatedgroupid, int relatedPostId) {
+        super(id, writterid, content, likeNumber, commentNumber, createDate, relatedgroupid);
+        this.relatedPostid = relatedPostId;
     }
 
     public Comment() {
