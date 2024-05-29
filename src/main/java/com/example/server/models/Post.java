@@ -16,11 +16,11 @@ public class Post {
     @JsonProperty ("content")
     private String content;
 
-    @JsonProperty ("liKeNumber")
-    private int liKeNumber;
+    @JsonProperty ("liKeNumbers")
+    private int likeNumbers;
 
-    @JsonProperty ("commentNumber")
-    private int commentNumber;
+    @JsonProperty ("commentNumbers")
+    private int commentNumbers;
 
     @JsonProperty ("createDate")
     private Timestamp createDate;
@@ -35,8 +35,8 @@ public class Post {
         this.id = id;
         this.writterid = writterid;
         this.content = content;
-        this.liKeNumber = likeNumber;
-        this.commentNumber = commentNumber;
+        this.likeNumbers = likeNumber;
+        this.commentNumbers = commentNumber;
         this.createDate = createDate;
         this.relatedGroupId = relatedGroupId;
 
@@ -72,19 +72,19 @@ public class Post {
     }
 
     public int getLiKeNumber() {
-        return liKeNumber;
+        return likeNumbers;
     }
 
     public void setLiKeNumber(int likeNumber) {
-        this.liKeNumber = likeNumber;
+        this.likeNumbers = likeNumber;
     }
 
     public int getCommentNumber() {
-        return commentNumber;
+        return commentNumbers;
     }
 
     public void setCommentNumber(int commentNumber) {
-        this.commentNumber = commentNumber;
+        this.commentNumbers = commentNumber;
     }
 
     public Timestamp getCreateDate() {
@@ -106,8 +106,8 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post [id=" + id + ", writterid=" + writterid + ", content=" + content + ", liKeNumber=" + liKeNumber
-                + ", commentNumber=" + commentNumber + ", createDate=" + createDate + ", relatedGroupId="
+        return "Post [id=" + id + ", writterid=" + writterid + ", content=" + content + ", liKeNumber=" + likeNumbers
+                + ", commentNumber=" + commentNumbers + ", createDate=" + createDate + ", relatedGroupId="
                 + relatedGroupId + "]";
     }
     
