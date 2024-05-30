@@ -16,7 +16,7 @@ public class UserController {
 
     }
 
-    public void createUser (int id , String password ,String email , String firstname , String lastname , String additionalname
+    public void createUser (int id , int password ,String email , String firstname , String lastname , String additionalname
      , String headtitle , String country , String city , String requiredJob  ) throws SQLException {
         User user = new User(id, email, password, firstname, lastname, additionalname, headtitle, country, city, requiredJob);
             userDAO.saveUser(user);
@@ -36,7 +36,7 @@ public class UserController {
         userDAO.deleteUsers();
      }
 
-     public void updateUser (int id , String password ,String email , String firstname , String lastname , String additionalname
+     public void updateUser (int id , int password ,String email , String firstname , String lastname , String additionalname
      , String headtitle , String country , String city , String requiredJob  ) throws SQLException {
         User user = new User();
         user.setId(id);
