@@ -19,14 +19,14 @@ public class UserDAO {
     }
 
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users (id PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255) NOT NULL, password INT, firstname VARCHAR(20), lastname VARCHAR(40), additionalname VARCHAR(40), headtitle VARCHAR(220), countrey VARCHAR(60), city VARCHAR(60), requiredjob VARCHAR(35), createdate TIMESTAMP DEFAULT NOW());");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS users (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(255) NOT NULL, password INT, firstname VARCHAR(20), lastname VARCHAR(40), additionalname VARCHAR(40), headtitle VARCHAR(220), country VARCHAR(60), city VARCHAR(60), requiredjob VARCHAR(35), createdate TIMESTAMP DEFAULT NOW());");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE users AUTO_INCREMENT = 20000000");
         statement.executeUpdate();
     }
 
     public void saveUser(User user) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO users (eamil, password, firstname, lastname, additionalname, headtitle, country, city, requiredjob) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO users (email, password, firstname, lastname, additionalname, headtitle, country, city, requiredjob) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
         statement.setString(1, user.getEmail());
         statement.setInt(2, user.getPassword());
         statement.setString(3, user.getFirstName());
@@ -70,7 +70,7 @@ public class UserDAO {
         statement.executeUpdate();
     }
 
-    public User getUser(String userid) throws SQLException {
+    public User getUserById(String userid) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE id = ?;");
         statement.setInt(1, Integer.parseInt(userid));
         ResultSet resultSet = statement.executeQuery();
@@ -92,11 +92,34 @@ public class UserDAO {
 
         return null;
     }
+    
+    public User getUserByEmail(String email) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE email = ?;");
+        statement.setString(1, email);
+        ResultSet resultSet = statement.executeQuery();
 
-    public User getUser(String userid, String password) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE password = ? AND id = ?;");
-        statement.setString(1, password);
-        statement.setInt(2, Integer.parseInt(userid));
+        if (resultSet.next()) {
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setEmail(resultSet.getString("email"));
+            user.setPassword(resultSet.getInt("password"));
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setLastname(resultSet.getString("lastname"));
+            user.setAdditionalname(resultSet.getString("additionalname"));
+            user.setHeadtitle(resultSet.getString("headtitle"));
+            user.setCountry(resultSet.getString("country"));
+            user.setCity(resultSet.getString("city"));
+            user.setRequiredJob(resultSet.getString("requiredjob"));
+            return user;
+        }
+
+        return null;
+    }
+
+    public User getUser(String email, int password) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE password = ? AND email = ?;");
+        statement.setInt(1, password);
+        statement.setString(2, email);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
