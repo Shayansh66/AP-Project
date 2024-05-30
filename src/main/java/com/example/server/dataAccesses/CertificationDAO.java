@@ -50,26 +50,26 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
-    public void delteCertification(Certifications certification) throws SQLException {
+    public void deleteCertification(Certifications certification) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM certifications WHERE id = ?;");
         statement.setInt(1, certification.getId());
         statement.executeUpdate();
     }
 
-    public void delteCertification(int id) throws SQLException {
+    public void deleteCertification(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM certifications WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1,(id));
         statement.executeUpdate();
     }
 
-    public void delteCertifications() throws SQLException {
+    public void deleteCertifications() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM certifications;");
         statement.executeUpdate();
     }
 
-    public Certifications getCertification(String id) throws SQLException {
+    public  Certifications getCertification(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE id = ?");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1,(id));
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
@@ -109,10 +109,10 @@ public class CertificationDAO {
         return list;
     }
     
-    public ArrayList<Certifications> getCertificationsByUserID(String userid) throws SQLException {
+    public ArrayList<Certifications> getCertificationsByUserID(int userid) throws SQLException {
         ArrayList<Certifications> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE userid = ?");
-        statement.setInt(1, Integer.parseInt(userid));
+        statement.setInt(1,(userid));
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {

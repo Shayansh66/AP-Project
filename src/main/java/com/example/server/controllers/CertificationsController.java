@@ -3,6 +3,10 @@ package main.java.com.example.server.controllers;
 import java.sql.Timestamp;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.java.com.example.server.dataAccesses.CertificationDAO;
 import main.java.com.example.server.models.Certifications;
@@ -30,7 +34,38 @@ public class CertificationsController {
     }
      
     public void deleteCertification (int id) throws SQLException {
-        certificationDAO.delteCertification(id);
+        certificationDAO.deleteCertification(id);
     }
+
+    public void deleteCertification (Certifications certification) throws SQLException {
+        certificationDAO.deleteCertification (certification);
+    }
+
+    public void deleteCertifications () throws SQLException {
+        certificationDAO.deleteCertifications();
+    }
+
+    public String getCertification(int id) throws SQLException, JsonProcessingException {
+        Certifications certification = certificationDAO.getCertification(id);
+        ObjectMapper ob = new ObjectMapper();
+        return ob.writeValueAsString(certification);
+    }
+
+    public String getCertificationsByUserId (int userId) throws SQLException, JsonProcessingException {
+        ArrayList <Certifications> userCertifications =  certificationDAO.getCertificationsByUserID(userId);
+        ObjectMapper ob = new ObjectMapper() ;
+
+        return ob.writeValueAsString(userCertifications);
+
+    }
+
+    public String getCertifications () throws SQLException, JsonProcessingException {
+        ArrayList <Certifications> certifications = certificationDAO.getCertifications();
+        ObjectMapper ob = new ObjectMapper();
+
+        return ob.writeValueAsString(certifications);
+    }
+
+
 
 }
