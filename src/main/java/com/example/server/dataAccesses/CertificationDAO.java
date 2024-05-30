@@ -39,7 +39,7 @@ public class CertificationDAO {
     }
     
     public void updateCertificate(Certifications certification) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE certifications SET userid = ?, name = ?, instutation = ?, issuedate = ?, expiredate = ?, creditid = ?, refrencewebsite = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE certifications SET userid = ?, name = ?, instutation = ?, issuedate = ?, expiredate = ?, creditid = ?, refrencewebsite = ? WHERE id = ?;");
         statement.setInt(1, certification.getUserId());
         statement.setString(2, certification.getName());
         statement.setString(3, certification.getInstitution());
@@ -47,6 +47,7 @@ public class CertificationDAO {
         statement.setTimestamp(5, certification.getExpireDate());
         statement.setString(6, certification.getCreditId());
         statement.setString(7, certification.getRefrenceWebsite());
+        statement.setInt(8, certification.getId());
         statement.executeUpdate();
     }
 

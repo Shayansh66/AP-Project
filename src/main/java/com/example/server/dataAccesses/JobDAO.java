@@ -1,5 +1,7 @@
 package main.java.com.example.server.dataAccesses;
 
+import main.java.com.example.server.models.Job;
+
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,5 +22,56 @@ public class JobDAO {
         statement = theConnection.prepareStatement("ALTER TALBE jobs AUTO_INCREMENT = 40000000;");
         statement.executeUpdate();
     }
+
+    public void saveJob(Job job) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO jobs (userid, title, companyname, workplace, isworking, worktype, jobtype, startdate, enddate, description, notifychanges) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+        statement.setInt(1, job.getUserid());
+        statement.setString(2, job.getTitle());
+        statement.setString(3, job.getCompanyName());
+        statement.setString(4, job.getWorkplace());
+        statement.setBoolean(5, job.isIsworking());
+        statement.setString(6, job.getWorkType());
+        statement.setString(7, job.getJobType());
+        statement.setTimestamp(8, job.getStartDate());
+        statement.setTimestamp(9, job.getEnddate());
+        statement.setString(10, job.getDescription());
+        statement.setBoolean(11, job.isNotifyChanges());
+        statement.executeUpdate();
+    }
+
+    public void updateJob(Job job) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE jobs SET userid = ?, title = ?, companyname = ?, workplace = ?, isworking = ?, jobtype = ?, startdate = ?, enddate = ?, description = ?, notifychanges = ? WHERE id = ?;");
+        statement.setInt(1, job.getUserid());
+        statement.setString(2, job.getTitle());
+        statement.setString(3, job.getCompanyName());
+        statement.setString(4, job.getWorkplace());
+        statement.setBoolean(5, job.isIsworking());
+        statement.setString(6, job.getWorkType());
+        statement.setString(7, job.getJobType());
+        statement.setTimestamp(8, job.getStartDate());
+        statement.setTimestamp(9, job.getEnddate());
+        statement.setString(10, job.getDescription());
+        statement.setBoolean(11, job.isNotifyChanges());
+        statement.setInt(12, job.getId());
+        statement.executeUpdate();
+    }
+
+    public void deleteJob(Job job) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM jobs WHERE id = ?");
+        statement.setInt(1, job.getId());
+        statement.executeUpdate();
+    }
+
+    public void deleteJob(String id) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM jobs WHERE id = ?");
+        statement.setInt(1, Integer.parseInt(id));
+        statement.executeUpdate();
+    }
+
+    public void deleteJobs() throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM jobs");
+        statement.executeUpdate();
+    }
+
     
 }

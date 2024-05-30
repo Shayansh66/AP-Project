@@ -43,24 +43,12 @@ public class Job {
     @JsonProperty ("notifyChanges")
     private boolean notifyChanges;
     
-    
-
-
-
-
-    @Override
-    public String toString() {
-        return "Job [id=" + id + ", userid=" + userid + ", title=" + title + ", companyname=" + companyName
-                + ", workplace=" + workplace + ", isworking=" + isworking + ", worktype=" + workType + ", jobtype="
-                + jobType + ", startDate=" + startDate + ", enddate=" + enddate + ", description=" + description
-                + ", notifyChanges=" + notifyChanges + "]";
-    }
-
     enum WorkType {
         inPlace,
         hybrid,
         telecommuting
     }
+
     enum JobType {
         fullTime,
         partTime,
@@ -72,79 +60,113 @@ public class Job {
         seasonal,
         voluantary
     }
+   
+
+    // accessor and mutators
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public int getUserid() {
         return userid;
     }
+
     public void setUserid(int userid) {
         this.userid = userid;
     }
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
+
     public String getCompanyName() {
         return companyName;
     }
+
     public void setCompanyName(String companyname) {
         this.companyName = companyname;
     }
+
     public String getWorkplace() {
         return workplace;
     }
+
     public void setWorkplace(String workplace) {
         this.workplace = workplace;
     }
+
     public boolean isIsworking() {
         return isworking;
     }
+
     public void setIsworking(boolean isworking) {
         this.isworking = isworking;
     }
+
     public String getWorkType() {
         return workType;
     }
+
     public void setWorkType(String worktype) {
         this.workType = worktype;
     }
+
     public String getJobType() {
         return jobType;
     }
+
     public void setJobType(String jobtype) {
         this.jobType = jobtype;
     }
+
     public Timestamp getStartDate() {
         return startDate;
     }
+
     public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
     }
+
     public Timestamp getEnddate() {
         return enddate;
     }
+
     public void setEnddate(Timestamp enddate) {
         this.enddate = enddate;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public boolean isNotifyChanges() {
         return notifyChanges;
     }
+
     public void setNotifyChanges(boolean notifyChanges) {
         this.notifyChanges = notifyChanges;
     }
 
+    
+    @Override
+    public String toString() {
+        return "Job [id=" + id + ", userid=" + userid + ", title=" + title + ", companyName=" + companyName
+                + ", workplace=" + workplace + ", isworking=" + isworking + ", workType=" + workType + ", jobType="
+                + jobType + ", startDate=" + startDate + ", enddate=" + enddate + ", description=" + description
+                + ", notifyChanges=" + notifyChanges + "]";
+    }
     
 }
 
