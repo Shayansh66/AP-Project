@@ -56,7 +56,7 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
-    public void delteCertification(String id) throws SQLException {
+    public void delteCertification(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM certifications WHERE id = ?;");
         statement.setInt(1, Integer.parseInt(id));
         statement.executeUpdate();
