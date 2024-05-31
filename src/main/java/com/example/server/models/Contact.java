@@ -1,6 +1,6 @@
 package main.java.com.example.server.models;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,10 +29,13 @@ public class Contact {
     private String addres;
 
     @JsonProperty ("birthday")
-    private LocalDate birthday;
+    private Timestamp birthday;
 
     @JsonProperty ("birthdayvisibility")
     private visibility birthdayvisibility;
+
+    @JsonProperty ("communicationId")
+    private String communicationId;
 
     enum visibility{
         me, 
@@ -50,7 +53,7 @@ public class Contact {
 
     // constructors
     public Contact(int id, int userid, String profilelink, String email, String phonenumber, PhoneType phoneType, String addres,
-            LocalDate birthday, visibility birthdayvisibility) {
+            Timestamp birthday, visibility birthdayvisibility, String communicationId) {
         this.id = id;
         this.userid = userid;
         this.profilelink = profilelink;
@@ -60,6 +63,7 @@ public class Contact {
         this.addres = addres;
         this.birthday = birthday;
         this.birthdayvisibility = birthdayvisibility;
+        this.communicationId = communicationId;
     }
 
     public Contact() {
@@ -124,11 +128,11 @@ public class Contact {
         this.addres = addres;
     }
     
-    public LocalDate getBirthday() {
+    public Timestamp getBirthday() {
         return birthday;
     }
     
-    public void setBirthday(LocalDate birthday) {
+    public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
     }
     
@@ -139,13 +143,22 @@ public class Contact {
     public void setBirthdayvisibility(visibility birthdayvisibility) {
         this.birthdayvisibility = birthdayvisibility;
     }
-    
 
+    public String getCommunicationId() {
+        return communicationId;
+    }
+
+    public void setCommunicationId(String communicationId) {
+        this.communicationId = communicationId;
+    }
+
+    
     @Override
     public String toString() {
         return "Contact [id=" + id + ", userid=" + userid + ", profilelink=" + profilelink + ", email=" + email
-                + ", phonenumber=" + phonenumber + ", addres=" + addres + ", birthday=" + birthday
-                + ", birthdayvisibility=" + birthdayvisibility + "]";
+                + ", phonenumber=" + phonenumber + ", phoneType=" + phoneType + ", addres=" + addres + ", birthday="
+                + birthday + ", birthdayvisibility=" + birthdayvisibility + ", communicationId=" + communicationId
+                + "]";
     }
     
 }

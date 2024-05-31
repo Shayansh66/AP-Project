@@ -58,24 +58,24 @@ public class JobDAO {
     }
 
     public void deleteJob(Job job) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs WHERE id = ?");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs WHERE id = ?;");
         statement.setInt(1, job.getId());
         statement.executeUpdate();
     }
 
     public void deleteJob(String id) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs WHERE id = ?");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs WHERE id = ?;");
         statement.setInt(1, Integer.parseInt(id));
         statement.executeUpdate();
     }
 
     public void deleteJobs() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs;");
         statement.executeUpdate();
     }
 
     public Job getJob(String id) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs WHERE id = ?");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs WHERE id = ?;");
         statement.setInt(1, Integer.parseInt(id));
         ResultSet resultSet = statement.executeQuery();
 
@@ -101,7 +101,7 @@ public class JobDAO {
 
     public ArrayList<Job> getUserJobs(String userId) throws SQLException {
         ArrayList<Job> list = new ArrayList< >();
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs WHERE userid = ?");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs WHERE userid = ?;");
         statement.setInt(1, Integer.parseInt(userId));
         ResultSet resultSet = statement.executeQuery();
 
@@ -127,7 +127,7 @@ public class JobDAO {
     
     public ArrayList<Job> getJobs() throws SQLException {
         ArrayList<Job> list = new ArrayList< >();
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs;");
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
