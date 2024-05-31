@@ -22,8 +22,8 @@ public class Contact {
     @JsonProperty ("phonenumber")
     private String phonenumber;
 
-    @JsonProperty ("PhoneType")
-    private PhoneType phoneType;
+    @JsonProperty ("String")
+    private String phoneType;
 
     @JsonProperty ("address")
     private String addres;
@@ -31,29 +31,17 @@ public class Contact {
     @JsonProperty ("birthday")
     private Timestamp birthday;
 
-    @JsonProperty ("birthdayvisibility")
-    private visibility birthdayvisibility;
+    @JsonProperty ("birthDayVisibility")
+    private String birthDayVisibility;
 
     @JsonProperty ("communicationId")
     private String communicationId;
 
-    enum visibility{
-        me, 
-        myContacts,
-        myNetwork,
-        everyBody
-    }
-
-    enum PhoneType {
-        Home,
-        Mobile,
-        Work
-    }
-
 
     // constructors
-    public Contact(int id, int userid, String profilelink, String email, String phonenumber, PhoneType phoneType, String addres,
-            Timestamp birthday, visibility birthdayvisibility, String communicationId) {
+    public Contact(int id, int userid, String profilelink, String email, String phonenumber, String phoneType, String addres,
+            Timestamp birthday, String birthDayVisibility
+    , String communicationId) {
         this.id = id;
         this.userid = userid;
         this.profilelink = profilelink;
@@ -62,7 +50,9 @@ public class Contact {
         this.phoneType = phoneType;
         this.addres = addres;
         this.birthday = birthday;
-        this.birthdayvisibility = birthdayvisibility;
+        this.birthDayVisibility
+ = birthDayVisibility
+;
         this.communicationId = communicationId;
     }
 
@@ -112,11 +102,11 @@ public class Contact {
         this.phonenumber = phonenumber;
     }
 
-    public PhoneType getPhoneType() {
+    public String getPhoneType() {
         return phoneType;
     }
 
-    public void setPhoneType(PhoneType phoneType) {
+    public void setPhoneType(String phoneType) {
         this.phoneType = phoneType;
     }
     
@@ -136,12 +126,14 @@ public class Contact {
         this.birthday = birthday;
     }
     
-    public visibility getBirthdayvisibility() {
-        return birthdayvisibility;
+    public String getbirthDayVisibility() {
+        return birthDayVisibility
+;
     }
 
-    public void setBirthdayvisibility(visibility birthdayvisibility) {
-        this.birthdayvisibility = birthdayvisibility;
+    public void setbirthDayVisibility(String birthDayVisibility) {
+        this.birthDayVisibility = birthDayVisibility
+;
     }
 
     public String getCommunicationId() {
@@ -152,13 +144,13 @@ public class Contact {
         this.communicationId = communicationId;
     }
 
-    
+
     @Override
     public String toString() {
         return "Contact [id=" + id + ", userid=" + userid + ", profilelink=" + profilelink + ", email=" + email
                 + ", phonenumber=" + phonenumber + ", phoneType=" + phoneType + ", addres=" + addres + ", birthday="
-                + birthday + ", birthdayvisibility=" + birthdayvisibility + ", communicationId=" + communicationId
+                + birthday + ", birthDayVisibility=" + birthDayVisibility + ", communicationId=" + communicationId
                 + "]";
     }
-    
+
 }
