@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class JobDAO {
     
@@ -57,21 +58,96 @@ public class JobDAO {
     }
 
     public void deleteJob(Job job) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM jobs WHERE id = ?");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs WHERE id = ?");
         statement.setInt(1, job.getId());
         statement.executeUpdate();
     }
 
     public void deleteJob(String id) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM jobs WHERE id = ?");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs WHERE id = ?");
         statement.setInt(1, Integer.parseInt(id));
         statement.executeUpdate();
     }
 
     public void deleteJobs() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM jobs");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobs");
         statement.executeUpdate();
     }
 
+    public Job getJob(String id) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs WHERE id = ?");
+        statement.setInt(1, Integer.parseInt(id));
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            Job job = new Job();
+            job.setId(resultSet.getInt("id"));
+            job.setUserid(resultSet.getInt("userid"));
+            job.setTitle(resultSet.getString("title"));
+            job.setCompanyName(resultSet.getString("companyname"));
+            job.setWorkplace(resultSet.getString("workplace"));
+            job.setIsworking(resultSet.getBoolean("isworking"));
+            job.setWorkType(resultSet.getString("worktype"));
+            job.setJobType(resultSet.getString("jobtype"));
+            job.setStartDate(resultSet.getTimestamp("startdate"));
+            job.setEnddate(resultSet.getTimestamp("enddate"));
+            job.setDescription(resultSet.getString("description"));
+            job.setNotifyChanges(resultSet.getBoolean("notifychanges"));
+            return job;
+        }
+
+        return null;
+    }
+
+    public ArrayList<Job> getUserJobs(String userId) throws SQLException {
+        ArrayList<Job> list = new ArrayList< >();
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs WHERE userid = ?");
+        statement.setInt(1, Integer.parseInt(userId));
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Job job = new Job();
+            job.setId(resultSet.getInt("id"));
+            job.setUserid(resultSet.getInt("userid"));
+            job.setTitle(resultSet.getString("title"));
+            job.setCompanyName(resultSet.getString("companyname"));
+            job.setWorkplace(resultSet.getString("workplace"));
+            job.setIsworking(resultSet.getBoolean("isworking"));
+            job.setWorkType(resultSet.getString("worktype"));
+            job.setJobType(resultSet.getString("jobtype"));
+            job.setStartDate(resultSet.getTimestamp("startdate"));
+            job.setEnddate(resultSet.getTimestamp("enddate"));
+            job.setDescription(resultSet.getString("description"));
+            job.setNotifyChanges(resultSet.getBoolean("notifychanges"));
+            list.add(job);
+        }
+        
+        return list;
+    }
+    
+    public ArrayList<Job> getJobs() throws SQLException {
+        ArrayList<Job> list = new ArrayList< >();
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobs");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            Job job = new Job();
+            job.setId(resultSet.getInt("id"));
+            job.setUserid(resultSet.getInt("userid"));
+            job.setTitle(resultSet.getString("title"));
+            job.setCompanyName(resultSet.getString("companyname"));
+            job.setWorkplace(resultSet.getString("workplace"));
+            job.setIsworking(resultSet.getBoolean("isworking"));
+            job.setWorkType(resultSet.getString("worktype"));
+            job.setJobType(resultSet.getString("jobtype"));
+            job.setStartDate(resultSet.getTimestamp("startdate"));
+            job.setEnddate(resultSet.getTimestamp("enddate"));
+            job.setDescription(resultSet.getString("description"));
+            job.setNotifyChanges(resultSet.getBoolean("notifychanges"));
+            list.add(job);
+        }
+        
+        return list;
+    }
     
 }
