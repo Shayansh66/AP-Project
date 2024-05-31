@@ -1,6 +1,6 @@
 package main.java.com.example.server.dataAccesses;
 
-import main.java.com.example.server.models.Certifications;
+import main.java.com.example.server.models.Certification;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,7 +26,7 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
-    public void saveCertificate(Certifications certification) throws SQLException {
+    public void saveCertificate(Certification certification) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO certifications (userid, name, instutation, issuedate, expiredate, creditid, refrencewebsite) VALUES (?, ?, ?, ?, ?, ?, ?);");
         statement.setInt(1, certification.getUserId());
         statement.setString(2, certification.getName());
@@ -38,7 +38,7 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
     
-    public void updateCertificate(Certifications certification) throws SQLException {
+    public void updateCertificate(Certification certification) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("UPDATE certifications SET userid = ?, name = ?, instutation = ?, issuedate = ?, expiredate = ?, creditid = ?, refrencewebsite = ? WHERE id = ?;");
         statement.setInt(1, certification.getUserId());
         statement.setString(2, certification.getName());
@@ -51,7 +51,7 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
-    public void deleteCertification(Certifications certification) throws SQLException {
+    public void deleteCertification(Certification certification) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM certifications WHERE id = ?;");
         statement.setInt(1, certification.getId());
         statement.executeUpdate();
@@ -68,13 +68,13 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
-    public  Certifications getCertification(int id) throws SQLException {
+    public  Certification getCertification(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE id = ?");
         statement.setInt(1,(id));
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
-            Certifications certification = new Certifications();
+            Certification certification = new Certification();
             certification.setId(resultSet.getInt("id"));
             certification.setUserId(resultSet.getInt("userid"));
             certification.setName(resultSet.getString("name"));
@@ -89,13 +89,13 @@ public class CertificationDAO {
         return null;
     }
 
-    public ArrayList<Certifications> getCertifications() throws SQLException {
-        ArrayList<Certifications> list = new ArrayList< >();
+    public ArrayList<Certification> getCertifications() throws SQLException {
+        ArrayList<Certification> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications");
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            Certifications certification = new Certifications();
+            Certification certification = new Certification();
             certification.setId(resultSet.getInt("id"));
             certification.setUserId(resultSet.getInt("userid"));
             certification.setName(resultSet.getString("name"));
@@ -110,14 +110,14 @@ public class CertificationDAO {
         return list;
     }
     
-    public ArrayList<Certifications> getCertificationsByUserID(int userid) throws SQLException {
-        ArrayList<Certifications> list = new ArrayList< >();
+    public ArrayList<Certification> getCertificationsByUserID(int userid) throws SQLException {
+        ArrayList<Certification> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE userid = ?");
         statement.setInt(1,(userid));
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            Certifications certification = new Certifications();
+            Certification certification = new Certification();
             certification.setId(resultSet.getInt("id"));
             certification.setUserId(resultSet.getInt("userid"));
             certification.setName(resultSet.getString("name"));

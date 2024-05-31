@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class Certifications {
+public class Certification {
 
     @JsonProperty("id")
     private int id;
@@ -33,7 +33,7 @@ public class Certifications {
     
     
     // constructors
-    public Certifications(int id, int userId, String name, String institution, Timestamp issueDate, Timestamp expireDate, String creditId,
+    public Certification(int id, int userId, String name, String institution, Timestamp issueDate, Timestamp expireDate, String creditId,
             String refrenceWebsite) {
         this.id = id;
         this.userId = userId;
@@ -45,7 +45,7 @@ public class Certifications {
         this.refrenceWebsite = refrenceWebsite;
     }
 
-    public Certifications() {
+    public Certification() {
 
     }
 
