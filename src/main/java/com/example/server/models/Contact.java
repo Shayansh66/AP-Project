@@ -22,7 +22,7 @@ public class Contact {
     @JsonProperty ("phonenumber")
     private String phonenumber;
 
-    @JsonProperty ("String")
+    @JsonProperty ("phoneType")
     private String phoneType;
 
     @JsonProperty ("address")
