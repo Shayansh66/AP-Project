@@ -1,7 +1,6 @@
 package main.java.com.example.server.models;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

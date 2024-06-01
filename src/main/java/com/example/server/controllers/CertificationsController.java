@@ -2,7 +2,6 @@ package main.java.com.example.server.controllers;
 
 import java.sql.Timestamp;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
