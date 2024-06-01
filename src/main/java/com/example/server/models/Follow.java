@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Follow {
 
+    @JsonProperty ("id")
+    private int id;
+
     @JsonProperty ("followerid")
     private int followerid;
 
@@ -16,7 +19,8 @@ public class Follow {
 
     
     // constructors
-    public Follow(int followerid, int followingid, boolean isConnection) {
+    public Follow(int id, int followerid, int followingid, boolean isConnection) {
+        this.id = id;
         this.followerid = followerid;
         this.followingid = followingid;
         this.isConnection = isConnection;
@@ -27,6 +31,14 @@ public class Follow {
 
 
     // accessor and mutators
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getFollowerid() {
         return followerid;
     }
