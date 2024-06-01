@@ -35,16 +35,13 @@ public class Education {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("skills")
-    private Skill[] skills;
-
     @JsonProperty("notifyChanges")
     private boolean notifyChanges;
 
 
     // constructors
     public Education(int id, int userid, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
-    float grade, String descriptionOfActivities, String description, Skill[] skills, boolean notifyChanges) {
+    float grade, String descriptionOfActivities, String description, boolean notifyChanges) {
         this.id = id;
         this.userid = userid;
         this.institutionName = institutionName;
@@ -54,7 +51,6 @@ public class Education {
         this.grade = grade;
         this.descriptionOfActivities = descriptionOfActivities;
         this.description = description;
-        this.skills = skills;
         this.notifyChanges = notifyChanges;
     }
     
@@ -72,11 +68,11 @@ public class Education {
         this.id = id;
     }
 
-    public int getuserid() {
+    public int getUserId() {
         return userid;
     }
 
-    public void setuserid(int userid) {
+    public void setUserId(int userid) {
         this.userid = userid;
     }
 
@@ -136,14 +132,6 @@ public class Education {
         this.description = description;
     }
 
-    public Skill[] getSkills() {
-        return skills;
-    }
-
-    public void setSkills(Skill[] skills) {
-        this.skills = skills;
-    }
-
     public boolean isNotifyChanges() {
         return notifyChanges;
     }
@@ -157,8 +145,7 @@ public class Education {
     public String toString() {
         return "Education [id=" + id + ", institutionName=" + institutionName + ", studyField=" + studyField
                 + ", startDate=" + startDate + ", endDate=" + endDate + ", grade=" + grade
-                + ", descriptionOfActivities=" + descriptionOfActivities + ", description=" + description + ", skills="
-                + Arrays.toString(skills) + ", notifyChanges=" + notifyChanges + "]";
+                + ", descriptionOfActivities=" + descriptionOfActivities + ", description=" + description + ", notifyChanges=" + notifyChanges + "]";
     }
     
 }
