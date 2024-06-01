@@ -20,14 +20,14 @@ public class CertificationDAO {
     }
 
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS certifications (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NOT NULL, name VARCHAR(40), instutationname VARCHAR(40), issuedate TIMESTAMP, expiredate TIMESTAMP, creditid VARCHAR(40), refrencewebsite VARCHAR(255));");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS certifications (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NOT NULL, name VARCHAR(40), institutionname VARCHAR(40), issuedate TIMESTAMP, expiredate TIMESTAMP, creditid VARCHAR(40), refrencewebsite VARCHAR(255));");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TALBE certifications AUTO_INCREMENT = 44000000;");
         statement.executeUpdate();
     }
 
     public void saveCertificate(Certification certification) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO certifications (userid, name, instutation, issuedate, expiredate, creditid, refrencewebsite) VALUES (?, ?, ?, ?, ?, ?, ?);");
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO certifications (userid, name, institution, issuedate, expiredate, creditid, refrencewebsite) VALUES (?, ?, ?, ?, ?, ?, ?);");
         statement.setInt(1, certification.getUserId());
         statement.setString(2, certification.getName());
         statement.setString(3, certification.getInstitution());
@@ -39,7 +39,7 @@ public class CertificationDAO {
     }
     
     public void updateCertificate(Certification certification) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE certifications SET userid = ?, name = ?, instutation = ?, issuedate = ?, expiredate = ?, creditid = ?, refrencewebsite = ? WHERE id = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE certifications SET userid = ?, name = ?, institution = ?, issuedate = ?, expiredate = ?, creditid = ?, refrencewebsite = ? WHERE id = ?;");
         statement.setInt(1, certification.getUserId());
         statement.setString(2, certification.getName());
         statement.setString(3, certification.getInstitution());
@@ -78,7 +78,7 @@ public class CertificationDAO {
             certification.setId(resultSet.getInt("id"));
             certification.setUserId(resultSet.getInt("userid"));
             certification.setName(resultSet.getString("name"));
-            certification.setInstitution(resultSet.getString("instutation"));
+            certification.setInstitution(resultSet.getString("institution"));
             certification.setIssueDate(resultSet.getTimestamp("issuedate"));
             certification.setExpireDate(resultSet.getTimestamp("expiredate"));
             certification.setCreditId(resultSet.getString("creditid"));
@@ -99,7 +99,7 @@ public class CertificationDAO {
             certification.setId(resultSet.getInt("id"));
             certification.setUserId(resultSet.getInt("userid"));
             certification.setName(resultSet.getString("name"));
-            certification.setInstitution(resultSet.getString("instutation"));
+            certification.setInstitution(resultSet.getString("institution"));
             certification.setIssueDate(resultSet.getTimestamp("issuedate"));
             certification.setExpireDate(resultSet.getTimestamp("expiredate"));
             certification.setCreditId(resultSet.getString("creditid"));
@@ -121,7 +121,7 @@ public class CertificationDAO {
             certification.setId(resultSet.getInt("id"));
             certification.setUserId(resultSet.getInt("userid"));
             certification.setName(resultSet.getString("name"));
-            certification.setInstitution(resultSet.getString("instutation"));
+            certification.setInstitution(resultSet.getString("institution"));
             certification.setIssueDate(resultSet.getTimestamp("issuedate"));
             certification.setExpireDate(resultSet.getTimestamp("expiredate"));
             certification.setCreditId(resultSet.getString("creditid"));

@@ -26,7 +26,7 @@ public class Contact {
     private String phoneType;
 
     @JsonProperty ("address")
-    private String addres;
+    private String address;
 
     @JsonProperty ("birthday")
     private Timestamp birthday;
@@ -39,7 +39,7 @@ public class Contact {
 
 
     // constructors
-    public Contact(int id, int userid, String profilelink, String email, String phonenumber, String phoneType, String addres,
+    public Contact(int id, int userid, String profilelink, String email, String phonenumber, String phoneType, String address,
             Timestamp birthday, String birthDayVisibility
     , String communicationId) {
         this.id = id;
@@ -48,7 +48,7 @@ public class Contact {
         this.email = email;
         this.phonenumber = phonenumber;
         this.phoneType = phoneType;
-        this.addres = addres;
+        this.address = address;
         this.birthday = birthday;
         this.birthDayVisibility
  = birthDayVisibility
@@ -110,12 +110,12 @@ public class Contact {
         this.phoneType = phoneType;
     }
     
-    public String getAddres() {
-        return addres;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddres(String addres) {
-        this.addres = addres;
+    public void setAddress(String address) {
+        this.address = address;
     }
     
     public Timestamp getBirthday() {
@@ -126,12 +126,12 @@ public class Contact {
         this.birthday = birthday;
     }
     
-    public String getbirthDayVisibility() {
+    public String getBirthDayVisibility() {
         return birthDayVisibility
 ;
     }
 
-    public void setbirthDayVisibility(String birthDayVisibility) {
+    public void setBirthDayVisibility(String birthDayVisibility) {
         this.birthDayVisibility = birthDayVisibility
 ;
     }
@@ -148,7 +148,7 @@ public class Contact {
     @Override
     public String toString() {
         return "Contact [id=" + id + ", userid=" + userid + ", profilelink=" + profilelink + ", email=" + email
-                + ", phonenumber=" + phonenumber + ", phoneType=" + phoneType + ", addres=" + addres + ", birthday="
+                + ", phonenumber=" + phonenumber + ", phoneType=" + phoneType + ", address=" + address + ", birthday="
                 + birthday + ", birthDayVisibility=" + birthDayVisibility + ", communicationId=" + communicationId
                 + "]";
     }

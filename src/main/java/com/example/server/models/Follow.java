@@ -2,39 +2,57 @@ package main.java.com.example.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Follow {
-    @JsonProperty ("followers")
-    private String followers;
 
-    @JsonProperty ("following")
-    private String following;
+public class Follow {
+
+    @JsonProperty ("id")
+    private int id;
+
+    @JsonProperty ("followerid")
+    private int followerid;
+
+    @JsonProperty ("followingid")
+    private int followingid;
 
     @JsonProperty ("isConnection")
     private boolean isConnection;
 
-    public Follow(String followers, String following, boolean isConnection) {
-        this.followers = followers;
-        this.following = following;
+    
+    // constructors
+    public Follow(int id, int followerid, int followingid, boolean isConnection) {
+        this.id = id;
+        this.followerid = followerid;
+        this.followingid = followingid;
         this.isConnection = isConnection;
     }
 
     public Follow() {
     }
 
-    public String getFollowers() {
-        return followers;
+
+    // accessor and mutators
+    public int getId() {
+        return id;
     }
 
-    public void setFollowers(String followers) {
-        this.followers = followers;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getFollowing() {
-        return following;
+    public int getFollowerid() {
+        return followerid;
     }
 
-    public void setFollowing(String following) {
-        this.following = following;
+    public void setFollowerid(int followerid) {
+        this.followerid = followerid;
+    }
+
+    public int getFollowingid() {
+        return followingid;
+    }
+
+    public void setFollowingid(int followingid) {
+        this.followingid = followingid;
     }
 
     public boolean isConnection() {
@@ -45,15 +63,4 @@ public class Follow {
         this.isConnection = isConnection;
     }
 
-    @Override
-    public String toString() {
-        return "Follow [followers=" + followers + ", following=" + following + ", isConnection=" + isConnection + "]";
-    }
-
-    
-
-  
-
-    
-    
 }

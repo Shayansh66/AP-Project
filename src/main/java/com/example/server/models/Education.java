@@ -1,7 +1,6 @@
 package main.java.com.example.server.models;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,8 +10,8 @@ public class Education {
     @JsonProperty("id")
     private int id;
 
-    @JsonProperty ("personid")
-    private int personid;
+    @JsonProperty ("userid")
+    private int userid;
 
     @JsonProperty("institutionName")
     private String institutionName;
@@ -35,18 +34,15 @@ public class Education {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("skills")
-    private Skill[] skills;
-
     @JsonProperty("notifyChanges")
     private boolean notifyChanges;
 
 
     // constructors
-    public Education(int id, int personid, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
-    float grade, String descriptionOfActivities, String description, Skill[] skills, boolean notifyChanges) {
+    public Education(int id, int userid, String institutionName, String studyField, Timestamp startDate, Timestamp endDate,
+    float grade, String descriptionOfActivities, String description, boolean notifyChanges) {
         this.id = id;
-        this.personid = personid;
+        this.userid = userid;
         this.institutionName = institutionName;
         this.studyField = studyField;
         this.startDate = startDate;
@@ -54,7 +50,6 @@ public class Education {
         this.grade = grade;
         this.descriptionOfActivities = descriptionOfActivities;
         this.description = description;
-        this.skills = skills;
         this.notifyChanges = notifyChanges;
     }
     
@@ -72,12 +67,12 @@ public class Education {
         this.id = id;
     }
 
-    public int getPersonid() {
-        return personid;
+    public int getUserId() {
+        return userid;
     }
 
-    public void setPersonid(int personid) {
-        this.personid = personid;
+    public void setUserId(int userid) {
+        this.userid = userid;
     }
 
     public String getInstitutionName() {
@@ -136,14 +131,6 @@ public class Education {
         this.description = description;
     }
 
-    public Skill[] getSkills() {
-        return skills;
-    }
-
-    public void setSkills(Skill[] skills) {
-        this.skills = skills;
-    }
-
     public boolean isNotifyChanges() {
         return notifyChanges;
     }
@@ -157,8 +144,7 @@ public class Education {
     public String toString() {
         return "Education [id=" + id + ", institutionName=" + institutionName + ", studyField=" + studyField
                 + ", startDate=" + startDate + ", endDate=" + endDate + ", grade=" + grade
-                + ", descriptionOfActivities=" + descriptionOfActivities + ", description=" + description + ", skills="
-                + Arrays.toString(skills) + ", notifyChanges=" + notifyChanges + "]";
+                + ", descriptionOfActivities=" + descriptionOfActivities + ", description=" + description + ", notifyChanges=" + notifyChanges + "]";
     }
     
 }
