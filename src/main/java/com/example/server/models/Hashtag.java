@@ -10,14 +10,18 @@ public class Hashtag {
     @JsonProperty ("content")
     private String content;
 
+
+    // constructors
     public Hashtag(String id, String content) {
         this.id = id;
         this.content = content;
     }
-
+    
     public Hashtag() {
     }
-
+    
+    
+    // accessor and mutators
     public String getId() {
         return id;
     }
@@ -34,11 +38,10 @@ public class Hashtag {
         this.content = content;
     }
 
+
     @Override
     public String toString() {
         return "Hashtag [id=" + id + ", content=" + content + "]";
     }
-
-    
     
 }
