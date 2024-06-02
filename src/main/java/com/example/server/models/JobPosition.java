@@ -2,8 +2,6 @@ package main.java.com.example.server.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import main.java.com.example.server.models.Job.JobType;
-import main.java.com.example.server.models.Job.WorkType;
 
 
 public class JobPosition {
@@ -11,8 +9,8 @@ public class JobPosition {
     @JsonProperty ("id")
     private int id;
 
-    @JsonProperty ("creatorId")
-    private int creatorId;
+    @JsonProperty ("userid")
+    private int userid;
 
     @JsonProperty ("title")
     private String title;
@@ -21,29 +19,29 @@ public class JobPosition {
     private String companyName;
 
     @JsonProperty ("worktype")
-    private WorkType worktpye;
+    private String worktype;
 
     @JsonProperty ("jobType")
-    private JobType jobType;
+    private String jobType;
 
     @JsonProperty ("profession")
     private String profession;
 
-    @JsonProperty ("descreption")
-    private String descreption;
+    @JsonProperty ("description")
+    private String description;
 
 
     // constructors
-    public JobPosition(int id, int creatorId, String title, String companyName, WorkType worktpye, JobType jobType,
-            String profession, String descreption) {
+    public JobPosition(int id, int userid, String title, String companyName, String worktype, String jobType,
+            String profession, String description) {
         this.id = id;
-        this.creatorId = creatorId;
+        this.userid = userid;
         this.title = title;
         this.companyName = companyName;
-        this.worktpye = worktpye;
+        this.worktype = worktype;
         this.jobType = jobType;
         this.profession = profession;
-        this.descreption = descreption;
+        this.description = description;
     }
 
     public JobPosition() {
@@ -60,12 +58,12 @@ public class JobPosition {
         this.id = id;
     }
 
-    public int getCreatorId() {
-        return creatorId;
+    public int getUserId() {
+        return userid;
     }
 
-    public void setCreatorId(int creatorId) {
-        this.creatorId = creatorId;
+    public void setUserId(int userid) {
+        this.userid = userid;
     }
 
     public String getTitle() {
@@ -84,19 +82,19 @@ public class JobPosition {
         this.companyName = companyName;
     }
 
-    public WorkType getWorktpye() {
-        return worktpye;
+    public String getWorkType() {
+        return worktype;
     }
 
-    public void setWorktpye(WorkType worktpye) {
-        this.worktpye = worktpye;
+    public void setWorkType(String worktype) {
+        this.worktype = worktype;
     }
 
-    public JobType getJobType() {
+    public String getJobType() {
         return jobType;
     }
 
-    public void setJobType(JobType jobType) {
+    public void setJobType(String jobType) {
         this.jobType = jobType;
     }
 
@@ -108,20 +106,20 @@ public class JobPosition {
         this.profession = profession;
     }
 
-    public String getDescreption() {
-        return descreption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescreption(String descreption) {
-        this.descreption = descreption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 
     @Override
     public String toString() {
-        return "JobPosition [id=" + id + ", creatorId=" + creatorId + ", title=" + title + ", companyName="
-                + companyName + ", worktpye=" + worktpye + ", jobType=" + jobType + ", profession=" + profession
-                + ", descreption=" + descreption + "]";
+        return "JobPosition [id=" + id + ", userid=" + userid + ", title=" + title + ", companyName="
+                + companyName + ", worktype=" + worktype + ", jobType=" + jobType + ", profession=" + profession
+                + ", description=" + description + "]";
     }
 
 }

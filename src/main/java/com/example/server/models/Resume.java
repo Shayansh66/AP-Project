@@ -12,8 +12,8 @@ public class Resume {
     @JsonProperty ("resumeFile")
     private String  resumeFile;
 
-    @JsonProperty ("descreption")
-    private String descreption;
+    @JsonProperty ("description")
+    private String description;
 
     public int getOwnerId() {
         return ownerId;
@@ -39,19 +39,19 @@ public class Resume {
         this.resumeFile = resumeFile;
     }
 
-    public String getDescreption() {
-        return descreption;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescreption(String descreption) {
-        this.descreption = descreption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Resume(int ownerId, String positionId, String resumeFile, String descreption) {
+    public Resume(int ownerId, String positionId, String resumeFile, String description) {
         this.ownerId = ownerId;
         this.positionId = positionId;
         this.resumeFile = resumeFile;
-        this.descreption = descreption;
+        this.description = description;
     }
 
     public Resume() {
@@ -60,7 +60,7 @@ public class Resume {
     @Override
     public String toString() {
         return "Resume [ownerId=" + ownerId + ", positionId=" + positionId + ", resumeFile=" + resumeFile
-                + ", descreption=" + descreption + "]";
+                + ", description=" + description + "]";
     }
 
     

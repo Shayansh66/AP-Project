@@ -50,7 +50,7 @@ public class ContactDAO {
         statement.setTimestamp(7, contact.getBirthday());
         statement.setString(8, contact.getBirthDayVisibility());
         statement.setString(9, contact.getCommunicationId());
-        statement.setInt(9, contact.getId());
+        statement.setInt(10, contact.getId());
         statement.executeUpdate();
     }
 
