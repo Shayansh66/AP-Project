@@ -25,7 +25,6 @@ public class ParticipatedOrginazation {
     @JsonProperty ("endDate")
     private Timestamp endDate;
     
-    
     @JsonProperty ("stillWorking")
     private boolean stillWorking;
     
