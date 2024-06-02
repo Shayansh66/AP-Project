@@ -7,66 +7,100 @@ import main.java.com.example.server.models.User;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.management.RuntimeErrorException;
 
 public class UserController {
 
    private final UserDAO userDAO;
+   private final ObjectMapper objectMapper;
+   private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
+   private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 
-   public UserController () throws SQLException {
+   public UserController() throws SQLException {
       userDAO = new UserDAO();
+      objectMapper = new ObjectMapper();
    }
 
-   public void createUser (int id , int password ,String email , String firstname , String lastname , String additionalname
-      , String headtitle , String country , String city , String requiredJob  ) throws SQLException {
-      User user = new User(id, email, password, firstname, lastname, additionalname, headtitle, country, city, requiredJob);
-      userDAO.saveUser(user);
+   public void createUser(String id, String password, String email, String firstName, String lastName, String additionalName,
+    String headTitle, String country, String city, String requiredJob) throws SQLException {
+        
+        if (isUserAlreadyExist(id)) {
+            
+        }
+
+       if (!isValidEmail(email)) {
+         throw new IllegalArgumentException("Invalid email format");
+       }
+       if (!isValidPassword(password)) {
+         throw new IllegalArgumentException("Invalid password format");
+       }
+       User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
+       userDAO.saveUser(user);
    }
 
-   public void deledteUser (int id ) throws SQLException {
-      User user = new User();
-      user.setId(id);
-      userDAO.deleteUser(id);; 
+   public void deleteUser(int id) throws SQLException {
+      userDAO.deleteUser(id);
    }
 
-   public void deledteUser (User user) throws SQLException {
+   public void deleteUser(User user) throws SQLException {
       userDAO.deleteUser(user);
    }
 
-   public void deledteUsers() throws SQLException {
+   public void deleteUsers() throws SQLException {
       userDAO.deleteUsers();
    }
 
-   public void updateUser (int id , int password ,String email , String firstname , String lastname , String additionalname
-   , String headtitle , String country , String city , String requiredJob  ) throws SQLException {
-      User user = new User();
-      user.setId(id);
-      user.setFirstName(firstname);
-      user.setLastname(lastname);
-      user.setAdditionalname(additionalname);
-      user.setPassword(password);
-      user.setHeadtitle(headtitle);
-      user.setEmail(email);
-      user.setCountry(country);
-      user.setCity(city);
-      user.setRequiredJob(requiredJob);
-   }
+  
 
    public String getUserById(String id) throws SQLException, JsonProcessingException {
       User user = userDAO.getUserById(id);
-      ObjectMapper ob = new ObjectMapper() ;
-      return ob.writeValueAsString(user);
+      if (user == null) return "No User Found";
+      return convertUserToJson(user);
    }
 
    public String getUserByEmail(String email) throws SQLException, JsonProcessingException {
-      User user = userDAO.getUserById(email);
-      ObjectMapper ob = new ObjectMapper() ;
-      return ob.writeValueAsString(user);
+      if (!isValidEmail(email)) {
+         throw new IllegalArgumentException("Invalid email format");
+      }
+      User user = userDAO.getUserByEmail(email);
+      if (user == null) return "No User Found";
+      return convertUserToJson(user);
    }
 
-   public String getUsers () throws SQLException, JsonProcessingException {
-      ArrayList <User> users = userDAO.getUsers();
-      ObjectMapper ob =  new ObjectMapper();
-      return ob.writeValueAsString(users);
+   public String getUsers() throws SQLException, JsonProcessingException {
+      ArrayList<User> users = userDAO.getUsers();
+      return objectMapper.writeValueAsString(users);
    }
 
+   private String convertUserToJson(User user) throws JsonProcessingException {
+      return objectMapper.writeValueAsString(user);
+   }
+
+   private boolean isValidEmail(String email) {
+      Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+      Matcher matcher = pattern.matcher(email);
+      return matcher.matches();
+   }
+
+   private boolean isValidPassword(String password) {
+      Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+      Matcher matcher = pattern.matcher(password);
+      return matcher.matches();
+   }
+
+
+   private Boolean isUserAlreadyExist (String id) {
+    if (id == null) return false;
+
+    try {
+        return (userDAO.getUserById(id))!= null;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+        
+    
+   }
 }

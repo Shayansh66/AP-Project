@@ -71,9 +71,9 @@ public class ContactDAO {
         statement.executeUpdate();
     }
     
-    public Contact getContactById(String id) throws SQLException {
+    public Contact getContactById(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM contacts WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1,(id));
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {

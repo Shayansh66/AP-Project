@@ -28,7 +28,7 @@ public class UserDAO {
     public void saveUser(User user) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO users (email, password, firstname, lastname, additionalname, headtitle, country, city, requiredjob) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
         statement.setString(1, user.getEmail());
-        statement.setInt(2, user.getPassword());
+        statement.setString(2, user.getPassword());
         statement.setString(3, user.getFirstName());
         statement.setString(4, user.getLastname());
         statement.setString(5, user.getAdditionalname());
@@ -41,7 +41,7 @@ public class UserDAO {
 
     public void updateUser(User user) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("UPDATE users SET password = ?, firstname = ?, lastname = ?, additionalname = ?, headtitle = ?, country = ?, city = ?, requiredjob = ? WHERE userid = ?;");
-        statement.setInt(1, user.getPassword());
+        statement.setString(1, user.getPassword());
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getLastname());
         statement.setString(4, user.getAdditionalname());

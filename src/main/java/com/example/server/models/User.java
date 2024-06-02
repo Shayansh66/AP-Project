@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class User {
 
     @JsonProperty ("id")
-    private int id;
+    private String id;
 
     @JsonProperty ("email")
     private String email;
 
     @JsonProperty ("password")
-    private int password;
+    private String password;
 
     @JsonProperty ("firstName")
     private String  firstName;
@@ -37,7 +37,7 @@ public class User {
 
 
     // constructors
-    public User(int id, String email, int password, String firstName, String lastname, String additionalname, String headtitle,
+    public User(String id, String email, String password, String firstName, String lastname, String additionalname, String headtitle,
             String country, String city, String requiredJob) {
         this.id = id;
         this.email = email;
@@ -57,11 +57,11 @@ public class User {
 
 
     // accessor and mutators
-    public int getId() {
+    public String getId() {
         return id;
     }
     
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -73,11 +73,11 @@ public class User {
         this.email = email;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
     
