@@ -32,14 +32,6 @@ public class FollowDAO {
         statement.executeUpdate();
     }
 
-    public void updateFollow(Follow follow) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE follows SET followerid = ?, followingid = ?, isconnection = ?;");
-        statement.setInt(1, follow.getFollowerid());
-        statement.setInt(2, follow.getFollowingid());
-        statement.setBoolean(3, follow.isConnection());
-        statement.executeUpdate();
-    }
-
     public void deleteFollow(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM follows WHERE id = ?;");
         statement.setInt(1, id);
