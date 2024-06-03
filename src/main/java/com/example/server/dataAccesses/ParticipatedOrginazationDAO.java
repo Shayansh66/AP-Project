@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 public class ParticipatedOrginazationDAO {
@@ -39,6 +40,84 @@ public class ParticipatedOrginazationDAO {
         statement.setBoolean(6, participatedorganazation.isStillWorking());
         statement.setInt(7, participatedorganazation.getId());
         statement.executeUpdate();
+    }
+
+    public void deleteParticipatedOrginazation(int id) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM participatedorganazations WHERE id = ?;");
+        statement.setInt(1, id);
+        statement.executeUpdate();
+    }
+
+    public void deleteParticipatedOrginazation(ParticipatedOrginazation participatedOrginazation) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM participatedorganazations WHERE id = ?;");
+        statement.setInt(1, participatedOrginazation.getId());
+        statement.executeUpdate();
+    }
+
+    public void deleteParticipatedOrginazations() throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DLETE FROM participatedorganazations;");
+        statement.executeUpdate();
+    }
+
+    public ParticipatedOrginazation getParticipatedOrginazation(int id) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM participatedorganazations WHERE id = ?;");
+        statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            ParticipatedOrginazation participatedOrginazation = new ParticipatedOrginazation();
+            participatedOrginazation.setId(resultSet.getInt("id"));
+            participatedOrginazation.setUserId(resultSet.getInt("userid"));
+            participatedOrginazation.setInstitution(resultSet.getString("institution"));
+            participatedOrginazation.setPosition(resultSet.getString("position"));
+            participatedOrginazation.setStartDate(resultSet.getTimestamp("pstrtdate"));
+            participatedOrginazation.setEndDate(resultSet.getTimestamp("enddate"));
+            participatedOrginazation.setStillWorking(resultSet.getBoolean("stillworking"));
+            return participatedOrginazation;
+        }
+
+        return null;
+    }
+
+    public ArrayList<ParticipatedOrginazation> getParticipatedOrginazationsByUserId(int userid) throws SQLException {
+        ArrayList<ParticipatedOrginazation> list = new ArrayList< >();
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM participatedorganazations WHERE userid = ?;");
+        statement.setInt(1, userid);
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            ParticipatedOrginazation participatedOrginazation = new ParticipatedOrginazation();
+            participatedOrginazation.setId(resultSet.getInt("id"));
+            participatedOrginazation.setUserId(resultSet.getInt("userid"));
+            participatedOrginazation.setInstitution(resultSet.getString("institution"));
+            participatedOrginazation.setPosition(resultSet.getString("position"));
+            participatedOrginazation.setStartDate(resultSet.getTimestamp("pstrtdate"));
+            participatedOrginazation.setEndDate(resultSet.getTimestamp("enddate"));
+            participatedOrginazation.setStillWorking(resultSet.getBoolean("stillworking"));
+            list.add(participatedOrginazation);
+        }
+
+        return list;
+    }
+    
+    public ArrayList<ParticipatedOrginazation> getParticipatedOrginazations() throws SQLException {
+        ArrayList<ParticipatedOrginazation> list = new ArrayList< >();
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM participatedorganazations;");
+        ResultSet resultSet = statement.executeQuery();
+
+        while (resultSet.next()) {
+            ParticipatedOrginazation participatedOrginazation = new ParticipatedOrginazation();
+            participatedOrginazation.setId(resultSet.getInt("id"));
+            participatedOrginazation.setUserId(resultSet.getInt("userid"));
+            participatedOrginazation.setInstitution(resultSet.getString("institution"));
+            participatedOrginazation.setPosition(resultSet.getString("position"));
+            participatedOrginazation.setStartDate(resultSet.getTimestamp("pstrtdate"));
+            participatedOrginazation.setEndDate(resultSet.getTimestamp("enddate"));
+            participatedOrginazation.setStillWorking(resultSet.getBoolean("stillworking"));
+            list.add(participatedOrginazation);
+        }
+
+        return list;
     }
     
 }
