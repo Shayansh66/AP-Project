@@ -16,7 +16,7 @@ public class ParticipatedOrginazationDAO {
     public void createTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS participatedorganazations (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NUO NULL, institution VARCHAR(40), position VARCHAR(40), startdate TIMESTAMP, enddate TIMESTAMP, stillworking BOOLEAN0);");
         statement.executeUpdate();
-        statement = theConnection.prepareStatement("ALTER TABLE participatedorganazations AUTO_INCREMENT = 45000000;");
+        statement = theConnection.prepareStatement("ALTER TABLE participatedorganazations AUTO_INCREMENT = 46000000;");
     }
 
     public void saveParticipatedOrginazation(ParticipatedOrginazation participatedorganazation) throws SQLException {

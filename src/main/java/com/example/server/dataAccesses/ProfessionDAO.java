@@ -21,7 +21,7 @@ public class ProfessionDAO {
     public void createTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS professions (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NOT NULL, text VARCHAR(60));");
         statement.executeUpdate();
-        statement = theConnection.prepareStatement("ALTER TABLE professions AUTO_INCREMENT = 43000000;");
+        statement = theConnection.prepareStatement("ALTER TABLE professions AUTO_INCREMENT = 44000000;");
         statement.executeUpdate();
     }
 
