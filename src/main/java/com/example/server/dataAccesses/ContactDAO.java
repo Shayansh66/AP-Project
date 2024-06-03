@@ -21,7 +21,7 @@ public class ContactDAO {
     public void createTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS contacts (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NOT NULL, profilelink VARCHAR(255), email VARCHAR(255), phonenumber VARCHAR(40), phonetype VARCHAR(40), address VARCHAR(220), birthday TIMESTAMP, birthdayvisibility VARCHAR(40), communicationid VARCHAR(255);");
         statement.executeUpdate();
-        statement = theConnection.prepareStatement("ALTER TABLE contacts AUTO_INCREMENT = 46000000;");
+        statement = theConnection.prepareStatement("ALTER TABLE contacts AUTO_INCREMENT = 47000000;");
         statement.executeUpdate();
     }
 

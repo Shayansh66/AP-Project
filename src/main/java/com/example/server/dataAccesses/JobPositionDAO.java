@@ -38,7 +38,7 @@ public class JobPositionDAO {
     }
 
     public void updateJObPosition(JobPosition jobPosition) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE jobpositions SET userid= ?, title= ?, companyname= ?, worktype= ?, jobtype= ?, profession= ?, description = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE jobpositions SET userid= ?, title= ?, companyname= ?, worktype= ?, jobtype= ?, profession= ?, description = ? HWERE id = ?;");
         statement.setInt(1, jobPosition.getId());
         statement.setString(2, jobPosition.getTitle());
         statement.setString(3, jobPosition.getCompanyName());
@@ -46,6 +46,7 @@ public class JobPositionDAO {
         statement.setString(5, jobPosition.getJobType());
         statement.setString(6, jobPosition.getProfession());
         statement.setString(7, jobPosition.getDescription());
+        statement.setInt(8, jobPosition.getId());
         statement.executeUpdate();
     }
 

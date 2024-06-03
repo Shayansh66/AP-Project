@@ -51,8 +51,13 @@ public class PostController {
         return ob.writeValueAsString(posts);
     }
 
+<<<<<<< HEAD
     public String getPostsbyWriterId (int userId)  throws SQLException, JsonProcessingException {
         ArrayList <Post> posts = postDAO.getPosts(getPostsbyWriterId(userId));
+=======
+    public String getPostsbyWriterId (int userId) throws SQLException, JsonProcessingException {
+        ArrayList<Post> posts = postDAO.getPosts(userId);
+>>>>>>> 4cc11c3f58262ede55fb7a150eb8a42326cb286e
         ObjectMapper ob = new ObjectMapper();
          return ob.writeValueAsString(posts);
     }

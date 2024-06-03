@@ -19,7 +19,7 @@ public class EducationDAO {
     public void createTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS educations (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NOT NULL, institutionname VARCHAR(40), studyfield VARCHAR(40), startdate TIMESTAMP, enddate TIMESTAMP, grade DECIMAL(2, 2), descriptionofactivities VARCHAR(500), description VARCHAR(1000), notifychanges BOOLEAN);");
         statement.executeUpdate();
-        statement = theConnection.prepareStatement("ALTER TABLE educations AUTO_INCREMENT = 42000000;");
+        statement = theConnection.prepareStatement("ALTER TABLE educations AUTO_INCREMENT = 43000000;");
         statement.executeUpdate();
     }
 

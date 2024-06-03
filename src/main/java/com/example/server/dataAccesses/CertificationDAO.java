@@ -22,7 +22,7 @@ public class CertificationDAO {
     public void createTable() throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS certifications (id INT PRIMARY KEY AUTO_INCREMENT, userid INT NOT NULL, name VARCHAR(40), institutionname VARCHAR(40), issuedate TIMESTAMP, expiredate TIMESTAMP, creditid VARCHAR(40), refrencewebsite VARCHAR(255));");
         statement.executeUpdate();
-        statement = theConnection.prepareStatement("ALTER TALBE certifications AUTO_INCREMENT = 44000000;");
+        statement = theConnection.prepareStatement("ALTER TALBE certifications AUTO_INCREMENT = 45000000;");
         statement.executeUpdate();
     }
 
