@@ -38,7 +38,7 @@ public class ContactController {
         contactDAO.deleteContact(contact);
     }
 
-    public void deleteContact (String id) throws SQLException {
+    public void deleteContact (int id) throws SQLException {
         contactDAO.deleteContact(id);
     }
 

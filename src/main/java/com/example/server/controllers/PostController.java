@@ -37,7 +37,7 @@ public class PostController {
         postDAO.deletePosts();
     }
 
-    public void deletepost (String id) throws SQLException {
+    public void deletepost (int id) throws SQLException {
         postDAO.deletePost(id);
     }
     public void deletepost (Post post) throws SQLException {
@@ -51,28 +51,28 @@ public class PostController {
         return ob.writeValueAsString(posts);
     }
 
-    public String getPostsbyWriterId (String userId)  throws SQLException, JsonProcessingException {
+    public String getPostsbyWriterId (int userId)  throws SQLException, JsonProcessingException {
         ArrayList <Post> posts = postDAO.getPosts(getPostsbyWriterId(userId));
         ObjectMapper ob = new ObjectMapper();
          return ob.writeValueAsString(posts);
     }
 
 
-    public String getPost (String id ) throws SQLException, JsonProcessingException {
+    public String getPost (int id ) throws SQLException, JsonProcessingException {
         Post post = postDAO.getPost(id);
         ObjectMapper ob = new ObjectMapper();
         return ob.writeValueAsString(post);
     }
 
 
-    public String getUserComments (String userid) throws SQLException, JsonProcessingException  {
+    public String getUserComments (int userid) throws SQLException, JsonProcessingException  {
         ArrayList <Post> userComments = postDAO.getComments(userid);
         ObjectMapper ob =new ObjectMapper();
         return ob.writeValueAsString(userComments);
 
     }
 
-    public String getPostComments (String postId) throws SQLException, JsonProcessingException  {
+    public String getPostComments (int postId) throws SQLException, JsonProcessingException  {
         ArrayList <Comment > postComments = postDAO.getCommentsByPostID(postId);
         ObjectMapper ob = new ObjectMapper(); 
         return ob.writeValueAsString(postComments);
