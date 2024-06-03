@@ -24,21 +24,23 @@ public class UserController {
       objectMapper = new ObjectMapper();
    }
 
-   public void createUser(String id, String password, String email, String firstName, String lastName, String additionalName,
+   public void createUser(int id, String password, String email, String firstName, String lastName, String additionalName,
     String headTitle, String country, String city, String requiredJob) throws SQLException {
+        if (!isValidEmail(email)) {
+          throw new IllegalArgumentException("Invalid email format");
+        }
+        if (!isValidPassword(password)) {
+          throw new IllegalArgumentException("Invalid password format");
+        }
+        User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
+        userDAO.saveUser(user);
         
         if (isUserAlreadyExist(id)) {
-            
+            userDAO.updateUser(user);
         }
 
-       if (!isValidEmail(email)) {
-         throw new IllegalArgumentException("Invalid email format");
-       }
-       if (!isValidPassword(password)) {
-         throw new IllegalArgumentException("Invalid password format");
-       }
-       User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
-       userDAO.saveUser(user);
+        else userDAO.saveUser(user);
+
    }
 
    public void deleteUser(int id) throws SQLException {
@@ -55,7 +57,7 @@ public class UserController {
 
   
 
-   public String getUserById(String id) throws SQLException, JsonProcessingException {
+   public String getUserById(int id) throws SQLException, JsonProcessingException {
       User user = userDAO.getUserById(id);
       if (user == null) return "No User Found";
       return convertUserToJson(user);
@@ -92,9 +94,7 @@ public class UserController {
    }
 
 
-   private Boolean isUserAlreadyExist (String id) {
-    if (id == null) return false;
-
+   private Boolean isUserAlreadyExist (int id) {
     try {
         return (userDAO.getUserById(id))!= null;
     } catch (SQLException e) {

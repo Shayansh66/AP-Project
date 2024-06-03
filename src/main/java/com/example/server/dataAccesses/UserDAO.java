@@ -70,7 +70,7 @@ public class UserDAO {
         statement.executeUpdate();
     }
 
-    public User getUserById(String userid) throws SQLException {
+    public User getUserById(int userid) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE id = ?;");
         statement.setInt(1, Integer.parseInt(userid));
         ResultSet resultSet = statement.executeQuery();
