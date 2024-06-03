@@ -40,9 +40,9 @@ public class FollowDAO {
         statement.executeUpdate();
     }
 
-    public void deleteFollow(String id) throws SQLException {
+    public void deleteFollow(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM follows WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         statement.executeUpdate();
     }
 
@@ -57,9 +57,9 @@ public class FollowDAO {
         statement.executeUpdate();
     }
 
-    public Follow getFollow(String id) throws SQLException {
+    public Follow getFollow(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM follows WHERE id = ?");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
@@ -74,10 +74,10 @@ public class FollowDAO {
         return null;
     }
     
-    public ArrayList<Follow> getFollowers(String followingid) throws SQLException {
+    public ArrayList<Follow> getFollowers(int followingid) throws SQLException {
         ArrayList<Follow> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM follows WHERE followerid = ?");
-        statement.setInt(1, Integer.parseInt(followingid));
+        statement.setInt(1, followingid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
@@ -92,10 +92,10 @@ public class FollowDAO {
         return list;
     }
     
-    public ArrayList<Follow> getFollowings(String followerid) throws SQLException {
+    public ArrayList<Follow> getFollowings(int followerid) throws SQLException {
         ArrayList<Follow> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM follows WHERE followerid = ?");
-        statement.setInt(1, Integer.parseInt(followerid));
+        statement.setInt(1, followerid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {

@@ -52,9 +52,9 @@ public class EducationDAO {
         statement.executeUpdate();
     }
 
-    public void deleteEducation(String id) throws SQLException {
+    public void deleteEducation(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM educations WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         statement.executeUpdate();
     }
 
@@ -69,9 +69,9 @@ public class EducationDAO {
         statement.executeUpdate();
     }
 
-    public Education getEducationById(String id) throws SQLException {
+    public Education getEducationById(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM educations WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
@@ -91,9 +91,9 @@ public class EducationDAO {
         return null;
     }
 
-    public Education getEducationByUserIs(String userid) throws SQLException {
+    public Education getEducationByUserIs(int userid) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM educations WHERE userid = ?;");
-        statement.setInt(1, Integer.parseInt(userid));
+        statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {

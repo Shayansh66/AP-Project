@@ -70,7 +70,7 @@ public class CertificationDAO {
 
     public  Certification getCertification(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE id = ?");
-        statement.setInt(1,(id));
+        statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
@@ -113,7 +113,7 @@ public class CertificationDAO {
     public ArrayList<Certification> getCertificationsByUserID(int userid) throws SQLException {
         ArrayList<Certification> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE userid = ?");
-        statement.setInt(1,(userid));
+        statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {

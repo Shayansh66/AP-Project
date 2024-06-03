@@ -55,9 +55,9 @@ public class JobPositionDAO {
         statement.executeUpdate();
     }
 
-    public void deleteJobPosition(String id) throws SQLException {
+    public void deleteJobPosition(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM jobpositions WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         statement.executeUpdate();
     }
 
@@ -66,9 +66,9 @@ public class JobPositionDAO {
         statement.executeUpdate();
     }
 
-    public JobPosition getJobPosition(String id) throws SQLException {
+    public JobPosition getJobPosition(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobpositions HWERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
@@ -87,10 +87,10 @@ public class JobPositionDAO {
         return null;
     }
     
-    public ArrayList<JobPosition> getJobPositionsByUserId(String userid) throws SQLException {
+    public ArrayList<JobPosition> getJobPositionsByUserId(int userid) throws SQLException {
         ArrayList<JobPosition> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM jobpositions WHERE userid = ?;");
-        statement.setInt(1, Integer.parseInt(userid));
+        statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {

@@ -60,9 +60,9 @@ public class ContactDAO {
         statement.executeUpdate();
     }
 
-    public void deleteContact(String id) throws SQLException {
+    public void deleteContact(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM contacts WHERE id = ?;");
-        statement.setInt(1, Integer.parseInt(id));
+        statement.setInt(1, id);
         statement.executeUpdate();
     }
 
@@ -95,9 +95,9 @@ public class ContactDAO {
         return null;
     }
 
-    public Contact getContactByUserId(String userid) throws SQLException {
+    public Contact getContactByUserId(int userid) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM contacts WHERE userid = ?;");
-        statement.setInt(1, Integer.parseInt(userid));
+        statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {

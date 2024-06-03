@@ -21,9 +21,9 @@ public class HashtagDAO {
         statement.executeUpdate();
     }
 
-    public void saveHashtag(String postid, String content) throws SQLException {
+    public void saveHashtag(int postid, String content) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO hashtags (postid, content) VALUES (?, ?);");
-        statement.setInt(1, Integer.parseInt(postid));
+        statement.setInt(1, postid);
         statement.setString(2, content);
         statement.executeUpdate();
     }
@@ -34,9 +34,9 @@ public class HashtagDAO {
         statement.executeUpdate();
     }
 
-    public void deleteHashtags(String postid) throws SQLException {
+    public void deleteHashtags(int postid) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("DELETE FROM hashtags WHERE postid = ?;");
-        statement.setInt(1, Integer.parseInt(postid));
+        statement.setInt(1, postid);
         statement.executeUpdate();
     }
 
@@ -45,10 +45,10 @@ public class HashtagDAO {
         statement.executeUpdate();
     }
 
-    public ArrayList<Integer> getHashtagsPost(String postid) throws SQLException {
+    public ArrayList<Integer> getHashtagsPost(int postid) throws SQLException {
         ArrayList<Integer> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM hashtags WHERE postid = ?;");
-        statement.setInt(1, Integer.parseInt(postid));
+        statement.setInt(1, postid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
