@@ -35,11 +35,12 @@ public class ResumeDAO {
     }
     
     public void updateResume(Resume resume) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE resumes SET ownerid = ?, positionid = ?, resumefile = ?, description = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE resumes SET ownerid = ?, positionid = ?, resumefile = ?, description = ? WHERE id = ?;");
         statement.setInt(1, resume.getOwnerId());
         statement.setInt(2, resume.getPositionId());
         statement.setString(3, resume.getResumeFile());
         statement.setString(4, resume.getDescription());
+        statement.setInt(5, resume.getId());
         statement.executeUpdate();
     }
 
