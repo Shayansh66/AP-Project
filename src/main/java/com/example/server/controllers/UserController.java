@@ -24,13 +24,13 @@ public class UserController {
       objectMapper = new ObjectMapper();
    }
 
-   public void createUser(int id, String password, String email, String firstName, String lastName, String additionalName,
+   public String createUser(int id, String password, String email, String firstName, String lastName, String additionalName,
     String headTitle, String country, String city, String requiredJob) throws SQLException {
         if (!isValidEmail(email)) {
-          throw new IllegalArgumentException("Invalid email format");
+          return "invalid email format";
         }
         if (!isValidPassword(password)) {
-          throw new IllegalArgumentException("Invalid password format");
+          return "invalid password format";
         }
         User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
         userDAO.saveUser(user);
@@ -40,11 +40,16 @@ public class UserController {
         }
 
         else userDAO.saveUser(user);
-
+        return "succsesful";
    }
 
-   public void deleteUser(int id) throws SQLException {
-      userDAO.deleteUser(id);
+   public String deleteUser(int id) throws SQLException {
+    if (isUserAlreadyExist(id)) {
+        userDAO.deleteUser(id);
+        return "succsessful";
+    }  
+    else 
+    return "no user found with this id";
    }
 
    public void deleteUser(User user) throws SQLException {
