@@ -71,7 +71,7 @@ public class UserController {
       if (user == null) return "No User Found";
       return convertUserToJson(user);
    }
-
+ 
    public String getUsers() throws SQLException, JsonProcessingException {
       ArrayList<User> users = userDAO.getUsers();
       return objectMapper.writeValueAsString(users);

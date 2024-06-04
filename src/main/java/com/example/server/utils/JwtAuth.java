@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class JwtAuth {
     // Replace this with your own secret key
-    private static final String SECRET_KEY_STRING = "YourSuperSecretKeyYourSuperSecretKey"; // Must be 32 characters (256 bits)
+    private static final String SECRET_KEY_STRING = "35789526def28dd4428eacd720446255"; 
     private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET_KEY_STRING.getBytes());
 
     public Claims verifyToken(String token) {
