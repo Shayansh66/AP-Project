@@ -1,150 +1,101 @@
 package main.java.com.example.server.httpHandler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import main.java.com.example.server.controllers.UserController;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import main.java.com.example.server.controllers.UserController;
-import main.java.com.example.server.utils.JwtAuth;
-import io.jsonwebtoken.Claims;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.*;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserHandler implements HttpHandler {
-    private final UserController userController;
-    private final ObjectMapper objectMapper;
-
-    public UserHandler() throws SQLException {
-        userController = new UserController();
-        objectMapper = new ObjectMapper();
-    }
-
-    @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        String method = exchange.getRequestMethod();
-        String response;
-        int statusCode = 200;
-        JwtAuth jwtAuth = new JwtAuth();
-
-        // Check JWT authentication
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            statusCode = 401;
-            response = "Unauthorized";
-            exchange.sendResponseHeaders(statusCode, response.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-            return;
-        }
-
-        String token = authHeader.substring(7); // Remove "Bearer " prefix
-        Claims claims;
+    @Override 
+    public void handle (HttpExchange exchange ) throws IOException {
+        UserController userController = null;
         try {
-            claims = jwtAuth.verifyToken(token);
-        } catch (Exception e) {
-            statusCode = 401;
-            response = "Invalid token";
-            exchange.sendResponseHeaders(statusCode, response.getBytes().length);
-            OutputStream os = exchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-            return;
-        }
-
-        // Access claims
-        String userId = claims.getSubject();
-        System.out.println("Authenticated user ID: " + userId);
-
-        try {
-            switch (method) {
-                case "POST":
-                    response = handleCreateUser(exchange);
-                    break;
-                case "DELETE":
-                    response = handleDeleteUser(exchange);
-                    break;
-                case "GET":
-                    response = handleGetUser(exchange);
-                    break;
-                default:
-                    response = "Method Not Allowed";
-                    statusCode = 405;
-                    break;
-            }
+            userController = new UserController();
         } catch (SQLException e) {
-            response = "Internal Server Error";
-            statusCode = 500;
             e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            response = e.getMessage();
-            statusCode = 400;
         }
-
-        exchange.sendResponseHeaders(statusCode, response.getBytes().length);
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
-
-    private String handleCreateUser(HttpExchange exchange) throws IOException, SQLException {
-        Map<String, String> params = parseQueryParameters(exchange);
-        int id = Integer.parseInt(params.get("id"));
-        String password = params.get("password");
-        String email = params.get("email");
-        String firstName = params.get("firstName");
-        String lastName = params.get("lastName");
-        String additionalName = params.get("additionalName");
-        String headTitle = params.get("headTitle");
-        String country = params.get("country");
-        String city = params.get("city");
-        String requiredJob = params.get("requiredJob");
-
-        userController.createUser(id, password, email, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
-        return "User created successfully";
-    }
+        String method =  exchange.getRequestMethod();
+        String path = exchange.getRequestURI().getPath();
+        String[] splittedpath = path.split("/");
+        String response = "";
 
 
-
-  
-
-    private String handleDeleteUser(HttpExchange exchange) throws SQLException {
-        Map<String, String> params = parseQueryParameters(exchange);
-        int id = Integer.parseInt(params.get("id"));
-        userController.deleteUser(id);
-        return "User deleted successfully";
-    }
-
-    private String handleGetUser(HttpExchange exchange) throws IOException, SQLException {
-        Map<String, String> params = parseQueryParameters(exchange);
-        String idParam = params.get("id");
-        String emailParam = params.get("email");
-
-        if (idParam != null) {
-            int id = Integer.parseInt(idParam);
-            return userController.getUserById(id);
-        } else if (emailParam != null) {
-            return userController.getUserByEmail(emailParam);
-        } else {
-            return userController.getUsers();
-        }
-    }
-
-    private Map<String, String> parseQueryParameters(HttpExchange exchange) {
-        Map<String, String> parameters = new HashMap<>();
-        String query = exchange.getRequestURI().getQuery();
-        if (query != null) {
-            String[] pairs = query.split("&");
-            for (String pair : pairs) {
-                String[] keyValue = pair.split("=");
-                if (keyValue.length > 1) {
-                    parameters.put(keyValue[0], keyValue[1]);
+        switch (method) {
+            case "GET":
+                if (splittedpath.length == 2) {
+                    try {
+                        response = userController.getUsers();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
+                
+                else {
+                    int userId = Integer.valueOf(splittedpath[splittedpath.length - 1]);
+
+                    try {
+                        response = userController.getUserById(userId);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+                case "POST":
+                InputStream requestBody = exchange.getRequestBody();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
+                StringBuilder body = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    body.append(line);
+                }
+                requestBody.close();
+                reader.close();
+
+                String newUser = body.toString();
+                JSONObject jsonObject = new JSONObject(newUser);
+                try {
+                    response = userController.createUser(
+                        jsonObject.getInt("id"),
+                        jsonObject.getString("password"),
+                        jsonObject.getString("email"),
+                        jsonObject.getString("firstname"),
+                        jsonObject.getString("lastname"),
+                        jsonObject.getString("additionalname"),
+                        jsonObject.getString("headTitle"),
+                        jsonObject.getString("country"),
+                        jsonObject.getString("city"),
+                        jsonObject.getString("requiredJob")
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+                case "DELETE":
+                if (splittedpath.length > 2) {
+                    int userId = Integer.valueOf(splittedpath[splittedpath.length - 1]);
+                    try {
+                        response = userController.deleteUser(userId);
+                    }
+                     catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
         }
-        return parameters;
+
+    
     }
+
+    exchange.sendResponseHeaders(200, response.getBytes().length);
+    OutputStream os = exchange.getResponseBody();
+    os.write(response.getBytes());
+    os.close();
+        
+
+}
+
 }
