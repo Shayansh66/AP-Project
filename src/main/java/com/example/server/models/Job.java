@@ -158,8 +158,30 @@ public class Job {
     public void setNotifyChanges(boolean notifyChanges) {
         this.notifyChanges = notifyChanges;
     }
+    
 
     
+    public Job(int id, int userid, String title, String companyName, String workplace, boolean isworking,
+            String workType, String jobType, Timestamp startDate, Timestamp enddate, String description,
+            boolean notifyChanges) {
+        this.id = id;
+        this.userid = userid;
+        this.title = title;
+        this.companyName = companyName;
+        this.workplace = workplace;
+        this.isworking = isworking;
+        this.workType = workType;
+        this.jobType = jobType;
+        this.startDate = startDate;
+        this.enddate = enddate;
+        this.description = description;
+        this.notifyChanges = notifyChanges;
+    }
+    
+
+    public Job() {
+    }
+
     @Override
     public String toString() {
         return "Job [id=" + id + ", userid=" + userid + ", title=" + title + ", companyName=" + companyName
