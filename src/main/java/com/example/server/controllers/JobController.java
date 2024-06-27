@@ -21,8 +21,8 @@ public class JobController {
 
     public void createJob (int id, int userid, String title, String companyName, String workplace, boolean isworking,
             String workType, String jobType, Timestamp startDate, Timestamp enddate, String description,
-            boolean notifyChanges) {
-                Job job = new Job(id, userid, title, companyName, workplace, isworking, workType, jobType, startDate, enddate, description, notifyChanges)
+            boolean notifyChanges) throws SQLException {
+                Job job = new Job(id, userid, title, companyName, workplace, isworking, workType, jobType, startDate, enddate, description, notifyChanges);
                 jobDAO.saveJob(job);
     }
     public void updateJob (int id, int userid, String title, String companyName, String workplace, boolean isworking,

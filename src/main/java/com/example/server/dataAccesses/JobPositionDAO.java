@@ -25,7 +25,7 @@ public class JobPositionDAO {
         statement.executeUpdate();
     }
     
-    public void saveJObPosition(JobPosition jobPosition) throws SQLException {
+    public void saveJobPosition(JobPosition jobPosition) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO jobpositions (userid, title, companyname, worktype, jobtype, profession, description) VALUES (?, ?, ?, ?, ?, ?, ?);");
         statement.setInt(1, jobPosition.getId());
         statement.setString(2, jobPosition.getTitle());
@@ -37,7 +37,7 @@ public class JobPositionDAO {
         statement.executeUpdate();
     }
 
-    public void updateJObPosition(JobPosition jobPosition) throws SQLException {
+    public void updateJobPosition(JobPosition jobPosition) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("UPDATE jobpositions SET userid= ?, title= ?, companyname= ?, worktype= ?, jobtype= ?, profession= ?, description = ? HWERE id = ?;");
         statement.setInt(1, jobPosition.getId());
         statement.setString(2, jobPosition.getTitle());
