@@ -99,7 +99,7 @@ public class UserController {
    }
 
 
-   private Boolean isUserAlreadyExist (int id) {
+   public Boolean isUserAlreadyExist (int id) {
     try {
         return (userDAO.getUserById(id))!= null;
     } catch (SQLException e) {

@@ -11,17 +11,25 @@ public class Skill {
     @JsonProperty ("explaintion")
     private String explaination;
 
+    @JsonProperty ("userid")
+    private int userid;
     
-    // constructors
-    public Skill(int id, String explaination) {
+   
+
+    
+    public Skill(int id, String explaination, int userid) {
         this.id = id;
         this.explaination = explaination;
+        this.userid = userid;
     }
+
+    
 
     public Skill() {
     }
 
-    
+
+
     // accessor and mutators
     public int getId() {
         return id;
@@ -40,9 +48,23 @@ public class Skill {
     }
 
     
+   
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+
+
     @Override
     public String toString() {
-        return "Skill [id=" + id + ", explaination=" + explaination + "]";
+        return "Skill [id=" + id + ", explaination=" + explaination + ", userid=" + userid + "]";
     }
+
+    
     
 }
