@@ -20,7 +20,8 @@ public class SkillControlller {
     
         skillDAO.saveSkill(explaination, id,jobType);
     }
-    public updateJobPosition (int id, String explaination , String jobType) throws SQLException {
-        skillDAO.updateSkill(explaination, id, jobType);
+    public  void updateJobPosition(String explaination, int objectid, String objecttype, int id) throws SQLException {
+        skillDAO.updateSkill(explaination, objectid, objecttype, id);
+        
     }
 }

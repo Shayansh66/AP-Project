@@ -54,7 +54,7 @@ public class ContactController {
         return ob.writeValueAsString(contacts);
     }
 
-    public String getContactsById (int userId) throws SQLException, JsonProcessingException {
+    public String getContactsByUserId (int userId) throws SQLException, JsonProcessingException {
         Contact userContacts = contactDAO.getContactById(userId);
         ObjectMapper ob = new ObjectMapper();
         return ob.writeValueAsString(userContacts);
