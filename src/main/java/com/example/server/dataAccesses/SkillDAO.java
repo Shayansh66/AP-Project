@@ -17,26 +17,24 @@ public class SkillDAO {
     }
     
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS skills (id INT PRIMARY KEY AUTO_INCREMENT, explaination VARCHAR(40), objectid INT NOT NULL, objecttype VARCHAR(40);)");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS skills (id INT PRIMARY KEY AUTO_INCREMENT, explaination VARCHAR(40), userid INT NOT NULL;)");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE skills AUTO_INCREMENT = 49000000;");
         statement.executeUpdate();
     }
 
-    public void saveSkill(String explaination, int objectid, String objecttype) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO skills (explaination, objectid, objectype) VALUES (?, ?, ?);");
+    public void saveSkill(String explaination, int userid) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO skills (explaination, userid) VALUES (?, ?);");
         statement.setString(1, explaination);
-        statement.setInt(2, objectid);
-        statement.setString(3, objecttype);
+        statement.setInt(2, userid);
         statement.executeUpdate();
     }
 
-    public void updateSkill(String explaination, int objectid, String objecttype, int id) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE skills SET explaination = ?, objectid = ?, objectype = ? WHERE id = ?;");
+    public void updateSkill(int id, String explaination, int userid) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE skills SET explaination = ?, userid = ? WHERE id = ?;");
         statement.setString(1, explaination);
-        statement.setInt(2, objectid);
-        statement.setString(3, objecttype);
-        statement.setInt(4, id);
+        statement.setInt(2, userid);
+        statement.setInt(3, id);
         statement.executeUpdate();
     }
 
@@ -62,10 +60,10 @@ public class SkillDAO {
         return null;
     }
 
-    public ArrayList<String> getSkillsByObjectId(int objectid) throws SQLException {
+    public ArrayList<String> getSkillsByuserid(int userid) throws SQLException {
         ArrayList<String> list = new ArrayList< >();
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills WHERE objectid = ?;");
-        statement.setInt(1, objectid);
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills WHERE userid = ?;");
+        statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
