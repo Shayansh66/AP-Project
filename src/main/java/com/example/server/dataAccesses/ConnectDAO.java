@@ -29,12 +29,23 @@ public class ConnectDAO {
     }
 
     public void deleteConnection(int userid1, int userid2) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM connectiond WHERE (userid1 = ? AND userid2 = ?) OR (userid2 = ? AND userid1 = ?);");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM connections WHERE (userid1 = ? AND userid2 = ?) OR (userid2 = ? AND userid1 = ?);");
         statement.setInt(1, userid1);
         statement.setInt(2, userid2);
         statement.setInt(3, userid1);
         statement.setInt(4, userid2);
         statement.executeUpdate();
+    }
+
+    public boolean isConnected(int userid1, int userid2) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM connections WHERE (userid1 = ? AND userid2 = ?) OR (userid2 = ? AND userid1 = ?)");
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

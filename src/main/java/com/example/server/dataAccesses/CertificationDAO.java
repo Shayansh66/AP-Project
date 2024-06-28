@@ -68,7 +68,7 @@ public class CertificationDAO {
         statement.executeUpdate();
     }
 
-    public  Certification getCertification(int id) throws SQLException {
+    public Certification getCertification(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM certifications WHERE id = ?");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
