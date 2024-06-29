@@ -9,12 +9,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.com.example.server.dataAccesses.SkillDAO;
 import main.java.com.example.server.models.Skill;
 
-public class SkillControlller {
+public class SkillController {
     private final SkillDAO skillDAO;
     private final ObjectMapper objectMapper; 
     private final UserController usercController;
 
-    public SkillControlller() throws SQLException {
+    public SkillController() throws SQLException {
         skillDAO = new SkillDAO();
         objectMapper = new ObjectMapper();
         usercController = new UserController();
@@ -58,7 +58,7 @@ public class SkillControlller {
          ArrayList <String> UserSkills = skillDAO.getSkillsByuserid(userId);
         return objectMapper.writeValueAsString(UserSkills);
     }
-    public void delteSkill (int id) throws SQLException {
+    public void deleteSkill (int id) throws SQLException {
         skillDAO.deleteSkill(id);
     }
 

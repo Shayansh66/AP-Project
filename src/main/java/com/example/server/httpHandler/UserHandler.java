@@ -1,101 +1,139 @@
 package main.java.com.example.server.httpHandler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import main.java.com.example.server.controllers.UserController;
+import main.java.com.example.server.models.User;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.*;
-import java.sql.Date;
-import java.sql.SQLException;
-
 public class UserHandler implements HttpHandler {
-    @Override 
-    public void handle (HttpExchange exchange ) throws IOException {
-        UserController userController = null;
-        try {
-            userController = new UserController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        String method =  exchange.getRequestMethod();
-        String path = exchange.getRequestURI().getPath();
-        String[] splittedpath = path.split("/");
-        String response = "";
 
+    private final UserController userController;
+    private final ObjectMapper objectMapper;
 
-        switch (method) {
-            case "GET":
-                if (splittedpath.length == 2) {
-                    try {
-                        response = userController.getUsers();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                
-                else {
-                    int userId = Integer.valueOf(splittedpath[splittedpath.length - 1]);
-
-                    try {
-                        response = userController.getUserById(userId);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-                case "POST":
-                InputStream requestBody = exchange.getRequestBody();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
-                StringBuilder body = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    body.append(line);
-                }
-                requestBody.close();
-                reader.close();
-
-                String newUser = body.toString();
-                JSONObject jsonObject = new JSONObject(newUser);
-                try {
-                    response = userController.createUser(
-                        jsonObject.getInt("id"),
-                        jsonObject.getString("password"),
-                        jsonObject.getString("email"),
-                        jsonObject.getString("firstname"),
-                        jsonObject.getString("lastname"),
-                        jsonObject.getString("additionalname"),
-                        jsonObject.getString("headTitle"),
-                        jsonObject.getString("country"),
-                        jsonObject.getString("city"),
-                        jsonObject.getString("requiredJob")
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-                case "DELETE":
-                if (splittedpath.length > 2) {
-                    int userId = Integer.valueOf(splittedpath[splittedpath.length - 1]);
-                    try {
-                        response = userController.deleteUser(userId);
-                    }
-                     catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-        }
-
-    
+    public UserHandler() throws SQLException {
+        this.userController = new UserController();
+        this.objectMapper = new ObjectMapper();
     }
 
-    exchange.sendResponseHeaders(200, response.getBytes().length);
-    OutputStream os = exchange.getResponseBody();
-    os.write(response.getBytes());
-    os.close();
-        
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        String requestMethod = exchange.getRequestMethod();
+        String response = "";
+        int statusCode = 200;
 
-}
+        switch (requestMethod) {
+            case "POST":
+                handlePost(exchange);
+                break;
+            case "DELETE":
+                handleDelete(exchange);
+                break;
+            case "GET":
+                handleGet(exchange);
+                break;
+            default:
+                response = "Method not supported";
+                statusCode = 404;
+                break;
+        }
 
+        exchange.sendResponseHeaders(statusCode, response.length());
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    private void handlePost(HttpExchange exchange) throws IOException {
+        InputStream requestBody = exchange.getRequestBody();
+        String requestBodyString = new String(requestBody.readAllBytes());
+        Map<String, String> parsedBody = parseRequestBody(requestBodyString);
+
+        try {
+            String result = userController.createUser(
+                    Integer.parseInt(parsedBody.get("id")),
+                    parsedBody.get("password"),
+                    parsedBody.get("email"),
+                    parsedBody.get("firstName"),
+                    parsedBody.get("lastName"),
+                    parsedBody.get("additionalName"),
+                    parsedBody.get("headTitle"),
+                    parsedBody.get("country"),
+                    parsedBody.get("city"),
+                    parsedBody.get("requiredJob")
+            );
+            sendResponse(exchange, result, 200);
+        } catch (NumberFormatException | SQLException e) {
+            sendResponse(exchange, "Error creating user", 500);
+        }
+    }
+
+    private void handleDelete(HttpExchange exchange) throws IOException {
+        String path = exchange.getRequestURI().getPath();
+        String[] pathParts = path.split("/");
+        int id = Integer.parseInt(pathParts[pathParts.length - 1]);
+
+        try {
+            String result = userController.deleteUser(id);
+            sendResponse(exchange, result, 200);
+        } catch (SQLException e) {
+            sendResponse(exchange, "Error deleting user", 500);
+        }
+    }
+
+    private void handleGet(HttpExchange exchange) throws IOException {
+        String path = exchange.getRequestURI().getPath();
+        String[] pathParts = path.split("/");
+        String result = "";
+
+        if (pathParts.length > 2) {
+            // Get user by ID
+            int id = Integer.parseInt(pathParts[pathParts.length - 1]);
+            try {
+                result = userController.getUserById(id);
+            } catch (SQLException | JsonProcessingException e) {
+                result = "Error fetching user";
+            }
+        } else {
+            // Get all users
+            try {
+                result = userController.getUsers();
+            } catch (SQLException | JsonProcessingException e) {
+                result = "Error fetching users";
+            }
+        }
+
+        sendResponse(exchange, result, 200);
+    }
+
+    private void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
+        exchange.sendResponseHeaders(statusCode, response.getBytes().length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(response.getBytes());
+        os.close();
+    }
+
+    private Map<String, String> parseRequestBody(String requestBody) {
+        Map<String, String> parsedBody = new HashMap<>();
+        String[] pairs = requestBody.split("&");
+
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            if (keyValue.length == 2) {
+                parsedBody.put(keyValue[0], keyValue[1]);
+            }
+        }
+
+        return parsedBody;
+    }
 }
