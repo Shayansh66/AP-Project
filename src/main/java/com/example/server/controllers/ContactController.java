@@ -12,22 +12,40 @@ import main.java.com.example.server.models.Contact;
 
 public class ContactController {
     private final ContactDAO contactDAO;
+    private final UserController userController;
 
     public ContactController () throws SQLException {
         contactDAO = new ContactDAO();
+        userController = new UserController();
     }
     
 
-    public void createContact (int id , String userId , String profileLink , String email , String phoneNumber , String phoneType , String address , Timestamp birthday  , 
+    public String createContact (int id , int userId , String profileLink , String email , String phoneNumber , String phoneType , String address , Timestamp birthday  , 
     String birthdayVisibility , String communicationId  ) throws SQLException {
+        if (!userController.isUserAlreadyExist(userId)) {
+            return "user not found";
+        }
+        if (!userController.isValidEmail(email)) {
+            return "not a valid emal format";
+         }
+        
         Contact contact =  new Contact(id, id, profileLink, email, phoneNumber, phoneType, address,birthday, birthdayVisibility, communicationId);
         contactDAO.saveContact(contact);
+        return "sucsessful";
     }
 
-    public void updateContact (int id , String userId , String profileLink , String email , String phoneNumber , String phoneType , String address , Timestamp birthday  , 
+    public String updateContact (int id , int userId , String profileLink , String email , String phoneNumber , String phoneType , String address , Timestamp birthday  , 
     String birthdayVisibility , String communicationId)throws SQLException {
+        if (!userController.isUserAlreadyExist(userId)) {
+            return "user not found";
+        }
+        if (!userController.isValidEmail(email)) {
+           return "not a valid emal format";
+        }
+        
         Contact contact = new Contact(id, id, profileLink, email, phoneNumber, phoneType, address, birthday, birthdayVisibility, communicationId);
         contactDAO.updateContact(contact);
+        return "sucsessful";
     }
 
     public void deleteContacts () throws SQLException {

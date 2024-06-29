@@ -86,13 +86,13 @@ public class UserController {
       return objectMapper.writeValueAsString(user);
    }
 
-   private boolean isValidEmail(String email) {
+   public boolean isValidEmail(String email) {
       Pattern pattern = Pattern.compile(EMAIL_PATTERN);
       Matcher matcher = pattern.matcher(email);
       return matcher.matches();
    }
 
-   private boolean isValidPassword(String password) {
+   public boolean isValidPassword(String password) {
       Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
       Matcher matcher = pattern.matcher(password);
       return matcher.matches();

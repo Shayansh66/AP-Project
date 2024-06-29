@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.java.com.example.server.dataAccesses.SkillDAO;
-import main.java.com.example.server.dataAccesses.UserDAO;
 import main.java.com.example.server.models.Skill;
 
 public class SkillControlller {
@@ -18,7 +17,7 @@ public class SkillControlller {
     public SkillControlller() throws SQLException {
         skillDAO = new SkillDAO();
         objectMapper = new ObjectMapper();
-        usercController = new UserDAO();
+        usercController = new UserController();
     }
     public String createSkill (int id, String explaination, int userid) throws SQLException {
         int skillnumbers  = skillDAO.getSkillsByuserid(userid).size();
@@ -52,7 +51,11 @@ public class SkillControlller {
 
 
     public String getSkillsByUserId (int userId) throws SQLException , JsonProcessingException {
-        ArrayList <String> UserSkills = skillDAO.getSkillsByuserid(userId);
+       
+        if (!usercController.isUserAlreadyExist(userId)) {
+            return "user not found";
+        }
+         ArrayList <String> UserSkills = skillDAO.getSkillsByuserid(userId);
         return objectMapper.writeValueAsString(UserSkills);
     }
     public void delteSkill (int id) throws SQLException {
