@@ -17,7 +17,7 @@ public class SkillDAO {
     }
     
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS skills (id INT PRIMARY KEY AUTO_INCREMENT, explaination VARCHAR(40), userid INT NOT NULL;)");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS skills (id INT PRIMARY KEY AUTO_INCREMENT, explaination VARCHAR(40), userid INT NOT NULL);");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE skills AUTO_INCREMENT = 49000000;");
         statement.executeUpdate();
