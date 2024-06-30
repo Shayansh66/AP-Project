@@ -7,11 +7,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Message {
     
+    @JsonProperty ("id")
+    private int id;
+
     @JsonProperty ("senderid")
-    private String senderid;
+    private int senderid;
 
     @JsonProperty ("recieverid")
-    private String recieverid;
+    private int recieverid;
 
     @JsonProperty ("context")
     private String context;
@@ -20,7 +23,8 @@ public class Message {
     private String[] multiMedia;
 
     
-    public Message(String senderid, String recieverid, String context, String[] multiMedia) {
+    public Message(int id, int senderid, int recieverid, String context, String[] multiMedia) {
+        this.id = id;
         this.senderid = senderid;
         this.recieverid = recieverid;
         this.context = context;
@@ -31,19 +35,19 @@ public class Message {
     }
 
     
-    public String getSenderid() {
+    public int getSenderid() {
         return senderid;
     }
 
-    public void setSenderid(String senderid) {
+    public void setSenderid(int senderid) {
         this.senderid = senderid;
     }
 
-    public String getRecieverid() {
+    public int getRecieverid() {
         return recieverid;
     }
 
-    public void setRecieverid(String recieverid) {
+    public void setRecieverid(int recieverid) {
         this.recieverid = recieverid;
     }
 
@@ -63,10 +67,19 @@ public class Message {
         this.multiMedia = multiMedia;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
     @Override
     public String toString() {
-        return "Message [senderid=" + senderid + ", recieverid=" + recieverid + ", context=" + context + ", multiMedia="
-                + Arrays.toString(multiMedia) + "]";
+        return "Message [id=" + id + ", senderid=" + senderid + ", recieverid=" + recieverid + ", context=" + context
+                + ", multiMedia=" + Arrays.toString(multiMedia) + "]";
     }
     
 }
