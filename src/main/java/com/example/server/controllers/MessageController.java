@@ -23,7 +23,7 @@ public class MessageController {
 
     public String createMessage(int id, int senderid, int recieverid, String context, String[] multiMedia) throws SQLException {
         if (userDAO.getUserById(senderid) == null || userDAO.getUserById(recieverid) == null ) {
-            return "sender or reciever not found"
+            return "sender or reciever not found";
         }
         else {
             Message message = new Message(id, senderid, recieverid, context, multiMedia);

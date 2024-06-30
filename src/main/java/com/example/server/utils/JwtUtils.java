@@ -1,52 +1,38 @@
 package main.java.com.example.server.utils;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 
-public class JwtUtils {
-    private static final Key key = Keys.secretKeyFor(io.jsonwebtoken.SignatureAlgorithm.HS256);
+public class JWTUtils {
+    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    // Generate JWT token
-    public static String generateJwtToken(int userId, String username, long expirationMillis) {
+    public static String createJWT(Map<String, Object> claims, long ttlMillis) {
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+
         return Jwts.builder()
-                .setSubject(username)
-                .claim("userId", userId)
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(nowMillis + ttlMillis))
                 .signWith(key)
                 .compact();
     }
 
-    // Validate JWT token
-    public static boolean validateJwtToken(String jwtToken) {
-        try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(jwtToken);
-
-            return !claimsJws.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // Extract user ID from JWT token
-    public static int extractUserIdFromJwtToken(String jwtToken) {
-        try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(jwtToken);
-
-            return claimsJws.getBody().get("userId", Integer.class);
-        } catch (Exception e) {
-            return -1; // Invalid token or error
-        }
+    public static Map<String, Object> verifyJWT(String jwt) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody();
+        return claims;
     }
 }
+
+
 

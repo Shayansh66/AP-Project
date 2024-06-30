@@ -20,15 +20,17 @@ public class PostController {
         
     }
 
-    public  void createPost (int id , int writterid , String content , int likeNumbers, 
-    int commentNumbers , Timestamp createDate , int relatedGroupId ) throws SQLException {
-       Post post = new Post(id, writterid, content, likeNumbers, commentNumbers, createDate, relatedGroupId) ;
-       postDAO.savePost(post);     
+    public  String createPost (int id , int writterid , String content , int likeNumbers, 
+    int commentNumbers , Timestamp createDate) throws SQLException {
+       Post post = new Post(id, writterid, content, likeNumbers, commentNumbers, createDate) ;
+       postDAO.savePost(post);  
+       int n =  post.getId();   
+       return Integer.toString(n);
     }
     
     public void updatePost (int id , int writterid , String content , int likeNumbers, 
-    int commentNumbers , Timestamp createDate , int relatedGroupId ) throws SQLException {
-        Post post = new Post(id, writterid, content, likeNumbers, commentNumbers, createDate, relatedGroupId);
+    int commentNumbers , Timestamp createDate ) throws SQLException {
+        Post post = new Post(id, writterid, content, likeNumbers, commentNumbers, createDate);
         postDAO.updatePost(post);
      
     }

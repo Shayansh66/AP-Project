@@ -1,190 +1,261 @@
 package main.java.com.example.server.httpHandler;
 
+import main.java.com.example.server.controllers.SkillController;
+import main.java.com.example.server.utils.JWTUtils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import io.jsonwebtoken.JwtException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map; 
-import main.java.com.example.server.controllers.SkillController;
-import main.java.com.example.server.utils.JwtUtils;
-import main.java.com.example.server.utils.HttpUtils;
+import java.util.Map;
+
 public class SkillHandler implements HttpHandler {
-
-    private final SkillController skillController;
-
-    public SkillHandler() throws SQLException {
-        this.skillController = new SkillController();
-    }
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String requestMethod = exchange.getRequestMethod();
+        SkillController skillController = null;
+        try {
+            skillController = new SkillController();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+            return;
+        }
+
+        String method = exchange.getRequestMethod();
+        String path = exchange.getRequestURI().getPath();
         String response = "";
-        int statusCode = 200;
+        String[] splittedPath = path.split("/");
 
+        switch (method) {
+            case "GET":
+                handleGetRequest(exchange, skillController, splittedPath);
+                break;
+
+            case "POST":
+                handlePostRequest(exchange, skillController);
+                break;
+
+            case "PUT":
+                handlePutRequest(exchange, skillController, splittedPath);
+                break;
+
+            case "DELETE":
+                handleDeleteRequest(exchange, skillController, splittedPath);
+                break;
+
+            default:
+                sendResponse(exchange, 405, "Method Not Allowed");
+                break;
+        }
+    }
+
+    private void handleGetRequest(HttpExchange exchange, SkillController skillController, String[] splittedPath) throws IOException {
+        String response;
         try {
-            switch (requestMethod) {
-                case "POST":
-                    handlePost(exchange);
-                    break;
-                case "PUT":
-                    handlePut(exchange);
-                    break;
-                case "GET":
-                    handleGet(exchange);
-                    break;
-                case "DELETE":
-                    handleDelete(exchange);
-                    break;
-                default:
-                    response = "Method not allowed";
-                    statusCode = 405;
-                    break;
+            if (splittedPath.length == 2) {
+                String userIdStr = exchange.getRequestHeaders().getFirst("userId");
+                if (userIdStr == null) {
+                    sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
+                    return;
+                }
+                int userId = Integer.parseInt(userIdStr);
+                response = skillController.getSkillsByUserId(userId);
+            } else {
+                String skillId = splittedPath[splittedPath.length - 1];
+                String userIdStr = exchange.getRequestHeaders().getFirst("userId");
+                if (userIdStr == null) {
+                    sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
+                    return;
+                }
+                int userId = Integer.parseInt(userIdStr);
+                int skillIdNum = Integer.parseInt(skillId);
+                response = skillController.getSkill(skillIdNum, userId);
+                if (response == null) {
+                    response = "No skill found with this ID";
+                }
             }
+            sendResponse(exchange, 200, response);
+        } catch (NumberFormatException e) {
+            sendResponse(exchange, 400, "Bad Request: Invalid ID");
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        }
+    }
+
+    private void handlePostRequest(HttpExchange exchange, SkillController skillController) throws IOException {
+        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            sendResponse(exchange, 401, "Unauthorized");
+            return;
+        }
+
+        String jwtToken = authHeader.substring(7);
+        Map<String, Object> claims;
+        try {
+            claims = JWTUtils.verifyJWT(jwtToken);
         } catch (Exception e) {
-            response = "Internal server error";
-            statusCode = 500;
-            e.printStackTrace(); // Log the exception for debugging
+            sendResponse(exchange, 401, "Invalid JWT Token");
+            return;
         }
 
-        exchange.sendResponseHeaders(statusCode, response.length());
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
-    }
+        int userId = (int) claims.get("userId");
 
-    private void handlePost(HttpExchange exchange) throws IOException,SQLException {
+        InputStream requestBody = exchange.getRequestBody();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            body.append(line);
+        }
+        requestBody.close();
+
+        String newSkill = body.toString();
+        JSONObject jsonObject = new JSONObject(newSkill);
+
         try {
-            // Validate JWT token from request
-            String jwtToken = extractJwtToken(exchange);
-            if (jwtToken == null || !JwtUtils.validateJwtToken(jwtToken)) {
-                sendResponse(exchange, "Unauthorized", 401);
-                return;
-            }
-
-            // Extract userId from JWT token
-            int userId = JwtUtils.extractUserIdFromJwtToken(jwtToken);
-
-            // Process request
-            Map<String, String> params = parseQueryString(exchange.getRequestURI().getQuery());
-            String result = skillController.createSkill(
-                    Integer.parseInt(params.get("id")),
-                    params.get("explanation"),
+            String response = skillController.createSkill(
+                    jsonObject.getInt("id"),
+                    jsonObject.getString("explaination"),
                     userId
             );
-            sendResponse(exchange, result, 200);
-        } catch (NumberFormatException | IOException | JwtException e) {
-            sendResponse(exchange, "Error processing request", 500);
+            if (response.equals("user not found") || response.equals("you can only have 5 skills")) {
+                sendResponse(exchange, 400, response);
+            } else {
+                sendResponse(exchange, 201, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 400, "Bad Request");
         }
     }
 
-    private void handlePut(HttpExchange exchange) throws IOException , SQLException {
+    private void handlePutRequest(HttpExchange exchange, SkillController skillController, String[] splittedPath) throws IOException {
+        if (splittedPath.length != 3) {
+            sendResponse(exchange, 400, "Bad Request");
+            return;
+        }
+
+        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            sendResponse(exchange, 401, "Unauthorized");
+            return;
+        }
+
+        String jwtToken = authHeader.substring(7);
+        Map<String, Object> claims;
         try {
-            // Validate JWT token from request
-            String jwtToken = extractJwtToken(exchange);
-            if (jwtToken == null || !JwtUtils.validateJwtToken(jwtToken)) {
-                sendResponse(exchange, "Unauthorized", 401);
-                return;
-            }
+            claims = JWTUtils.verifyJWT(jwtToken);
+        } catch (Exception e) {
+            sendResponse(exchange, 401, "Invalid JWT Token");
+            return;
+        }
 
-            // Extract userId from JWT token
-            int userId = JwtUtils.extractUserIdFromJwtToken(jwtToken);
+        int userId = (int) claims.get("userId");
+        String skillId = splittedPath[splittedPath.length - 1];
+        int skillIdNum;
+        try {
+            skillIdNum = Integer.parseInt(skillId);
+        } catch (NumberFormatException e) {
+            sendResponse(exchange, 400, "Invalid Skill ID");
+            return;
+        }
 
-            // Process request
-            Map<String, String> params = parseQueryString(exchange.getRequestURI().getQuery());
-            String result = skillController.updateSkill(
-                    Integer.parseInt(params.get("id")),
-                    params.get("explanation"),
+        InputStream requestBody = exchange.getRequestBody();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            body.append(line);
+        }
+        requestBody.close();
+
+        String updatedSkill = body.toString();
+        JSONObject jsonObject = new JSONObject(updatedSkill);
+
+        try {
+            String response = skillController.updateSkill(
+                    skillIdNum,
+                    jsonObject.getString("explaination"),
                     userId
             );
-            sendResponse(exchange, result, 200);
-        } catch (NumberFormatException | IOException | JwtException e) {
-            sendResponse(exchange, "Error processing request", 500);
+            if (response.equals("user not found")) {
+                sendResponse(exchange, 404, response);
+            } else {
+                sendResponse(exchange, 200, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 400, "Bad Request");
         }
     }
 
-    private void handleGet(HttpExchange exchange) throws IOException , SQLException {
+    private void handleDeleteRequest(HttpExchange exchange, SkillController skillController, String[] splittedPath) throws IOException {
+        if (splittedPath.length != 3) {
+            sendResponse(exchange, 400, "Bad Request");
+            return;
+        }
+
+        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            sendResponse(exchange, 401, "Unauthorized");
+            return;
+        }
+
+        String jwtToken = authHeader.substring(7);
+        Map<String, Object> claims;
         try {
-            // Validate JWT token from request
-            String jwtToken = extractJwtToken(exchange);
-            if (jwtToken == null || !JwtUtils.validateJwtToken(jwtToken)) {
-                sendResponse(exchange, "Unauthorized", 401);
+            claims = JWTUtils.verifyJWT(jwtToken);
+        } catch (Exception e) {
+            sendResponse(exchange, 401, "Invalid JWT Token");
+            return;
+        }
+
+        int userId = (int) claims.get("userId");
+        String skillId = splittedPath[splittedPath.length - 1];
+        int skillIdNum;
+        try {
+            skillIdNum = Integer.parseInt(skillId);
+        } catch (NumberFormatException e) {
+            sendResponse(exchange, 400, "Invalid Skill ID");
+            return;
+        }
+
+        try {
+            String response = skillController.getSkill(skillIdNum, userId);
+            if (response.equals("user not found")) {
+                sendResponse(exchange, 404, response);
                 return;
             }
-
-            // Extract userId from JWT token
-            int userId = JwtUtils.extractUserIdFromJwtToken(jwtToken);
-
-            // Process request
-            Map<String, String> params = parseQueryString(exchange.getRequestURI().getQuery());
-            String result = skillController.getSkill(
-                    Integer.parseInt(params.get("id")),
-                    userId
-            );
-            sendResponse(exchange, result, 200);
-        } catch (NumberFormatException | IOException | JwtException e) {
-            sendResponse(exchange, "Error processing request", 500);
+            skillController.deleteSkill(skillIdNum);
+            sendResponse(exchange, 200, "Skill deleted successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 400, "Bad Request");
         }
     }
 
-    private void handleDelete(HttpExchange exchange) throws IOException,SQLException {
-        try {
-            // Validate JWT token from request
-            String jwtToken = extractJwtToken(exchange);
-            if (jwtToken == null || !JwtUtils.validateJwtToken(jwtToken)) {
-                sendResponse(exchange, "Unauthorized", 401);
-                return;
-            }
-
-            // Extract userId from JWT token
-            int userId = JwtUtils.extractUserIdFromJwtToken(jwtToken);
-
-            // Process request
-            Map<String, String> params = parseQueryString(exchange.getRequestURI().getQuery());
-            skillController.deleteSkill(
-                    Integer.parseInt(params.get("id")));
-            sendResponse(exchange, "Skill deleted successfully", 200);
-        } catch (NumberFormatException | IOException | JwtException e) {
-            sendResponse(exchange, "Error processing request", 500);
-        }
-    }
-
-    private String extractJwtToken(HttpExchange exchange) {
-        // Extract JWT token from Authorization header
-        String authorizationHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7); // "Bearer " length is 7
-        }
-        return null;
-    }
-
-    private void sendResponse(HttpExchange exchange, String response, int statusCode) throws IOException {
+    private void sendResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         exchange.sendResponseHeaders(statusCode, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
     }
-
-      public static Map<String, String> parseQueryString(String query) throws UnsupportedEncodingException {
-        Map<String, String> params = new HashMap<>();
-        if (query != null) {
-            String[] pairs = query.split("&");
-            for (String pair : pairs) {
-                int idx = pair.indexOf("=");
-                String key = idx > 0 ? URLDecoder.decode(pair.substring(0, idx), "UTF-8") : pair;
-                String value = idx > 0 && pair.length() > idx + 1 ? URLDecoder.decode(pair.substring(idx + 1), "UTF-8") : null;
-                params.put(key, value);
-            }
-        }
-        return params;
-    }
-    
 }
-
-
