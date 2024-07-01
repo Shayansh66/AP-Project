@@ -59,14 +59,18 @@ public class UserController {
    public void deleteUsers() throws SQLException {
       userDAO.deleteUsers();
    }
+   public String getUser (String email, String password) throws SQLException , JsonProcessingException {
+    User user = userDAO.getUser(email, password);
+    return objectMapper.writeValueAsString(user);
+   }
 
   
 
    public String getUserById(int id) throws SQLException, JsonProcessingException {
       User user = userDAO.getUserById(id);
       if (user == null) return "No User Found";
-      return convertUserToJson(user);
-   }
+      return objectMapper.writeValueAsString(user);
+    }
 
    public String getUserByEmail(String email) throws SQLException, JsonProcessingException {
       if (!isValidEmail(email)) {
@@ -74,7 +78,7 @@ public class UserController {
       }
       User user = userDAO.getUserByEmail(email);
       if (user == null) return "No User Found";
-      return convertUserToJson(user);
+      return objectMapper.writeValueAsString(user);
    }
  
    public String getUsers() throws SQLException, JsonProcessingException {
@@ -82,9 +86,7 @@ public class UserController {
       return objectMapper.writeValueAsString(users);
    }
 
-   private String convertUserToJson(User user) throws JsonProcessingException {
-      return objectMapper.writeValueAsString(user);
-   }
+   
 
    public boolean isValidEmail(String email) {
       Pattern pattern = Pattern.compile(EMAIL_PATTERN);
