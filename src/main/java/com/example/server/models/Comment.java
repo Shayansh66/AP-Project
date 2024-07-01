@@ -12,8 +12,8 @@ public class Comment extends Post {
 
 
     // constructors
-    public Comment(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate, int relatedgroupid, int relatedPostId) {
-        super(id, writterid, content, likeNumber, commentNumber, createDate, relatedgroupid);
+    public Comment(int id, int writterid, String content, int likeNumber, int commentNumber, Timestamp createDate,int relatedPostId) {
+        super(id, writterid, content, likeNumber, commentNumber, createDate);
         this.relatedPostid = relatedPostId;
     }
 
