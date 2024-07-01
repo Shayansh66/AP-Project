@@ -1,12 +1,13 @@
 package main.java.com.example.server;
 
 import com.sun.net.httpserver.HttpServer;
-i
+
 
 import main.java.com.example.server.httpHandler.SessionHandler;
 import main.java.com.example.server.httpHandler.SkillHandler;
 import main.java.com.example.server.httpHandler.UserHandler;
 import main.java.com.example.server.httpHandler.ConnectionHandler;
+import main.java.com.example.server.httpHandler.ContactHandler;
 import main.java.com.example.server.httpHandler.EducationHandler;
 import main.java.com.example.server.httpHandler.FollowHandler;
 import main.java.com.example.server.httpHandler.LikeHandler;
@@ -30,9 +31,10 @@ public class Server {
             server.createContext("/skills", new SkillHandler());
             server.createContext("users", new UserHandler());
             server.createContext("/connections", new ConnectionHandler());
+            server.createContext("/contacts", new ContactHandler());
             
 
-            server.setExecutor(null); // creates a default executor
+            server.setExecutor(null); 
             server.start();
 
             System.out.println("Server started on port 8000");
