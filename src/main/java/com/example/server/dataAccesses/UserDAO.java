@@ -116,6 +116,30 @@ public class UserDAO {
         return null;
     }
 
+    public User getUser(int id, String password) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE password = ? AND id = ?;");
+        statement.setInt(1, password.hashCode());
+        statement.setInt(2, id);
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setEmail(resultSet.getString("email"));
+            user.setPassword(null);
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setLastname(resultSet.getString("lastname"));
+            user.setAdditionalname(resultSet.getString("additionalname"));
+            user.setHeadtitle(resultSet.getString("headtitle"));
+            user.setCountry(resultSet.getString("country"));
+            user.setCity(resultSet.getString("city"));
+            user.setRequiredJob(resultSet.getString("requiredjob"));
+            return user;
+        }
+
+        return null;
+    }
+
     public User getUser(String email, String password) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE password = ? AND email = ?;");
         statement.setInt(1, password.hashCode());
