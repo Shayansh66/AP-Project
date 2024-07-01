@@ -42,7 +42,7 @@ public class LikeDAO {
         statement.executeUpdate();
     }
 
-    public boolean isLikeing(int likerid, int likedPostid) throws SQLException {
+    public boolean isLiking(int likerid, int likedPostid) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM likes WHERE likerid = ? AND likedpostid = ?;");
         statement.setInt(1, likerid);
         statement.setInt(2, likedPostid);

@@ -19,7 +19,7 @@ public class LikeController {
 
     public void  createLike (int id, int likerid, int likedPostid) throws SQLException {
         Like like = new Like(id, likerid, likedPostid);
-        if (likeDAO.isLikeing(likerid, likedPostid)) {
+        if (likeDAO.isLiking(likerid, likedPostid)) {
             likeDAO.deleteLike(like);
         }
         else {
@@ -29,5 +29,8 @@ public class LikeController {
 
     public void deleteLikes () throws SQLException {
         likeDAO.deleteLikes();
+    }
+    public boolean isLiking(int likerId, int likedPostId) throws SQLException {
+        return likeDAO.isLiking(likerId, likedPostId);
     }
 }

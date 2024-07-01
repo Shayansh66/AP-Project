@@ -1,7 +1,6 @@
 package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.UserController;
-import main.java.com.example.server.utils.ExtractUserAuth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
