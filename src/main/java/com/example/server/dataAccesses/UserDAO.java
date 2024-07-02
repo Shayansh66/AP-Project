@@ -54,13 +54,13 @@ public class UserDAO {
     }
 
     public void deleteUser(User user) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE userid = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE id = ?;");
         statement.setInt(1, user.getId());
         statement.executeUpdate();
     }
     
     public void deleteUser(int id) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE userid = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM users WHERE id = ?;");
         statement.setInt(1, id);
         statement.executeUpdate();
     }
