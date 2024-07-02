@@ -17,7 +17,7 @@ public class UserController {
    private final UserDAO userDAO;
    private final ObjectMapper objectMapper;
    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@(.+)$";
-   private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+   private static final String PASSWORD_PATTERN = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$";
 
    public UserController() throws SQLException {
       userDAO = new UserDAO();
@@ -26,6 +26,9 @@ public class UserController {
 
    public String createUser(int id, String password, String email, String firstName, String lastName, String additionalName,
     String headTitle, String country, String city, String requiredJob) throws SQLException {
+        if (userDAO.getUserByEmail(email) != null) {
+            return "Email already in use";
+        }
         if (!isValidEmail(email)) {
           return "invalid email format";
         }

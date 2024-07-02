@@ -2,7 +2,6 @@ package main.java.com.example.server;
 
 import com.sun.net.httpserver.HttpServer;
 
-
 import main.java.com.example.server.httpHandler.SessionHandler;
 import main.java.com.example.server.httpHandler.SkillHandler;
 import main.java.com.example.server.httpHandler.UserHandler;
@@ -29,10 +28,9 @@ public class Server {
             server.createContext("/likes", new LikeHandler());
             server.createContext("/messages", new MessageHandler());
             server.createContext("/skills", new SkillHandler());
-            server.createContext("users", new UserHandler());
+            server.createContext("/users", new UserHandler());
             server.createContext("/connections", new ConnectionHandler());
             server.createContext("/contacts", new ContactHandler());
-            
 
             server.setExecutor(null); 
             server.start();

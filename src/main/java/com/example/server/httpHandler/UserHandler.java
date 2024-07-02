@@ -112,19 +112,22 @@ public class UserHandler implements HttpHandler {
     }
 
     private void handleDeleteRequest(HttpExchange exchange, UserController userController, String[] splittedPath) throws IOException {
-        if (splittedPath.length != 3) {
-            sendResponse(exchange, 400, "Bad Request");
-            return;
-        }
-
-        String userId = splittedPath[splittedPath.length - 1];
         try {
-            int userIdNum = Integer.parseInt(userId);
-            String response = userController.deleteUser(userIdNum);
-            if (response.equals("no user found with this id")) {
-                sendResponse(exchange, 404, response);
-            } else {
+            if (splittedPath.length == 2) {
+                userController.deleteUsers();
+                String response = "sucsessful";
                 sendResponse(exchange, 200, response);
+            } else if (splittedPath.length == 3) {
+                String userId = splittedPath[splittedPath.length - 1];
+                int userIdNum = Integer.parseInt(userId);
+                String response = userController.deleteUser(userIdNum);
+                if ("no user found with this id".equals(response)) {
+                    sendResponse(exchange, 404, response);
+                } else {
+                    sendResponse(exchange, 200, response);
+                }
+            } else {
+                sendResponse(exchange, 400, "Bad Request");
             }
         } catch (NumberFormatException e) {
             sendResponse(exchange, 400, "Invalid User ID");
