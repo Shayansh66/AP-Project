@@ -40,7 +40,7 @@ public class UserDAO {
     }
 
     public void updateUser(User user) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("UPDATE users SET password = ?, firstname = ?, lastname = ?, additionalname = ?, headtitle = ?, country = ?, city = ?, requiredjob = ? WHERE userid = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("UPDATE users SET password = ?, firstname = ?, lastname = ?, additionalname = ?, headtitle = ?, country = ?, city = ?, requiredjob = ? WHERE id = ?;");
         statement.setInt(1, user.getPassword().hashCode());
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getLastname());
