@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class EducationDAO {
     
@@ -91,7 +92,8 @@ public class EducationDAO {
         return null;
     }
 
-    public Education getEducationByUserIs(int userid) throws SQLException {
+    public ArrayList<Education> getEducationsByUserId(int userid) throws SQLException {
+        ArrayList<Education> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM educations WHERE userid = ?;");
         statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
@@ -107,17 +109,18 @@ public class EducationDAO {
             education.setGrade(resultSet.getFloat("grade"));
             education.setDescription(resultSet.getString("description"));
             education.setNotifyChanges(resultSet.getBoolean("notifychanges"));
-            return education;
+            list.add(education);
         }
 
-        return null;
+        return list;
     }
     
-    public Education getEducations() throws SQLException {
+    public ArrayList<Education> getEducations() throws SQLException {
+        ArrayList<Education> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM educations;");
         ResultSet resultSet = statement.executeQuery();
 
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             Education education = new Education();
             education.setId(resultSet.getInt("id"));
             education.setUserId(resultSet.getInt("userid"));
@@ -128,10 +131,10 @@ public class EducationDAO {
             education.setGrade(resultSet.getFloat("grade"));
             education.setDescription(resultSet.getString("description"));
             education.setNotifyChanges(resultSet.getBoolean("notifychanges"));
-            return education;
+            list.add(education);
         }
 
-        return null;
+        return list;
     }
     
 }
