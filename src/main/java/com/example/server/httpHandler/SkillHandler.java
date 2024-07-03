@@ -1,9 +1,6 @@
 package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.SkillController;
-import main.java.com.example.server.utils.JWTUtils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
@@ -14,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class SkillHandler implements HttpHandler {
 
@@ -85,30 +81,13 @@ public class SkillHandler implements HttpHandler {
             sendResponse(exchange, 200, response);
         } catch (NumberFormatException e) {
             sendResponse(exchange, 400, "Bad Request: Invalid ID");
-        } catch (SQLException | JsonProcessingException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
 
     private void handlePostRequest(HttpExchange exchange, SkillController skillController) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int userId = (int) claims.get("userId");
-
         InputStream requestBody = exchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
         StringBuilder body = new StringBuilder();
@@ -125,7 +104,7 @@ public class SkillHandler implements HttpHandler {
             String response = skillController.createSkill(
                     jsonObject.getInt("id"),
                     jsonObject.getString("explaination"),
-                    userId
+                    jsonObject.getInt("userId")
             );
             if (response.equals("user not found") || response.equals("you can only have 5 skills")) {
                 sendResponse(exchange, 400, response);
@@ -147,22 +126,6 @@ public class SkillHandler implements HttpHandler {
             return;
         }
 
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int userId = (int) claims.get("userId");
         String skillId = splittedPath[splittedPath.length - 1];
         int skillIdNum;
         try {
@@ -188,7 +151,7 @@ public class SkillHandler implements HttpHandler {
             String response = skillController.updateSkill(
                     skillIdNum,
                     jsonObject.getString("explaination"),
-                    userId
+                    jsonObject.getInt("userId")
             );
             if (response.equals("user not found")) {
                 sendResponse(exchange, 404, response);
@@ -210,22 +173,6 @@ public class SkillHandler implements HttpHandler {
             return;
         }
 
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int userId = (int) claims.get("userId");
         String skillId = splittedPath[splittedPath.length - 1];
         int skillIdNum;
         try {
@@ -236,11 +183,6 @@ public class SkillHandler implements HttpHandler {
         }
 
         try {
-            String response = skillController.getSkill(skillIdNum, userId);
-            if (response.equals("user not found")) {
-                sendResponse(exchange, 404, response);
-                return;
-            }
             skillController.deleteSkill(skillIdNum);
             sendResponse(exchange, 200, "Skill deleted successfully");
         } catch (SQLException e) {

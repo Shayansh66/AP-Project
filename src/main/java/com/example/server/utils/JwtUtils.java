@@ -10,29 +10,26 @@ import java.util.Date;
 import java.util.Map;
 
 public class JWTUtils {
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public static String createJWT(Map<String, Object> claims, long ttlMillis) {
+    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    public static String createJWT(Map<String, Object> claims, long expirationMillis) {
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(nowMillis + ttlMillis))
-                .signWith(key)
+                .setExpiration(new Date(nowMillis + expirationMillis))
+                .signWith(SECRET_KEY)
                 .compact();
     }
 
-    public static Map<String, Object> verifyJWT(String jwt) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+    public static Claims decodeJWT(String jwt) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(jwt)
                 .getBody();
-        return claims;
     }
 }
-
-
-

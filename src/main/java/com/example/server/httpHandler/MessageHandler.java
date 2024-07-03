@@ -1,9 +1,5 @@
 package main.java.com.example.server.httpHandler;
-
 import main.java.com.example.server.controllers.MessageController;
-import main.java.com.example.server.utils.JWTUtils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
@@ -14,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class MessageHandler implements HttpHandler {
 
@@ -53,66 +48,40 @@ public class MessageHandler implements HttpHandler {
     }
 
     private void handleGetRequest(HttpExchange exchange, MessageController messageController, String[] splittedPath) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
         try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int userId = (int) claims.get("userId");
-
-        try {
-            String response = "";
-            if (splittedPath.length == 2) {
-                // /messages
-                sendResponse(exchange, 400, "Bad Request: No user ID or message ID provided");
-            } else if (splittedPath[2].equals("sent")) {
-                // /messages/sent
-                response = messageController.getSentMessages(userId);
-            } else if (splittedPath[2].equals("received")) {
-                // /messages/received
-                response = messageController.GetRecievedMessages(userId);
-            } else {
-                // /messages/{id}
-                int messageId = Integer.parseInt(splittedPath[2]);
-                response = messageController.getMessage(messageId);
+            String response;
+            if (splittedPath.length != 4) {
+                sendResponse(exchange, 400, "Bad Request: User ID not provided");
+                return;
             }
+
+            // Assuming splittedPath[2] contains "received" or "sent"
+            String messageType = splittedPath[2];
+            int userId;
+            try {
+                userId = Integer.parseInt(splittedPath[3]);
+            } catch (NumberFormatException e) {
+                sendResponse(exchange, 400, "Bad Request: Invalid User ID");
+                return;
+            }
+
+            if (messageType.equals("received")) {
+                response = messageController.getRecievedMessages(userId);
+            } else if (messageType.equals("sent")) {
+                response = messageController.getSentMessages(userId);
+            } else {
+                sendResponse(exchange, 400, "Bad Request: Invalid Message Type");
+                return;
+            }
+
             sendResponse(exchange, 200, response);
-        } catch (NumberFormatException e) {
-            sendResponse(exchange, 400, "Bad Request: Invalid ID");
-        } catch (SQLException | JsonProcessingException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
 
     private void handlePostRequest(HttpExchange exchange, MessageController messageController) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int senderId = (int) claims.get("userId");
-
         InputStream requestBody = exchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
         StringBuilder body = new StringBuilder();
@@ -127,16 +96,13 @@ public class MessageHandler implements HttpHandler {
 
         try {
             int id = jsonObject.getInt("id");
+            int senderId = jsonObject.getInt("senderId");
             int receiverId = jsonObject.getInt("receiverId");
             String context = jsonObject.getString("context");
             String[] multimedia = jsonObject.has("multiMedia") ? jsonObject.getJSONArray("multiMedia").toList().toArray(new String[0]) : new String[0];
 
             String response = messageController.createMessage(id, senderId, receiverId, context, multimedia);
-            if (response.equals("sender or receiver not found")) {
-                sendResponse(exchange, 400, response);
-            } else {
-                sendResponse(exchange, 201, response);
-            }
+            sendResponse(exchange, 201, response);
         } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
@@ -147,31 +113,14 @@ public class MessageHandler implements HttpHandler {
     }
 
     private void handleDeleteRequest(HttpExchange exchange, MessageController messageController, String[] splittedPath) throws IOException {
-        if (splittedPath.length != 3) {
-            sendResponse(exchange, 400, "Bad Request");
+        if (splittedPath.length != 4) {
+            sendResponse(exchange, 400, "Bad Request: User ID not provided");
             return;
         }
 
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int userId = (int) claims.get("userId");
-        String messageIdStr = splittedPath[2];
         int messageId;
         try {
-            messageId = Integer.parseInt(messageIdStr);
+            messageId = Integer.parseInt(splittedPath[3]);
         } catch (NumberFormatException e) {
             sendResponse(exchange, 400, "Invalid Message ID");
             return;

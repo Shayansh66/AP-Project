@@ -40,6 +40,10 @@ public class UserHandler implements HttpHandler {
                 handlePostRequest(exchange, userController);
                 break;
 
+            case "PUT":
+                handlePutRequest(exchange, userController);
+                break;
+
             case "DELETE":
                 handleDeleteRequest(exchange, userController, splittedPath);
                 break;
@@ -111,11 +115,47 @@ public class UserHandler implements HttpHandler {
         }
     }
 
+    private void handlePutRequest(HttpExchange exchange, UserController userController) throws IOException {
+        InputStream requestBody = exchange.getRequestBody();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            body.append(line);
+        }
+        requestBody.close();
+
+        String updateUser = body.toString();
+        JSONObject jsonObject = new JSONObject(updateUser);
+
+        try {
+            String response = userController.UpdateUser(
+                jsonObject.getInt("id"),
+                jsonObject.getString("password"),
+                jsonObject.getString("email"),
+                jsonObject.getString("firstName"),
+                jsonObject.getString("lastName"),
+                jsonObject.optString("additionalName", ""),
+                jsonObject.optString("headTitle", ""),
+                jsonObject.optString("country", ""),
+                jsonObject.optString("city", ""),
+                jsonObject.optString("requiredJob", "")
+            );
+            sendResponse(exchange, 200, response);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 400, "Bad Request");
+        }
+    }
+
     private void handleDeleteRequest(HttpExchange exchange, UserController userController, String[] splittedPath) throws IOException {
         try {
             if (splittedPath.length == 2) {
                 userController.deleteUsers();
-                String response = "sucsessful";
+                String response = "successful";
                 sendResponse(exchange, 200, response);
             } else if (splittedPath.length == 3) {
                 String userId = splittedPath[splittedPath.length - 1];

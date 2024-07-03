@@ -62,7 +62,7 @@ public class FollowHandler implements HttpHandler {
         String jwtToken = authHeader.substring(7);
         Map<String, Object> claims;
         try {
-            claims = JWTUtils.verifyJWT(jwtToken);
+            claims = JWTUtils.decodeJWT(jwtToken);
         } catch (Exception e) {
             sendResponse(exchange, 401, "Invalid JWT Token");
             return;
@@ -106,7 +106,7 @@ public class FollowHandler implements HttpHandler {
         String jwtToken = authHeader.substring(7);
         Map<String, Object> claims;
         try {
-            claims = JWTUtils.verifyJWT(jwtToken);
+            claims = JWTUtils.decodeJWT(jwtToken);
         } catch (Exception e) {
             sendResponse(exchange, 401, "Invalid JWT Token");
             return;
@@ -157,7 +157,7 @@ public class FollowHandler implements HttpHandler {
         String jwtToken = authHeader.substring(7);
         Map<String, Object> claims;
         try {
-            claims = JWTUtils.verifyJWT(jwtToken);
+            claims = JWTUtils.decodeJWT(jwtToken);
         } catch (Exception e) {
             sendResponse(exchange, 401, "Invalid JWT Token");
             return;

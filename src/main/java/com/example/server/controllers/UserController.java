@@ -37,13 +37,17 @@ public class UserController {
         }
         User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
         userDAO.saveUser(user);
-        
-        if (isUserAlreadyExist(id)) {
-            userDAO.updateUser(user);
-        }
-
-        else userDAO.saveUser(user);
         return "succsesful";
+   }
+
+   public String UpdateUser (int id, String password, String email, String firstName, String lastName, String additionalName,
+   String headTitle, String country, String city, String requiredJob) throws SQLException {
+    if (userDAO.getUserById(id) == null) {
+        return" no user found with this id";
+    }
+        User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
+        userDAO.updateUser(user);
+        return "sucsessful";
    }
 
    public String deleteUser(int id) throws SQLException {
@@ -64,9 +68,19 @@ public class UserController {
    }
    public String getUser (String email, String password) throws SQLException , JsonProcessingException {
     User user = userDAO.getUser(email, password);
+    if (user == null) {
+        return "the email and password is incorrect";
+    }
     return objectMapper.writeValueAsString(user);
    }
 
+   public String getUser (int id, String password) throws SQLException , JsonProcessingException {
+    User user = userDAO.getUser(id, password);
+    if (user == null) {
+        return "the email and password is incorrect";
+    }
+    return objectMapper.writeValueAsString(user);
+   }
   
 
    public String getUserById(int id) throws SQLException, JsonProcessingException {

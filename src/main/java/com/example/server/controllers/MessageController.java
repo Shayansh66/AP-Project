@@ -57,7 +57,7 @@ public class MessageController {
         return objectMapper.writeValueAsString(sentMessages);
     }
 
-    public String GetRecievedMessages (int userid ) throws SQLException ,JsonProcessingException {
+    public String getRecievedMessages (int userid ) throws SQLException ,JsonProcessingException {
         ArrayList <Message> recievedMessages = messageDAO.getRecievedMessages(userid);
         return objectMapper.writeValueAsString(recievedMessages);
     }

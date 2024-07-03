@@ -1,7 +1,7 @@
 package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.UserController;
-import main.java.com.example.server.utils.JWTUtils;
+
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -9,14 +9,12 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SessionHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        UserController userController;
+        UserController userController = null;
         try {
             userController = new UserController();
         } catch (SQLException e) {
@@ -26,42 +24,38 @@ public class SessionHandler implements HttpHandler {
         }
 
         String method = exchange.getRequestMethod();
+
+        switch (method) {
+            case "GET":
+                handleGetMethod(exchange, userController);
+                break;
+
+            default:
+                sendResponse(exchange, 405, "Method Not Allowed");
+                break;
+        }
+    }
+
+    private void handleGetMethod(HttpExchange exchange, UserController userController) throws IOException {
         String path = exchange.getRequestURI().getPath();
-        String response;
+        String response = "";
         String[] splittedPath = path.split("/");
-
-        if (!"GET".equals(method)) {
-            sendResponse(exchange, 405, "Method Not Allowed");
-            return;
-        }
-
-        if (splittedPath.length != 3) {
-            sendResponse(exchange, 400, "Bad Request: Expected format /session/{email}/{password}");
-            return;
-        }
-
-        String email = splittedPath[1];
-        String password = splittedPath[2];
-        String result;
+        String id = splittedPath[2]; 
+        String password = splittedPath[3]; 
+        String result = null;
         try {
-            result = userController.getUser(email, password);
-        } catch (SQLException e) {
+            result = userController.getUser(Integer.parseInt(id), password); 
+        } catch (Exception e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
             return;
         }
 
         if (result == null) {
-            response = "Email or Password is incorrect";
+            response = "ID or Password is incorrect"; // Adjusted message for ID
             sendResponse(exchange, 401, response);
         } else {
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("email", email);
-            String jwtToken = JWTUtils.createJWT(claims, 3600000); // 1 hour expiration
-
-            Headers headers = exchange.getResponseHeaders();
-            headers.add("Authorization", "Bearer " + jwtToken);
-            response = "Welcome " + email + " !!!";
+            response = "Welcome user with ID " + id + " !!!"; // Adjusted message for ID
             sendResponse(exchange, 200, response);
         }
     }

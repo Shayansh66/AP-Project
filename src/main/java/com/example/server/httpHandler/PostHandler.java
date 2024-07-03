@@ -1,9 +1,6 @@
 package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.PostController;
-import main.java.com.example.server.utils.JWTUtils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
@@ -15,7 +12,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Map;
 
 public class PostHandler implements HttpHandler {
 
@@ -68,30 +64,13 @@ public class PostHandler implements HttpHandler {
                 }
             }
             sendResponse(exchange, 200, response);
-        } catch (SQLException | JsonProcessingException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
 
     private void handlePostRequest(HttpExchange exchange, PostController postController) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int writerId = (int) claims.get("userId");
-
         InputStream requestBody = exchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
         StringBuilder body = new StringBuilder();
@@ -107,7 +86,7 @@ public class PostHandler implements HttpHandler {
         try {
             String response = postController.createPost(
                 jsonObject.getInt("id"),
-                writerId,
+                jsonObject.getInt("writerId"),
                 jsonObject.getString("content"),
                 jsonObject.getInt("likenumbers"),
                 jsonObject.getInt("commentnumbers"),
@@ -129,22 +108,6 @@ public class PostHandler implements HttpHandler {
             return;
         }
 
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.verifyJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int writerId = (int) claims.get("userId");
         String postId = splittedPath[splittedPath.length - 1];
         int postIdNum;
         try {
@@ -155,18 +118,14 @@ public class PostHandler implements HttpHandler {
         }
 
         try {
-            String postResponse = postController.getPost(postIdNum);
-            JSONObject postJson = new JSONObject(postResponse);
-            if (postJson.getInt("writterid") != writerId) {
-                sendResponse(exchange, 403, "Forbidden");
-                return;
-            }
-
             postController.deletepost(postIdNum);
             sendResponse(exchange, 200, "Post deleted successfully");
-        } catch (SQLException | JsonProcessingException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+            sendResponse(exchange, 400, "Bad Request");
         }
     }
 

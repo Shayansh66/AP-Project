@@ -141,7 +141,7 @@ public class UserDAO {
     }
 
     public User getUser(String email, String password) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE password = ? AND email = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?;");
         statement.setInt(1, password.hashCode());
         statement.setString(2, email);
         ResultSet resultSet = statement.executeQuery();
