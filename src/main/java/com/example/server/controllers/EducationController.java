@@ -52,7 +52,7 @@ public class EducationController {
     }
 
     public String getEducationByUserId (int userid ) throws SQLException , JsonProcessingException {
-        Education userEducation = educationDAO.getEducationsByUserId(userid);
+        ArrayList <Education> userEducation = educationDAO.getEducationsByUserId(userid);
         return objectMapper.writeValueAsString(userEducation);
     }
 

@@ -5,13 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import main.java.com.example.server.controllers.EducationController;
-import main.java.com.example.server.utils.JWTUtils;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Map;
 
 public class EducationHandler implements HttpHandler {
 
@@ -55,19 +53,14 @@ public class EducationHandler implements HttpHandler {
     private void handleGetRequest(HttpExchange exchange, String[] splittedPath) throws IOException {
         String response;
         try {
-            if (splittedPath.length == 2) {
-                int userId = getUserIdFromHeader(exchange);
-                if (userId == -1) {
-                    sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
-                    return;
-                }
-                response = educationController.getEducationByUserId(userId);
-            } else {
-                int educationId = Integer.parseInt(splittedPath[splittedPath.length - 1]);
-                response = educationController.getEducationById(educationId);
-                if (response == null) {
-                    response = "No education found with this ID";
-                }
+            if (splittedPath.length != 3) {
+                sendResponse(exchange, 400, "Bad Request: Invalid path");
+                return;
+            }
+            int educationId = Integer.parseInt(splittedPath[2]);
+            response = educationController.getEducationById(educationId);
+            if (response == null) {
+                response = "No education found with this ID";
             }
             sendResponse(exchange, 200, response);
         } catch (NumberFormatException e) {
@@ -80,14 +73,9 @@ public class EducationHandler implements HttpHandler {
 
     private void handlePostRequest(HttpExchange exchange) throws IOException {
         try {
-            int userId = getUserIdFromHeader(exchange);
-            if (userId == -1) {
-                sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
-                return;
-            }
-
             JSONObject jsonObject = getJSONObjectFromRequest(exchange);
             int id = jsonObject.getInt("id");
+            int userId = jsonObject.getInt("userId");
             String institutionName = jsonObject.getString("institutionName");
             String studyField = jsonObject.getString("studyField");
             Timestamp startDate = Timestamp.valueOf(jsonObject.getString("startDate"));
@@ -116,15 +104,9 @@ public class EducationHandler implements HttpHandler {
         }
 
         try {
-            int userId = getUserIdFromHeader(exchange);
-            if (userId == -1) {
-                sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
-                return;
-            }
-
             JSONObject jsonObject = getJSONObjectFromRequest(exchange);
-            int educationId = Integer.parseInt(splittedPath[2]);
             int id = jsonObject.getInt("id");
+            int userId = jsonObject.getInt("userId");
             String institutionName = jsonObject.getString("institutionName");
             String studyField = jsonObject.getString("studyField");
             Timestamp startDate = Timestamp.valueOf(jsonObject.getString("startDate"));
@@ -134,8 +116,7 @@ public class EducationHandler implements HttpHandler {
             String description = jsonObject.getString("description");
             boolean notifyChanges = jsonObject.getBoolean("notifyChanges");
 
-            educationController.updateEducation(educationId, userId, institutionName, studyField, startDate, endDate, grade, descriptionOfActivities, description, notifyChanges);
-
+            educationController.updateEducation(id, userId, institutionName, studyField, startDate, endDate, grade, descriptionOfActivities, description, notifyChanges);
             sendResponse(exchange, 200, "Education updated successfully");
         } catch (NumberFormatException e) {
             sendResponse(exchange, 400, "Bad Request: Invalid ID");
@@ -155,12 +136,6 @@ public class EducationHandler implements HttpHandler {
         }
 
         try {
-            int userId = getUserIdFromHeader(exchange);
-            if (userId == -1) {
-                sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
-                return;
-            }
-
             int educationId = Integer.parseInt(splittedPath[2]);
             educationController.deleteEducation(educationId);
 
@@ -174,14 +149,6 @@ public class EducationHandler implements HttpHandler {
             e.printStackTrace();
             sendResponse(exchange, 400, "Bad Request");
         }
-    }
-
-    private int getUserIdFromHeader(HttpExchange exchange) {
-        String userIdStr = exchange.getRequestHeaders().getFirst("userId");
-        if (userIdStr == null) {
-            return -1;
-        }
-        return Integer.parseInt(userIdStr);
     }
 
     private JSONObject getJSONObjectFromRequest(HttpExchange exchange) throws IOException {
