@@ -17,35 +17,71 @@ public class ConnectDAO {
     }
 
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS connections (userid1 INT NOT NULL, userid2 INT NOT NULL);");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS connections (sender INT NOT NULL, reciever INT NOT NULL);");
         statement.executeUpdate();
     }
 
-    public void createConnection(int userid1, int userid2) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO connections (userid1, userid2) VALUES (?, ?);");
-        statement.setInt(1, userid1);
-        statement.setInt(2, userid2);
+    public void requestConnection(int sender, int reciever) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO connections (sender, reciever) VALUES (?, ?);");
+        statement.setInt(2, sender);
+        statement.setInt(2, reciever);
         statement.executeUpdate();
     }
 
-    public void deleteConnection(int userid1, int userid2) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM connections WHERE (userid1 = ? AND userid2 = ?) OR (userid2 = ? AND userid1 = ?);");
-        statement.setInt(1, userid1);
-        statement.setInt(2, userid2);
-        statement.setInt(3, userid1);
-        statement.setInt(4, userid2);
-        statement.executeUpdate();
-    }
-
-    public boolean isConnected(int userid1, int userid2) throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM connections WHERE (userid1 = ? AND userid2 = ?) OR (userid2 = ? AND userid1 = ?)");
+    public boolean isRequestSent(int sender, int reciever) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM connections WHERE (sender = ? AND reciever = ?);");
+        statement.setInt(1, sender);
+        statement.setInt(2, reciever);
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return true;
-        }
-        else {
+        if (resultSet.next() == false) {
             return false;
         }
+        
+        statement = theConnection.prepareStatement("SELECT * FROM connections WHERE (reciever = ? AND sender = ?);");
+        statement.setInt(1, sender);
+        statement.setInt(2, reciever);
+        resultSet = statement.executeQuery();
+        if (resultSet.next() == false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void acceptConnection(int sender, int reciever) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("INSERT INTO connections (sender, reciever) VALUES (?, ?);");
+        statement.setInt(2, sender);
+        statement.setInt(2, reciever);
+        statement.executeUpdate();
+    }
+
+    public void deleteConnection(int user1, int user2) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("DELETE FROM connections WHERE (sender = ? AND reciever = ?) OR (reciever = ? AND sender = ?);");
+        statement.setInt(1, user1);
+        statement.setInt(2, user2);
+        statement.setInt(3, user1);
+        statement.setInt(4, user2);
+        statement.executeUpdate();
+    }
+
+    public boolean isConnected(int user1, int user2) throws SQLException {
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM connections WHERE (sender = ? AND reciever = ?);");
+        statement.setInt(1, user1);
+        statement.setInt(2, user2);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next() == false) {
+            return false;
+        }
+        
+        statement = theConnection.prepareStatement("SELECT * FROM connections WHERE (reciever = ? AND sender = ?);");
+        statement.setInt(1, user1);
+        statement.setInt(2, user2);
+        resultSet = statement.executeQuery();
+        if (resultSet.next() == false) {
+            return false;
+        }
+
+        return true;
     }
 
 }

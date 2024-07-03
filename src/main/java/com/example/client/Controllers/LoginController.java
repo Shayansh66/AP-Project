@@ -8,7 +8,7 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
-// import main.java.com.example.server.controllers.UserController;
+import main.java.com.example.server.controllers.UserController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,6 +41,7 @@ public class LoginController {
         String email = loginEmail.getText();
         String password = loginPassword.getText();
 
+<<<<<<< HEAD
         if (email.length() == 0 || password.length() == 0)
         wrong_pass_label.setText("please enter all the fields");
         else {
@@ -60,6 +61,11 @@ public class LoginController {
                 if (response.equals("Email or Password is incorrect")) {
                     wrong_pass_label.setText("Email or Password is incorrect");
                 }
+=======
+        if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
+
+        }
+>>>>>>> 10d1304c11e60724db118e8707b0780c506c6b64
 
                 else {
                     Linkedin linkedin = new Linkedin();
@@ -96,7 +102,7 @@ public class LoginController {
     }
 
     public void signup(ActionEvent event) {
-        // System.out.println("signup");
+        System.out.println("signup");
     }
     
 }
