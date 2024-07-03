@@ -45,6 +45,12 @@ public class UserController {
     if (userDAO.getUserById(id) == null) {
         return" no user found with this id";
     }
+      if (!isValidEmail(email)) {
+        return "invalid email format";
+      }
+      if (!isValidPassword(password)) {
+        return "invalid password format";
+      }
         User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
         userDAO.updateUser(user);
         return "sucsessful";

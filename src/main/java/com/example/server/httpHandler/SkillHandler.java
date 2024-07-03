@@ -57,28 +57,17 @@ public class SkillHandler implements HttpHandler {
         String response;
         try {
             if (splittedPath.length == 2) {
-                String userIdStr = exchange.getRequestHeaders().getFirst("userId");
-                if (userIdStr == null) {
-                    sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
-                    return;
-                }
-                int userId = Integer.parseInt(userIdStr);
+                // Case 1: Retrieve all skills
+                response = skillController.getSkills();
+                sendResponse(exchange, 200, response);
+            } else if (splittedPath.length == 3 && splittedPath[2].matches("\\d+")) {
+                // Case 2: Retrieve skills for a specific user (last parameter is user ID)
+                int userId = Integer.parseInt(splittedPath[2]);
                 response = skillController.getSkillsByUserId(userId);
+                sendResponse(exchange, 200, response);
             } else {
-                String skillId = splittedPath[splittedPath.length - 1];
-                String userIdStr = exchange.getRequestHeaders().getFirst("userId");
-                if (userIdStr == null) {
-                    sendResponse(exchange, 400, "Bad Request: userId header is required for this request");
-                    return;
-                }
-                int userId = Integer.parseInt(userIdStr);
-                int skillIdNum = Integer.parseInt(skillId);
-                response = skillController.getSkill(skillIdNum, userId);
-                if (response == null) {
-                    response = "No skill found with this ID";
-                }
+                sendResponse(exchange, 400, "Bad Request: Invalid URL path");
             }
-            sendResponse(exchange, 200, response);
         } catch (NumberFormatException e) {
             sendResponse(exchange, 400, "Bad Request: Invalid ID");
         } catch (SQLException e) {
@@ -86,6 +75,8 @@ public class SkillHandler implements HttpHandler {
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
+    
+    
 
     private void handlePostRequest(HttpExchange exchange, SkillController skillController) throws IOException {
         InputStream requestBody = exchange.getRequestBody();

@@ -36,7 +36,8 @@ public class SkillController {
         if (!usercController.isUserAlreadyExist(userid)) {
             return "user not found";
         }
-        skillDAO.updateSkill(id, explaination, userid);
+        Skill skill = new Skill(id, explaination, userid);
+        skillDAO.updateSkill(skill);
         return "sucsessful";
     }
 
@@ -45,7 +46,7 @@ public class SkillController {
             return "user not found";
         }
         
-        String skill = skillDAO.getSkill(id);
+        Skill skill = skillDAO.getSkill(id);
         return objectMapper.writeValueAsString(skill);
     }
 
@@ -55,8 +56,14 @@ public class SkillController {
         if (!usercController.isUserAlreadyExist(userId)) {
             return "user not found";
         }
-         ArrayList <String> UserSkills = skillDAO.getSkillsByuserid(userId);
+         ArrayList <Skill> UserSkills = skillDAO.getSkillsByuserid(userId);
         return objectMapper.writeValueAsString(UserSkills);
+    }
+
+    public String getSkills () throws SQLException , JsonProcessingException {
+        ArrayList <Skill> skills = skillDAO.getSkills();
+        return objectMapper.writeValueAsString(skills);
+
     }
     public void deleteSkill (int id) throws SQLException {
         skillDAO.deleteSkill(id);

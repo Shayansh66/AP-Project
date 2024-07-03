@@ -1,6 +1,6 @@
 package main.java.com.example.server.dataAccesses;
 
-import main.java.com.example.server.model.Skill;
+import main.java.com.example.server.models.Skill;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,16 +27,16 @@ public class SkillDAO {
 
     public void saveSkill(Skill skill) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO skills (explaination, userid) VALUES (?, ?);");
-        statement.setString(1, skill.getExplaination);
-        statement.setInt(2, skill.getUserid);
+        statement.setString(1, skill.getExplaination());
+        statement.setInt(2, skill.getUserid());
         statement.executeUpdate();
     }
 
     public void updateSkill(Skill skill) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("UPDATE skills SET explaination = ?, userid = ? WHERE id = ?;");
-        statement.setString(1, skill.getExplaination);
-        statement.setInt(2, skill.getUserid);
-        statement.setInt(3, skill.getId);
+        statement.setString(1, skill.getExplaination());
+        statement.setInt(2, skill.getUserid());
+        statement.setInt(3, skill.getId());
         statement.executeUpdate();
     }
 
@@ -67,7 +67,7 @@ public class SkillDAO {
     }
 
     public ArrayList<Skill> getSkillsByuserid(int userid) throws SQLException {
-        ArrayList<String> list = new ArrayList< >();
+        ArrayList<Skill> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills WHERE userid = ?;");
         statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
@@ -83,7 +83,7 @@ public class SkillDAO {
     }
 
     public ArrayList<Skill> getSkills() throws SQLException {
-        ArrayList<String> list = new ArrayList< >();
+        ArrayList<Skill> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills;");
         ResultSet resultSet = statement.executeQuery();
 
