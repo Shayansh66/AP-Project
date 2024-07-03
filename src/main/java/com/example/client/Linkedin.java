@@ -22,7 +22,7 @@ public class Linkedin extends Application {
             Scene scene = new Scene(root);
             stage.setScene(scene);
 
-            // stage.setMaximized(true);
+            stage.setTitle("Linkedin");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

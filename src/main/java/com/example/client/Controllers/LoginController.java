@@ -1,6 +1,6 @@
 package main.java.com.example.client.Controllers;
 
-// import main.java.com.example.server.controllers.UserController;
+import main.java.com.example.server.controllers.UserController;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,18 +24,18 @@ public class LoginController {
     private Hyperlink signupHyperlink;
 
     public void loginButtonClick(ActionEvent event) {
-        // String email = loginEmail.getText();
-        // String password = loginPassword.getText();
+        String email = loginEmail.getText();
+        String password = loginPassword.getText();
 
-        // if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
+        if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
 
-        // }
+        }
 
 
     }
 
     public void signup(ActionEvent event) {
-        // System.out.println("signup");
+        System.out.println("signup");
     }
     
 }
