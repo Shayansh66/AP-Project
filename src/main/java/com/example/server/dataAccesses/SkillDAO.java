@@ -1,5 +1,7 @@
 package main.java.com.example.server.dataAccesses;
 
+import main.java.com.example.server.model.Skill;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,18 +25,18 @@ public class SkillDAO {
         statement.executeUpdate();
     }
 
-    public void saveSkill(String explaination, int userid) throws SQLException {
+    public void saveSkill(Skill skill) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO skills (explaination, userid) VALUES (?, ?);");
-        statement.setString(1, explaination);
-        statement.setInt(2, userid);
+        statement.setString(1, skill.getExplaination);
+        statement.setInt(2, skill.getUserid);
         statement.executeUpdate();
     }
 
-    public void updateSkill(int id, String explaination, int userid) throws SQLException {
+    public void updateSkill(Skill skill) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("UPDATE skills SET explaination = ?, userid = ? WHERE id = ?;");
-        statement.setString(1, explaination);
-        statement.setInt(2, userid);
-        statement.setInt(3, id);
+        statement.setString(1, skill.getExplaination);
+        statement.setInt(2, skill.getUserid);
+        statement.setInt(3, skill.getId);
         statement.executeUpdate();
     }
 
@@ -49,36 +51,48 @@ public class SkillDAO {
         statement.executeUpdate();
     }
 
-    public String getSkill(int id) throws SQLException {
+    public Skill getSkill(int id) throws SQLException {
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills WHERE id = ?;");
         statement.setInt(1, id);
         ResultSet resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
-            return resultSet.getString("explaination");
+            Skill skill = new Skill();
+            skill.setId(resultSet.getInt("id"));
+            skill.setExplaination(resultSet.getString("explaination"));
+            skill.setUserid(resultSet.getInt("userid"));
+            return skill;
         }
         return null;
     }
 
-    public ArrayList<String> getSkillsByuserid(int userid) throws SQLException {
+    public ArrayList<Skill> getSkillsByuserid(int userid) throws SQLException {
         ArrayList<String> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills WHERE userid = ?;");
         statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            list.add(resultSet.getString("explaination"));
+            Skill skill = new Skill();
+            skill.setId(resultSet.getInt("id"));
+            skill.setExplaination(resultSet.getString("explaination"));
+            skill.setUserid(resultSet.getInt("userid"));
+            list.add(skill);
         }
         return list;
     }
 
-    public ArrayList<String> getSkills() throws SQLException {
+    public ArrayList<Skill> getSkills() throws SQLException {
         ArrayList<String> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM skills;");
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            list.add(resultSet.getString("explaination"));
+            Skill skill = new Skill();
+            skill.setId(resultSet.getInt("id"));
+            skill.setExplaination(resultSet.getString("explaination"));
+            skill.setUserid(resultSet.getInt("userid"));
+            list.add(skill);
         }
         return list;
     }
