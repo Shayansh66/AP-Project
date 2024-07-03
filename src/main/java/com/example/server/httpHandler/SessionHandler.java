@@ -2,7 +2,6 @@ package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.UserController;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -40,11 +39,15 @@ public class SessionHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
         String response = "";
         String[] splittedPath = path.split("/");
-        String id = splittedPath[2]; 
+        if (splittedPath.length != 4) { // Ensure there are exactly 4 parts in the URL
+            sendResponse(exchange, 400, "Bad Request: URL should be /session/{email}/{password}");
+            return;
+        }
+        String email = splittedPath[2]; 
         String password = splittedPath[3]; 
         String result = null;
         try {
-            result = userController.getUser(Integer.parseInt(id), password); 
+            result = userController.getUser(email, password); // Adjusted to use email
         } catch (Exception e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
@@ -52,10 +55,10 @@ public class SessionHandler implements HttpHandler {
         }
 
         if (result == null) {
-            response = "ID or Password is incorrect"; // Adjusted message for ID
+            response = "Email or Password is incorrect"; // Adjusted message for email
             sendResponse(exchange, 401, response);
         } else {
-            response = "Welcome user with ID " + id + " !!!"; // Adjusted message for ID
+            response = "Welcome user with Email " + email + " !!!"; // Adjusted message for email
             sendResponse(exchange, 200, response);
         }
     }

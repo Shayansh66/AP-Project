@@ -58,22 +58,27 @@ public class UserHandler implements HttpHandler {
         String response;
         try {
             if (splittedPath.length == 2) {
+                // Fetch all users
                 response = userController.getUsers();
-            } else {
-                String userId = splittedPath[splittedPath.length - 1];
-                try {
-                    int userIdNum = Integer.parseInt(userId);
-                    response = userController.getUserById(userIdNum);
-                } catch (NumberFormatException e) {
-                    response = userController.getUserByEmail(userId);
+            } else if (splittedPath.length == 3) {
+                // Fetch a user by email
+                String email = splittedPath[2];
+                response = userController.getUserByEmail(email);
+                if (response == null) {
+                    sendResponse(exchange, 404, "User not found");
+                    return;
                 }
+            } else {
+                sendResponse(exchange, 400, "Bad Request: Invalid URL path");
+                return;
             }
             sendResponse(exchange, 200, response);
-        } catch (SQLException | JsonProcessingException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
+    
 
     private void handlePostRequest(HttpExchange exchange, UserController userController) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
