@@ -45,7 +45,7 @@ public class UserDAO {
         statement.setString(2, user.getFirstName());
         statement.setString(3, user.getLastname());
         statement.setString(4, user.getAdditionalname());
-        statement.setString(5, user.getAdditionalname());
+        statement.setString(5, user.getHeadtitle());
         statement.setString(6, user.getCountry());
         statement.setString(7, user.getCity());
         statement.setString(8, user.getRequiredJob());
