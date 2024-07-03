@@ -14,16 +14,14 @@ public class Follow {
     @JsonProperty ("followingid")
     private int followingid;
 
-    @JsonProperty ("isConnection")
-    private boolean isConnection;
 
     
     // constructors
-    public Follow(int id, int followerid, int followingid, boolean isConnection) {
+    public Follow(int id, int followerid, int followingid) {
         this.id = id;
         this.followerid = followerid;
         this.followingid = followingid;
-        this.isConnection = isConnection;
+
     }
 
     public Follow() {
@@ -55,12 +53,10 @@ public class Follow {
         this.followingid = followingid;
     }
 
-    public boolean isConnection() {
-        return isConnection;
+    @Override
+    public String toString() {
+        return "Follow [id=" + id + ", followerid=" + followerid + ", followingid=" + followingid + "]";
     }
-
-    public void setConnection(boolean isConnection) {
-        this.isConnection = isConnection;
-    }
+     
 
 }

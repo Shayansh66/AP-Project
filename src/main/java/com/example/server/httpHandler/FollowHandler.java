@@ -1,49 +1,41 @@
 package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.FollowController;
-import main.java.com.example.server.utils.JWTUtils;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.json.JSONObject;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class FollowHandler implements HttpHandler {
 
+    private final FollowController followController;
+
+    public FollowHandler() throws SQLException {
+        followController = new FollowController();
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        FollowController followController;
-        try {
-            followController = new FollowController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            sendResponse(exchange, 500, "Internal Server Error");
-            return;
-        }
-
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
         String[] splittedPath = path.split("/");
 
         switch (method) {
             case "GET":
-                handleGetRequest(exchange, followController, splittedPath);
+                handleGetRequest(exchange, splittedPath);
                 break;
 
             case "POST":
-                handlePostRequest(exchange, followController);
+                handlePostRequest(exchange);
                 break;
 
             case "DELETE":
-                handleDeleteRequest(exchange, followController, splittedPath);
+                handleDeleteRequest(exchange, splittedPath);
                 break;
 
             default:
@@ -52,68 +44,31 @@ public class FollowHandler implements HttpHandler {
         }
     }
 
-    private void handleGetRequest(HttpExchange exchange, FollowController followController, String[] splittedPath) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.decodeJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
+    private void handleGetRequest(HttpExchange exchange, String[] splittedPath) throws IOException {
         try {
             String response;
-            if (splittedPath.length == 2) {
+            if (splittedPath.length == 3 && splittedPath[2].equals("follows")) {
                 response = followController.getFollows();
-            } else if (splittedPath.length == 3) {
-                if (splittedPath[2].equals("followers")) {
-                    int followingId = (int) claims.get("userId");
-                    response = followController.getFollowers(followingId);
-                } else if (splittedPath[2].equals("followings")) {
-                    int followerId = (int) claims.get("userId");
-                    response = followController.getFollowings(followerId);
-                } else {
-                    int followId = Integer.parseInt(splittedPath[2]);
-                    response = followController.getFollow(followId);
-                }
+            } else if (splittedPath.length == 4 && splittedPath[2].equals("followers")) {
+                int userId = Integer.parseInt(splittedPath[3]);
+                response = followController.getFollowers(userId);
+            } else if (splittedPath.length == 4 && splittedPath[2].equals("followings")) {
+                int userId = Integer.parseInt(splittedPath[3]);
+                response = followController.getFollowings(userId);
             } else {
-                sendResponse(exchange, 400, "Bad Request");
+                sendResponse(exchange, 404, "Not Found");
                 return;
             }
             sendResponse(exchange, 200, response);
         } catch (NumberFormatException e) {
             sendResponse(exchange, 400, "Bad Request: Invalid ID");
-        } catch (SQLException | JsonProcessingException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         }
     }
 
-    private void handlePostRequest(HttpExchange exchange, FollowController followController) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.decodeJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int followerId = (int) claims.get("userId");
-
+    private void handlePostRequest(HttpExchange exchange) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
         StringBuilder body = new StringBuilder();
@@ -128,10 +83,10 @@ public class FollowHandler implements HttpHandler {
 
         try {
             int id = jsonObject.getInt("id");
+            int followerId = jsonObject.getInt("followerId");
             int followingId = jsonObject.getInt("followingId");
-            boolean isConnection = jsonObject.getBoolean("isConnection");
 
-            followController.createFollow(id, followerId, followingId, isConnection);
+            followController.createFollow(id, followerId, followingId);
             sendResponse(exchange, 201, "Follow created successfully");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -142,24 +97,9 @@ public class FollowHandler implements HttpHandler {
         }
     }
 
-    private void handleDeleteRequest(HttpExchange exchange, FollowController followController, String[] splittedPath) throws IOException {
+    private void handleDeleteRequest(HttpExchange exchange, String[] splittedPath) throws IOException {
         if (splittedPath.length != 3) {
             sendResponse(exchange, 400, "Bad Request");
-            return;
-        }
-
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.decodeJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
             return;
         }
 

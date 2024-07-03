@@ -19,8 +19,8 @@ public class FollowController {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void createFollow(int id, int followerId, int followingId, boolean isConnection) throws SQLException {
-        Follow follow = new Follow(id, followerId, followingId, isConnection);
+    public void createFollow(int id, int followerId, int followingId) throws SQLException {
+        Follow follow = new Follow(id, followerId, followingId);
         followDAO.saveFollow(follow);
     }
 

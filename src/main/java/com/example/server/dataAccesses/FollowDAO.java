@@ -28,7 +28,7 @@ public class FollowDAO {
         PreparedStatement statement = theConnection.prepareStatement("INSERT INTO follows (followerid, followingid, isconnection) VALUES (?, ?, ?);");
         statement.setInt(1, follow.getFollowerid());
         statement.setInt(2, follow.getFollowingid());
-        statement.setBoolean(3, follow.isConnection());
+
         statement.executeUpdate();
     }
 
@@ -59,7 +59,6 @@ public class FollowDAO {
             follow.setId(resultSet.getInt("id"));
             follow.setFollowerid(resultSet.getInt("followerid"));
             follow.setFollowingid(resultSet.getInt("followingid"));
-            follow.setConnection(resultSet.getBoolean("isconnection"));
             return follow;
         }
 
@@ -77,7 +76,6 @@ public class FollowDAO {
             follow.setId(resultSet.getInt("id"));
             follow.setFollowerid(resultSet.getInt("followerid"));
             follow.setFollowingid(resultSet.getInt("followingid"));
-            follow.setConnection(resultSet.getBoolean("isconnection"));
             list.add(follow);
         }
 
@@ -95,7 +93,6 @@ public class FollowDAO {
             follow.setId(resultSet.getInt("id"));
             follow.setFollowerid(resultSet.getInt("followerid"));
             follow.setFollowingid(resultSet.getInt("followingid"));
-            follow.setConnection(resultSet.getBoolean("isconnection"));
             list.add(follow);
         }
 
@@ -112,7 +109,6 @@ public class FollowDAO {
             follow.setId(resultSet.getInt("id"));
             follow.setFollowerid(resultSet.getInt("followerid"));
             follow.setFollowingid(resultSet.getInt("followingid"));
-            follow.setConnection(resultSet.getBoolean("isconnection"));
             list.add(follow);
         }
 
