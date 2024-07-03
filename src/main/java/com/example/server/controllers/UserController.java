@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.management.RuntimeErrorException;
 
 public class UserController {
 
@@ -111,13 +110,13 @@ public class UserController {
 
    
 
-   public boolean isValidEmail(String email) {
+   public static boolean isValidEmail(String email) {
       Pattern pattern = Pattern.compile(EMAIL_PATTERN);
       Matcher matcher = pattern.matcher(email);
       return matcher.matches();
    }
 
-   public boolean isValidPassword(String password) {
+   public static boolean isValidPassword(String password) {
       Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
       Matcher matcher = pattern.matcher(password);
       return matcher.matches();
