@@ -19,7 +19,7 @@ public class FollowDAO {
     }
 
     public void createTable() throws SQLException {
-        PreparedStatement statement = theConnection.prepareStatement("CRATE TABLE IF NOT EXISTS follows (id INT PRIMARY KEY AUTO_INCREMENT, followerid INT NOT NULL, followingid INT NOT NULL, isconnection BOOLEAN DEFAULT FALSE);");
+        PreparedStatement statement = theConnection.prepareStatement("CREATE TABLE IF NOT EXISTS follows (id INT PRIMARY KEY AUTO_INCREMENT, followerid INT NOT NULL, followingid INT NOT NULL, isconnection BOOLEAN DEFAULT FALSE);");
         statement.executeUpdate();
         statement = theConnection.prepareStatement("ALTER TABLE follows AUTO_INCREMENT = 25000000;");
     }
