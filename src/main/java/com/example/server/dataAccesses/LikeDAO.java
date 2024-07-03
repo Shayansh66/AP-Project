@@ -92,7 +92,7 @@ public class LikeDAO {
     
     public ArrayList<Like> getLikesByPostid(int postid) throws SQLException {
         ArrayList<Like> list = new ArrayList< >();
-        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM likes WHERE likerid = ?;");
+        PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM likes WHERE postid = ?;");
         statement.setInt(1, postid);
         ResultSet resultSet = statement.executeQuery();
 

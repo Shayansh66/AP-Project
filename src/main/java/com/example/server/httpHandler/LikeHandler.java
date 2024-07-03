@@ -1,9 +1,8 @@
 package main.java.com.example.server.httpHandler;
 
 import main.java.com.example.server.controllers.LikeController;
-import main.java.com.example.server.utils.JWTUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.json.JSONObject;
@@ -14,33 +13,39 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
-import java.util.Map;
 
 public class LikeHandler implements HttpHandler {
 
+    private final LikeController likeController;
+
+    public LikeHandler() throws SQLException {
+        likeController = new LikeController();
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        LikeController likeController = null;
-        try {
-            likeController = new LikeController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            sendResponse(exchange, 500, "Internal Server Error");
-            return;
-        }
-
         String method = exchange.getRequestMethod();
         String path = exchange.getRequestURI().getPath();
-        String response = "";
         String[] splittedPath = path.split("/");
 
         switch (method) {
-            case "POST":
-                handlePostRequest(exchange, likeController);
+            case "GET":
+                if (splittedPath.length < 2) {
+                    sendResponse(exchange, 400, "Bad Request: Missing path parameter");
+                    return;
+                }
+                String type = splittedPath[1];
+                if ("likers".equals(type) && splittedPath.length == 3) {
+                    handleGetLikers(exchange, splittedPath[2]);
+                } else if ("likings".equals(type) && splittedPath.length == 3) {
+                    handleGetLikings(exchange, splittedPath[2]);
+                } else {
+                    sendResponse(exchange, 404, "Not Found");
+                }
                 break;
 
-            case "DELETE":
-                handleDeleteRequest(exchange, likeController, splittedPath);
+            case "POST":
+                handlePostRequest(exchange);
                 break;
 
             default:
@@ -49,24 +54,43 @@ public class LikeHandler implements HttpHandler {
         }
     }
 
-    private void handlePostRequest(HttpExchange exchange, LikeController likeController) throws IOException {
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
+    private void handleGetLikers(HttpExchange exchange, String postIdStr) throws IOException {
+        int postId;
         try {
-            claims = JWTUtils.decodeJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
+            postId = Integer.parseInt(postIdStr);
+        } catch (NumberFormatException e) {
+            sendResponse(exchange, 400, "Bad Request: Invalid Post ID");
             return;
         }
 
-        int userId = (int) claims.get("userId");
+        try {
+            String response = likeController.getlikesByPostId(postId);
+            sendResponse(exchange, 200, response);
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        }
+    }
 
+    private void handleGetLikings(HttpExchange exchange, String userIdStr) throws IOException {
+        int userId;
+        try {
+            userId = Integer.parseInt(userIdStr);
+        } catch (NumberFormatException e) {
+            sendResponse(exchange, 400, "Bad Request: Invalid User ID");
+            return;
+        }
+
+        try {
+            String response = likeController.getlikesByUserId(userId);
+            sendResponse(exchange, 200, response);
+        } catch (SQLException | JsonProcessingException e) {
+            e.printStackTrace();
+            sendResponse(exchange, 500, "Internal Server Error");
+        }
+    }
+
+    private void handlePostRequest(HttpExchange exchange) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
         BufferedReader reader = new BufferedReader(new InputStreamReader(requestBody));
         StringBuilder body = new StringBuilder();
@@ -82,52 +106,16 @@ public class LikeHandler implements HttpHandler {
         try {
             int id = jsonObject.getInt("id");
             int likedPostId = jsonObject.getInt("likedPostId");
+            int likerId = jsonObject.getInt("likerId");
 
-            if (likeController.isLiking(userId, likedPostId)) {
-                likeController.createLike(id, userId, likedPostId);
-                sendResponse(exchange, 200, "Like toggled successfully");
-            } else {
-                likeController.createLike(id, userId, likedPostId);
-                sendResponse(exchange, 201, "Like created successfully");
-            }
+            String response = likeController.createLike(id, likerId, likedPostId);
+            sendResponse(exchange, 200, response);
         } catch (SQLException e) {
             e.printStackTrace();
             sendResponse(exchange, 500, "Internal Server Error");
         } catch (Exception e) {
             e.printStackTrace();
             sendResponse(exchange, 400, "Bad Request");
-        }
-    }
-
-    private void handleDeleteRequest(HttpExchange exchange, LikeController likeController, String[] splittedPath) throws IOException {
-        if (splittedPath.length != 3) {
-            sendResponse(exchange, 400, "Bad Request");
-            return;
-        }
-
-        String authHeader = exchange.getRequestHeaders().getFirst("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            sendResponse(exchange, 401, "Unauthorized");
-            return;
-        }
-
-        String jwtToken = authHeader.substring(7);
-        Map<String, Object> claims;
-        try {
-            claims = JWTUtils.decodeJWT(jwtToken);
-        } catch (Exception e) {
-            sendResponse(exchange, 401, "Invalid JWT Token");
-            return;
-        }
-
-        int userId = (int) claims.get("userId");
-
-        try {
-            likeController.deleteLikes();
-            sendResponse(exchange, 200, "All likes deleted successfully");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            sendResponse(exchange, 500, "Internal Server Error");
         }
     }
 
