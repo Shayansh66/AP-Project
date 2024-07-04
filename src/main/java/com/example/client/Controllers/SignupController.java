@@ -86,9 +86,15 @@ public class SignupController {
             outputStream.write(bodyRequest.getBytes());
             outputStream.flush();
             outputStream.close();
+            int responseCode = connection.getResponseCode(); 
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                
+            }
+            else {
+                
+            }
 
 
-            
         }
 
 
