@@ -65,10 +65,20 @@ public class SignupController {
 
         
         if (UserController.isValidEmail(email) == false) {
-            wrongInputLabel.setText("");
+            wrongInputLabel.setText("please enter correct email");
+            return;
+        }
+        else if (firstName.length() == 0 || lastName.length() == 0) {
+            wrongInputLabel.setText("please fill all sections");
+            return;
+        }
+        else if (UserController.isValidPassword(password) == false) {
+            wrongInputLabel.setText("password must include at least 8 character\nand a letter andd number");
+            return;
         }
         else if (password.equals(repeatPassword) == false) {
             wrongInputLabel.setText("password and its repeat are not same!");
+            return;
         }
         else {
 
