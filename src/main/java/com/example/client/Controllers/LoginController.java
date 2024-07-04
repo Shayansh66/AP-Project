@@ -9,14 +9,21 @@ import java.net.URL;
 
 import main.java.com.example.server.controllers.UserController;
 
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import main.java.com.example.client.Linkedin;
 import main.java.com.example.server.controllers.UserController;
+import javafx.stage.Stage;
 
 
 public class LoginController {
@@ -52,7 +59,16 @@ public class LoginController {
     }
 
     public void signup(ActionEvent event) {
-        System.out.println("signup");
+        // try {
+        //     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        //     Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Signup.fxml"));
+        //     Scene scene = new Scene(root);
+
+        //     stage.setScene(scene);
+        //     stage.show();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
     }
     
 }
