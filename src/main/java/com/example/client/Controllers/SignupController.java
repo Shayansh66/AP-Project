@@ -1,8 +1,14 @@
 package main.java.com.example.client.Controllers;
 
-import main.java.com.example.server.controllers.UserController;;
+import main.java.com.example.server.controllers.UserController;
+import main.java.com.example.server.models.User;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +50,7 @@ public class SignupController {
     private Label wrongInputLabel;
 
     
-    public void signupButtonClick(ActionEvent event) {
+    public void signupButtonClick(ActionEvent event) throws IOException {
         String email = signupEmail.getText();
         String firstName = signupFirstName.getText();
         String lastName = signupLastName.getText();
@@ -59,12 +65,33 @@ public class SignupController {
             wrongInputLabel.setText("password and its repeat are not same!");
         }
         else {
+            User user = new User();
+            user.setEmail(email);
+            user.setFirstName(firstName);
+            user.setLastname(lastName);
+            user.setPassword(repeatPassword);
 
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String bodyRequest;
+            bodyRequest = objectMapper.writeValueAsString(user);
+
+            URL url;
+            url = new URL("http://localhost:8080/users");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+            OutputStream outputStream = connection.getOutputStream();
+            outputStream.write(bodyRequest.getBytes());
+            outputStream.flush();
+            outputStream.close();
+
+
+            
         }
 
-        /*
-         *              correct form of email, Fname, Lname and password
-         */
+
 
     }
 

@@ -77,8 +77,13 @@ public class LoginController {
                 // TODO: handle exception
             }
         }
+        finally {
+            
+        }
+
 
     }
+}
 
     public void signup(ActionEvent event) {
         try {
@@ -91,6 +96,8 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
     
+}
+    
+
 }
