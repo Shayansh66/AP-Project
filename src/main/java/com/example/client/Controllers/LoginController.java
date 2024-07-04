@@ -49,12 +49,34 @@ public class LoginController {
 
         if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
             wrongInputLabel.setText("please enter correct format!");
-        }
+        }   
+        else {
+            try {
+                try {
+                    URL url = new URL("http://localhost:8080/sessions/" + Username_textfield.getText() + "/" + Password_textfeild.getText());
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("GET");
+                    int responseCode = con.getResponseCode();
+                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    String inputline;
+                    StringBuffer response1 = new StringBuffer();
+                    while ((inputline = in.readLine()) != null) {
+                        response1.append(inputline);
+                    }
+                    in.close();
+                    String response = response1.toString();
 
-        /*
-                    ----------------------------------------------------------------------------------
-                    Here is where a login request must be created to server with 'email' and 'password'
-         */
+                    if (response.equals("Email or Password is incorrect")) {
+                        wrongInputLabel.setText("Email or Password is incorrect");
+                    }
+                    else{
+                        // this will be implemented after the completion of the linkedin.java
+                        
+                    }
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        }
 
     }
 
