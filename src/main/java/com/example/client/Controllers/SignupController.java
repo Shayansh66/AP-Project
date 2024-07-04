@@ -3,8 +3,12 @@ package main.java.com.example.client.Controllers;
 import main.java.com.example.server.controllers.UserController;
 import main.java.com.example.server.models.User;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -22,6 +26,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class SignupController {
 
@@ -65,41 +71,84 @@ public class SignupController {
             wrongInputLabel.setText("password and its repeat are not same!");
         }
         else {
-            User user = new User();
-            user.setEmail(email);
-            user.setFirstName(firstName);
-            user.setLastname(lastName);
-            user.setPassword(repeatPassword);
 
+            try {
+                String response = new String();
+                {
+                URL url = new  URL("http://localhost:8080/users");
+                HttpURLConnection connection =  (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                int responsecode = connection.getResponseCode();
+                BufferedReader in = new  BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputline;
+                StringBuffer response1 = new StringBuffer();
+                while ((inputline = in.readLine()) != null) {
+                    response1.append(inputline);
+                }
+                in.close();
+                 response = response1.toString();
+                }
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            String bodyRequest;
-            bodyRequest = objectMapper.writeValueAsString(user);
-
-            URL url;
-            url = new URL("http://localhost:8080/users");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
-            OutputStream outputStream = connection.getOutputStream();
-            outputStream.write(bodyRequest.getBytes());
-            outputStream.flush();
-            outputStream.close();
-            int responseCode = connection.getResponseCode(); 
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                
+                JSONArray jsonObject = new JSONArray();
+                String[] users = toStringArray(jsonObject);
+                boolean Email_existed = false;
+                for (String t: users) {
+                    JSONObject obj = new JSONObject(t);
+                    User user = new User();
+                    user.setEmail(email);
+                    if (user.getEmail().equals(email) && email.length() != 0)
+                        Email_existed = true;
+            }
+            if (Email_existed) {
+                wrongInputLabel.setText("email is already used");
             }
             else {
-                
+                User user = new User();
+                user.setEmail(email);
+                user.setFirstName(firstName);
+                user.setLastname(lastName);
+                user.setPassword(repeatPassword);
+                URL url = new URL("http://localhost:8080/users");
+                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        String json = objectMapper.writeValueAsString(user);
+
+                        byte[] postDataBytes = json.getBytes();
+                        
+                        connection.setRequestMethod("POST");
+                        connection.setDoOutput(true);
+                        connection.getOutputStream().write(postDataBytes);
+
+                        Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        StringBuilder sb = new StringBuilder();
+
+                        for (int c; (c = in.read()) > 0; )
+                        sb.append((char) c);
+                        response = sb.toString();
+
+                        if (response.equals("sucsessful")) {
+                            // sucsessful signup
+                        }
+                        else {
+                        // failed signip
+                        }
+
             }
+        }
+            catch (ConnectException e) {
+                wrongInputLabel.setText("connection failed");
+           }
+    }
+          
 
 
         }
 
 
 
-    }
+    
 
     public void login(ActionEvent event) {
         try {
@@ -113,5 +162,15 @@ public class SignupController {
             e.printStackTrace();
         }
     }
-    
+    public static String[] toStringArray(JSONArray array) {
+        if(array == null)
+            return new String[0];
+
+        String[] arr = new String[array.length()];
+        for(int i = 0; i < arr.length; i++)
+            arr[i] = array.optString(i);
+        return arr;
+    }
 }
+
+
