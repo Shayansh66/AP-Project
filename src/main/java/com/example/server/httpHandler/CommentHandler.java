@@ -1,6 +1,5 @@
 package main.java.com.example.server.httpHandler;
 
-
 import main.java.com.example.server.controllers.CommentController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,10 +44,6 @@ public class CommentHandler implements HttpHandler {
 
             case "PUT":
                 handlePutRequest(exchange, commentController, splittedPath);
-                break;
-
-            case "DELETE":
-                handleDeleteRequest(exchange, commentController, splittedPath);
                 break;
 
             default:
@@ -169,34 +164,6 @@ public class CommentHandler implements HttpHandler {
         }
     }
 
-    private void handleDeleteRequest(HttpExchange exchange, CommentController commentController, String[] splittedPath) throws IOException {
-        if (splittedPath.length != 3) {
-            sendResponse(exchange, 400, "Bad Request");
-            return;
-        }
-
-        String commentId = splittedPath[splittedPath.length - 1];
-        int commentIdNum;
-        try {
-            commentIdNum = Integer.parseInt(commentId);
-        } catch (NumberFormatException e) {
-            sendResponse(exchange, 400, "Invalid Comment ID");
-            return;
-        }
-
-        try {
-            // Implement the delete functionality in CommentController and call it here
-            // commentController.deleteComment(commentIdNum);
-            sendResponse(exchange, 200, "Comment deleted successfully");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            sendResponse(exchange, 500, "Internal Server Error");
-        } catch (Exception e) {
-            e.printStackTrace();
-            sendResponse(exchange, 400, "Bad Request");
-        }
-    }
-
     private void sendResponse(HttpExchange exchange, int statusCode, String response) throws IOException {
         exchange.sendResponseHeaders(statusCode, response.getBytes().length);
         OutputStream os = exchange.getResponseBody();
@@ -204,4 +171,3 @@ public class CommentHandler implements HttpHandler {
         os.close();
     }
 }
-
