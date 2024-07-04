@@ -41,7 +41,7 @@ public String  updateComment (int id, int writterid, String content, int likeNum
     }
     else {
     Comment comment = new Comment(id, writterid, content, likeNumber, commentNumber, createDate, relatedPostId);
-    postDAO.updatePost(comment);(comment);
+    postDAO.updatePost(comment);
     return "sucssesful";
 }
 }
