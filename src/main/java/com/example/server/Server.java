@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpServer;
 import main.java.com.example.server.httpHandler.SessionHandler;
 import main.java.com.example.server.httpHandler.SkillHandler;
 import main.java.com.example.server.httpHandler.UserHandler;
+import main.java.com.example.server.httpHandler.CommentHandler;
 import main.java.com.example.server.httpHandler.ConnectionHandler;
 import main.java.com.example.server.httpHandler.ContactHandler;
 import main.java.com.example.server.httpHandler.EducationHandler;
@@ -31,6 +32,7 @@ public class Server {
             server.createContext("/connections", new ConnectionHandler());
             server.createContext("/contacts", new ContactHandler());
             server.createContext("/posts", new PostHandler());
+            server.createContext("/comments", new CommentHandler());
             server.start();
 
             System.out.println("Server started on port 8080");
