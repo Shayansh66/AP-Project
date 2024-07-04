@@ -53,7 +53,7 @@ public class LoginController {
         else {
             try {
                 try {
-                    URL url = new URL("http://localhost:8080/sessions/" + Username_textfield.getText() + "/" + Password_textfeild.getText());
+                    URL url = new URL("http://localhost:8080/sessions/" + email + "/" + password);
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("GET");
                     int responseCode = con.getResponseCode();
@@ -71,7 +71,7 @@ public class LoginController {
                     }
                     else{
                         // this will be implemented after the completion of the linkedin.java
-                        
+
                     }
             } catch (Exception e) {
                 // TODO: handle exception
