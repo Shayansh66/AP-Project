@@ -49,6 +49,7 @@ public class LoginController {
 
         if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
             wrongInputLabel.setText("please enter correct format!");
+            return;
         }   
         else {
             try {
@@ -73,8 +74,11 @@ public class LoginController {
                         // this will be implemented after the completion of the linkedin.java
 
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (Exception e) {
-                // TODO: handle exception
+                e.printStackTrace();
             }
         }
         finally {
