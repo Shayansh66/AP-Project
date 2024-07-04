@@ -24,8 +24,7 @@ public class PostController {
     int commentNumbers , Timestamp createDate) throws SQLException {
        Post post = new Post(id, writterid, content, likeNumbers, commentNumbers, createDate) ;
        postDAO.savePost(post);  
-       int n =  post.getId();   
-       return Integer.toString(n);
+       return "sucsessful";
     }
     
     public void updatePost (int id , int writterid , String content , int likeNumbers, 
@@ -75,7 +74,7 @@ public class PostController {
 
 
     public String getUserComments (int userid) throws SQLException, JsonProcessingException  {
-        ArrayList <Post> userComments = postDAO.getComments(userid);
+        ArrayList <Comment> userComments = postDAO.getComments(userid);
         ObjectMapper ob =new ObjectMapper();
         return ob.writeValueAsString(userComments);
 

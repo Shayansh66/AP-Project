@@ -29,6 +29,7 @@ public class SkillController {
         }
         else {
         Skill skill = new Skill(id, explaination, userid);
+        skillDAO.saveSkill(skill);
         return "sucsessful";
     }
 }

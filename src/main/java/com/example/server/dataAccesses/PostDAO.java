@@ -169,8 +169,8 @@ public class PostDAO {
         return list;
     }
 
-    public ArrayList<Post> getComments(int userid) throws SQLException {
-        ArrayList<Post> list = new ArrayList< >();
+    public ArrayList<Comment> getComments(int userid) throws SQLException {
+        ArrayList<Comment> list = new ArrayList< >();
         PreparedStatement statement = theConnection.prepareStatement("SELECT * FROM posts WHERE writterid = ? WHERE relatedpost != -1;");
         statement.setInt(1, userid);
         ResultSet resultSet = statement.executeQuery();
