@@ -71,7 +71,16 @@ public class LoginController {
                         wrongInputLabel.setText("Email or Password is incorrect");
                     }
                     else{
-                        // this will be implemented after the completion of the linkedin.java
+                        try {
+                            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Profile.fxml"));
+                            Scene scene = new Scene(root);
+                
+                            stage.setScene(scene);
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 } catch (Exception e) {
