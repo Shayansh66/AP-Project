@@ -43,13 +43,13 @@ public class LoginController {
     @FXML
     private Label wrongInputLabel;
 
+    
     public void loginButtonClick(ActionEvent event) {
         String email = loginEmail.getText();
         String password = loginPassword.getText();
 
         if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
             wrongInputLabel.setText("please enter correct format!");
-            return;
         }   
         else {
             try {
@@ -81,13 +81,9 @@ public class LoginController {
                 e.printStackTrace();
             }
         }
-        finally {
-            
-        }
 
 
     }
-}
 
     public void signup(ActionEvent event) {
         try {
