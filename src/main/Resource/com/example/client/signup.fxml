@@ -43,7 +43,7 @@
             <Font size="30.0" />
          </font>
          <GridPane.margin>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets bottom="30.0" top="10.0" />
          </GridPane.margin>
       </Label>
       <TextField fx:id="signupEmail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" promptText="Email" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -66,5 +66,10 @@
             <Insets bottom="15.0" top="20.0" />
          </GridPane.margin>
       </Hyperlink>
+      <Label fx:id="wrongInputLabel" text=" " textFill="RED" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+         <GridPane.margin>
+            <Insets bottom="3.0" />
+         </GridPane.margin>
+      </Label>
    </children>
 </GridPane>
