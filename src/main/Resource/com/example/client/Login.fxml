@@ -92,13 +92,5 @@
             <Font size="13.0" />
          </font>
       </Hyperlink>
-      <Label fx:id="wrongInputLabel" text=" " textFill="RED" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-         <font>
-            <Font size="13.0" />
-         </font>
-         <GridPane.margin>
-            <Insets bottom="2.0" />
-         </GridPane.margin>
-      </Label>
    </children>
 </GridPane>

@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -21,7 +22,9 @@ public class Linkedin extends Application {
             root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Login.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
-
+            Image icon = new Image("/main/Resource/images/icon.jpg");
+            
+            stage.getIcons().add(icon);
             stage.setTitle("Linkedin");
             stage.show();
         } catch (IOException e) {

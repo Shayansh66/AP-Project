@@ -81,16 +81,16 @@ public class LoginController {
     }
 
     public void signup(ActionEvent event) {
-        // try {
-        //     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        //     Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Signup.fxml"));
-        //     Scene scene = new Scene(root);
+        try {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Signup.fxml"));
+            Scene scene = new Scene(root);
 
-        //     stage.setScene(scene);
-        //     stage.show();
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
 }

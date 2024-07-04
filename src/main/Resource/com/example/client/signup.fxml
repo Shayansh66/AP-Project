@@ -10,30 +10,32 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="800.0" maxWidth="1280.0" minHeight="600.0" minWidth="800.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.example.client.Controllers.SignupController">
+<GridPane maxHeight="800.0" maxWidth="1280.0" minHeight="600.0" minWidth="800.0" prefHeight="768.0" prefWidth="1024.0" style="-fx-background-color: #47a4d0;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.java.com.example.client.Controllers.SignupController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="506.4000244140625" minWidth="10.0" prefWidth="410.4000244140625" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="660.0" prefWidth="660.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="220.19998779296876" minHeight="10.0" prefHeight="130.19998779296876" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="327.6000122070312" minHeight="10.0" prefHeight="103.60001220703123" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="281.40000000000003" minHeight="10.0" prefHeight="104.80001831054688" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="243.99997558593748" minHeight="10.0" prefHeight="102.4000244140625" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="144.80002441406248" minHeight="10.0" prefHeight="106.39998779296872" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="107.20001220703125" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="73.60000000000002" minHeight="10.0" prefHeight="60.80002441406248" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="61.5999755859375" minHeight="10.0" prefHeight="61.5999755859375" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="327.6000122070312" minHeight="10.0" prefHeight="88.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="281.40000000000003" minHeight="10.0" prefHeight="91.99998168945311" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="243.99997558593748" minHeight="10.0" prefHeight="93.39999999999998" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="146.20000000000005" minHeight="10.0" prefHeight="94.20001220703125" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="151.79998779296875" minHeight="10.0" prefHeight="93.5999755859375" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="120.00002441406252" minHeight="10.0" prefHeight="86.99996337890627" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="100.80001220703127" minHeight="10.0" prefHeight="94.20003662109377" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
+      <Rectangle arcHeight="35.0" arcWidth="35.0" fill="WHITE" height="710.0" stroke="BLACK" strokeType="INSIDE" width="300.0" GridPane.halignment="CENTER" GridPane.rowSpan="8" GridPane.valignment="CENTER" />
       <ImageView fitHeight="738.0" fitWidth="630.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="8" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
          <image>
-            <Image url="@../../../../../../../../../../Downloads/image_2024-01-25_11-49-09.jpg" />
+            <Image url="@../../../../../../../../../../Downloads/_20b4cd77-ad09-4e34-b415-72f00995ff57.jpeg" />
          </image>
       </ImageView>
       <Label text="Sign Up" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
@@ -59,9 +61,9 @@
             <Font size="16.0" />
          </font>
       </Button>
-      <Hyperlink fx:id="loginHyperlink" onAction="#login" text="login" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="BOTTOM">
+      <Hyperlink fx:id="loginHyperlink" onAction="#login" text="login" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="TOP">
          <GridPane.margin>
-            <Insets bottom="15.0" />
+            <Insets bottom="15.0" top="20.0" />
          </GridPane.margin>
       </Hyperlink>
    </children>
