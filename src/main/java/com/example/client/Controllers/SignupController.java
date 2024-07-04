@@ -8,9 +8,6 @@ import javafx.scene.control.TextField;
 
 
 public class SignupController {
-    
-    @FXML
-    private Button signupButton;
 
     @FXML
     private TextField signupEmail;
@@ -28,10 +25,18 @@ public class SignupController {
     private TextField signupRepeatPassword;
 
     @FXML
+    private Button signupButton;
+
+    @FXML
     private Hyperlink loginHyperlink;
 
+    
     public void signupButtonClick(ActionEvent event) {
         
+    }
+
+    public void login(ActionEvent event) {
+
     }
     
 }
