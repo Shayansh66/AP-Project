@@ -3,6 +3,7 @@ package main.java.com.example.client.Controllers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
@@ -106,35 +107,71 @@ public class ProfileController {
         String theProfession = profession.getText();
         
         if (headTitle.length() > 220) {
-            wrongInputLabel.setText("head title must not be more than 220\ncharacters!");
-            return ;
-        }
-        else if (firstName.length() > 20) {
-            wrongInputLabel.setText("first name must not be more than 20\ncharacters");
-            return ;
-        }
-        else if (lastName.length() > 40) {
-            wrongInputLabel.setText("last name must not be more than 40 \ncharacters");
-            return ;
-        }
-        else if (additionalName.length() > 40) {
-            wrongInputLabel.setText("additional name must not be more\nthan 40characters");
-            return ;
-        }
-        else if (countryLocation.length() > 40) {
-            wrongInputLabel.setText("country must not be morethan 60 characters");
-            return ;
-        }
-        else if (cityLocation.length() > 40) {
-            wrongInputLabel.setText("city must not be morethan 60 characters");
-            return ;
-        }
-        else if (theProfession.length() > 40) {
-            wrongInputLabel.setText("profession must not be morethan 60 characters");
-            return ;
+            wrongInputLabel.setText("Head title must not be more than 220 characters!");
+            return;
+        } else if (firstName.length() > 20) {
+            wrongInputLabel.setText("First name must not be more than 20 characters");
+            return;
+        } else if (lastName.length() > 40) {
+            wrongInputLabel.setText("Last name must not be more than 40 characters");
+            return;
+        } else if (additionalName.length() > 40) {
+            wrongInputLabel.setText("Additional name must not be more than 40 characters");
+            return;
+        } else if (countryLocation.length() > 40) {
+            wrongInputLabel.setText("Country must not be more than 40 characters");
+            return;
+        } else if (cityLocation.length() > 40) {
+            wrongInputLabel.setText("City must not be more than 40 characters");
+            return;
+        } else if (theProfession.length() > 40) {
+            wrongInputLabel.setText("Profession must not be more than 40 characters");
+            return;
         }
 
-        /******************************************************************** correct info */
+        // Construct the user object
+        User updatedUser = Session.getInstance().getLoggedInUser();
+        updatedUser.setHeadtitle(headTitle);
+        updatedUser.setFirstName(firstName);
+        updatedUser.setLastname(lastName);
+        updatedUser.setAdditionalname(additionalName);
+        updatedUser.setCountry(countryLocation);
+        updatedUser.setCity(cityLocation);
+        updatedUser.setRequiredJob(theProfession);
 
+        try {
+            String userJson = objectMapper.writeValueAsString(updatedUser);
+            String response = sendPutRequest("http://localhost:8080/users", userJson);
+            wrongInputLabel.setText("Update successful: " + response);
+        } catch (IOException e) {
+            e.printStackTrace();
+            wrongInputLabel.setText("Error updating user: " + e.getMessage());
+        }
     }
+       private String sendPutRequest(String urlStr, String jsonInputString) throws IOException {
+        URL url = new URL(urlStr);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("Content-Type", "application/json; utf-8");
+        con.setDoOutput(true);
+
+        try (OutputStream os = con.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = con.getResponseCode();
+        if (responseCode == 200) { // OK
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+            while ((responseLine = in.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            return response.toString();
+        } else {
+            throw new IOException("Failed to update user, response code: " + responseCode);
+        }
+    }
+
 }
