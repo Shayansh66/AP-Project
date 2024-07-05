@@ -1,9 +1,11 @@
 package main.java.com.example.server.models;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class User {
+public class User implements Serializable {
 
     @JsonProperty ("id")
     private int id;

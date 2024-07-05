@@ -152,7 +152,7 @@ public class UserDAO {
             user.setEmail(resultSet.getString("email"));
             user.setPassword(null);
             user.setFirstName(resultSet.getString("firstname"));
-            user.setLastname(resultSet.getString("lastname"));
+            user.setLastname(resultSet.getString("lastName"));
             user.setAdditionalname(resultSet.getString("additionalname"));
             user.setHeadtitle(resultSet.getString("headtitle"));
             user.setCountry(resultSet.getString("country"));

@@ -36,10 +36,10 @@ public class SignupController {
 
     @FXML
     private TextField signupFirstName;
-    
+
     @FXML
     private TextField signupLastName;
-    
+
     @FXML
     private TextField signupPassword;
 
@@ -55,110 +55,111 @@ public class SignupController {
     @FXML
     private Label wrongInputLabel;
 
-    
-    public void signupButtonClick(ActionEvent event) throws IOException {
+    public void signupButtonClick(ActionEvent event) {
         String email = signupEmail.getText();
         String firstName = signupFirstName.getText();
         String lastName = signupLastName.getText();
         String password = signupPassword.getText();
         String repeatPassword = signupRepeatPassword.getText();
 
-        
-        if (UserController.isValidEmail(email) == false) {
-            wrongInputLabel.setText("please enter correct email");
+        // Validate input fields
+        if (!UserController.isValidEmail(email)) {
+            wrongInputLabel.setText("Please enter a correct email");
+            return;
+        } else if (firstName.isEmpty() || lastName.isEmpty()) {
+            wrongInputLabel.setText("Please fill all sections");
+            return;
+        } else if (!UserController.isValidPassword(password)) {
+            wrongInputLabel.setText("Password must include at least 8 characters, a letter, and a number");
+            return;
+        } else if (!password.equals(repeatPassword)) {
+            wrongInputLabel.setText("Password and its repeat are not the same");
             return;
         }
-        else if (firstName.length() == 0 || lastName.length() == 0) {
-            wrongInputLabel.setText("please fill all sections");
-            return;
-        }
-        else if (UserController.isValidPassword(password) == false) {
-            wrongInputLabel.setText("password must include at least 8 character\nand a letter andd number");
-            return;
-        }
-        else if (password.equals(repeatPassword) == false) {
-            wrongInputLabel.setText("password and its repeat are not same!");
-            return;
-        }
-        else {
 
-            try {
-                String response = new String();
-                {
-                URL url = new  URL("http://localhost:8080/users");
-                HttpURLConnection connection =  (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                int responsecode = connection.getResponseCode();
-                BufferedReader in = new  BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputline;
-                StringBuffer response1 = new StringBuffer();
-                while ((inputline = in.readLine()) != null) {
-                    response1.append(inputline);
+        try {
+            // Check if email already exists
+            if (emailExists(email)) {
+                wrongInputLabel.setText("Email is already in use");
+                return;
+            }
+
+            // Proceed with user creation
+            User user = new User(0, email, password, firstName, lastName, null, null, "", null, null);
+
+            // Convert user object to JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(user);
+
+            // Send POST request to server
+            URL url = new URL("http://localhost:8080/users");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setDoOutput(true);
+
+            // Write JSON data to output stream
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = json.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            // Handle response from server
+            try (BufferedReader br = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
                 }
-                in.close();
-                 response = response1.toString();
+                String responseBody = response.toString();
+                if (responseBody.equals("successful")) {
+                    // Successful signup
+                    System.out.println("Signup successful");
+                } else {
+                    // Failed signup
+                    System.err.println("Signup failed");
                 }
-
-                JSONArray jsonObject = new JSONArray();
-                String[] users = toStringArray(jsonObject);
-                boolean Email_existed = false;
-                for (String t: users) {
-                    JSONObject obj = new JSONObject(t);
-                    User user = new User();
-                    user.setEmail(email);
-                    if (user.getEmail().equals(email) && email.length() != 0)
-                        Email_existed = true;
             }
-            if (Email_existed) {
-                wrongInputLabel.setText("email is already used");
-            }
-            else {
-                User user = new User();
-                user.setEmail(email);
-                user.setFirstName(firstName);
-                user.setLastname(lastName);
-                user.setPassword(repeatPassword);
-                URL url = new URL("http://localhost:8080/users");
-                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
+            connection.disconnect();
 
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        String json = objectMapper.writeValueAsString(user);
-
-                        byte[] postDataBytes = json.getBytes();
-                        
-                        connection.setRequestMethod("POST");
-                        connection.setDoOutput(true);
-                        connection.getOutputStream().write(postDataBytes);
-
-                        Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                        StringBuilder sb = new StringBuilder();
-
-                        for (int c; (c = in.read()) > 0; )
-                        sb.append((char) c);
-                        response = sb.toString();
-
-                        if (response.equals("sucsessful")) {
-                            // sucsessful signup
-                        }
-                        else {
-                        // failed signip
-                        }
-
-            }
+        } catch (ConnectException e) {
+            wrongInputLabel.setText("Connection failed");
+            e.printStackTrace();
+        } catch (IOException e) {
+            wrongInputLabel.setText("Failed to communicate with the server");
+            e.printStackTrace();
         }
-            catch (ConnectException e) {
-                wrongInputLabel.setText("connection failed");
-           }
     }
-          
 
+    private boolean emailExists(String email) throws IOException {
+        // Send GET request to check if email already exists
+        URL url = new URL("http://localhost:8080/users");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
 
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try (BufferedReader in = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream()))) {
+                StringBuilder response = new StringBuilder();
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                // Check if email exists in the response
+                JSONArray jsonArray = new JSONArray(response.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString("email").equals(email)) {
+                        return true;
+                    }
+                }
+            }
         }
-
-
-
-    
+        return false;
+    }
 
     public void login(ActionEvent event) {
         try {
@@ -172,15 +173,4 @@ public class SignupController {
             e.printStackTrace();
         }
     }
-    public static String[] toStringArray(JSONArray array) {
-        if(array == null)
-            return new String[0];
-
-        String[] arr = new String[array.length()];
-        for(int i = 0; i < arr.length; i++)
-            arr[i] = array.optString(i);
-        return arr;
-    }
 }
-
-
