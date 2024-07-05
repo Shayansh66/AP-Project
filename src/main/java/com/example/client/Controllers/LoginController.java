@@ -26,6 +26,11 @@ import main.java.com.example.server.controllers.UserController;
 import javafx.stage.Stage;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import main.java.com.example.server.models.User;
+
+// Other imports...
+
 public class LoginController {
 
     @FXML
@@ -39,59 +44,57 @@ public class LoginController {
 
     @FXML
     private Hyperlink signupHyperlink;
-    
+
     @FXML
     private Label wrongInputLabel;
 
-    
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     public void loginButtonClick(ActionEvent event) {
         String email = loginEmail.getText();
         String password = loginPassword.getText();
 
-        if (UserController.isValidEmail(email) == false || UserController.isValidPassword(password) == false) {
-            wrongInputLabel.setText("please enter correct format!");
-        }   
-        else {
+        if (!UserController.isValidEmail(email) || !UserController.isValidPassword(password)) {
+            wrongInputLabel.setText("Please enter correct format!");
+        } else {
             try {
-                try {
-                    URL url = new URL("http://localhost:8080/sessions/" + email + "/" + password);
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("GET");
-                    int responseCode = con.getResponseCode();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String inputline;
-                    StringBuffer response1 = new StringBuffer();
-                    while ((inputline = in.readLine()) != null) {
-                        response1.append(inputline);
-                    }
-                    in.close();
-                    String response = response1.toString();
+                URL url = new URL("http://localhost:8080/sessions/" + email + "/" + password);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                int responseCode = con.getResponseCode();
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response1 = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    response1.append(inputLine);
+                }
+                in.close();
+                String response = response1.toString();
 
-                    if (response.equals("Email or Password is incorrect")) {
-                        wrongInputLabel.setText("Email or Password is incorrect");
-                    }
-                    else{
-                        try {
-                            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Profile.fxml"));
-                            Scene scene = new Scene(root);
-                
-                            stage.setScene(scene);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                if (response.equals("the email and password is incorrect")) {
+                    wrongInputLabel.setText("Email or Password is incorrect");
+                } else {
+                    // Deserialize the response into a User object
+                    User loggedInUser = objectMapper.readValue(response, User.class);
 
+                 
+                    Session.getInstance().setLoggedInUser(loggedInUser);
+
+                    try {
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Profile.fxml"));
+                        Scene scene = new Scene(root);
+
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     public void signup(ActionEvent event) {
@@ -105,8 +108,5 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
-}
-    
-
+    }
 }
