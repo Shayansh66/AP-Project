@@ -113,9 +113,9 @@ public class SignupController {
                     response.append(responseLine.trim());
                 }
                 String responseBody = response.toString();
-                if (responseBody.equals("successful")) {
+                if (responseBody.equals("sucsessful")) {
                     // Successful signup
-                    System.out.println("Signup successful");
+                    System.out.println("Signup sucsessful");
                 } else {
                     // Failed signup
                     System.err.println("Signup failed");

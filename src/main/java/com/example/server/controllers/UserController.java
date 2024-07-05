@@ -36,7 +36,7 @@ public class UserController {
         }
         User user = new User(id, email, password, firstName, lastName, additionalName, headTitle, country, city, requiredJob);
         userDAO.saveUser(user);
-        return "succsesful";
+        return "sucsessful";
    }
 
    public String UpdateUser (int id, String password, String email, String firstName, String lastName, String additionalName,

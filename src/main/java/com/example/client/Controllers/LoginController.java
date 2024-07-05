@@ -21,7 +21,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-// Other imports...
+import com.fasterxml.jackson.databind.ObjectMapper;
+import main.java.com.example.server.models.User;
+
+
 
 public class LoginController {
 
@@ -41,33 +44,19 @@ public class LoginController {
     private Label wrongInputLabel;
 
     private ObjectMapper objectMapper = new ObjectMapper();
+
     public void loginButtonClick(ActionEvent event) {
-        System.out.println("Login button clicked");
-    
         String email = loginEmail.getText();
         String password = loginPassword.getText();
-    
+
         if (!UserController.isValidEmail(email) || !UserController.isValidPassword(password)) {
             wrongInputLabel.setText("Please enter correct format!");
-            System.out.println("Invalid email or password format");
         } else {
             try {
                 URL url = new URL("http://localhost:8080/sessions/" + email + "/" + password);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("GET");
-    
-                // If your API requires additional headers, add them here
-                // con.setRequestProperty("Authorization", "Bearer YOUR_TOKEN");
-    
                 int responseCode = con.getResponseCode();
-                System.out.println("Response Code: " + responseCode);
-    
-                if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    wrongInputLabel.setText("Email or Password is incorrect");
-                    System.out.println("401 Unauthorized - Email or Password is incorrect");
-                    return;
-                }
-    
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 String inputLine;
                 StringBuffer response1 = new StringBuffer();
@@ -76,46 +65,43 @@ public class LoginController {
                 }
                 in.close();
                 String response = response1.toString();
-                System.out.println("Response: " + response);
-    
+
                 if (response.equals("the email and password is incorrect")) {
                     wrongInputLabel.setText("Email or Password is incorrect");
                 } else {
+                    // Deserialize the response into a User object
                     User loggedInUser = objectMapper.readValue(response, User.class);
+
+                    // Set the user in the session
                     Session.getInstance().setLoggedInUser(loggedInUser);
-    
+
                     try {
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Profile.fxml"));
                         Scene scene = new Scene(root);
-    
+
                         stage.setScene(scene);
                         stage.show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-            } catch (ConnectException e) {
-                wrongInputLabel.setText("Could not connect to the server. Please try again later.");
-                System.out.println("Connection Error: " + e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
-                wrongInputLabel.setText("An unexpected error occurred.");
             }
         }
     }
-    
 
     public void signup(ActionEvent event) {
         try {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Signup.fxml"));
             Scene scene = new Scene(root);
+
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            wrongInputLabel.setText("Failed to load signup page.");
         }
     }
 }
