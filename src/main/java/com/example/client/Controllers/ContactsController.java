@@ -3,6 +3,7 @@ package main.java.com.example.client.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.java.com.example.server.models.Contact;
@@ -17,19 +18,23 @@ public class ContactsController {
     
     @FXML
     private TextField addressTextField;
+
+    @FXML
+    private Label phoneNumberLabel;
     
     
     public void load(Parent root, Contact contact) {
         
-            Scene scene = new Scene(root);
+        Scene scene = new Scene(root);
             
-            emailTextField.setText(contact.getEmail());
-            phoneTextField.setText(contact.getPhonenumber());
-            addressTextField.setText(contact.getAddress());
+        emailTextField.setText(contact.getEmail());
+        phoneTextField.setText(contact.getPhonenumber());
+        phoneNumberLabel.setText("Phone(" + contact.getPhoneType() + ")");
+        addressTextField.setText(contact.getAddress());
 
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
     }
     
 }

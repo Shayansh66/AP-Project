@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -79,5 +80,20 @@
          </GridPane.margin>
       </TextArea>
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="6" />
+      <ChoiceBox fx:id="birthdayMonth" prefWidth="150.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </GridPane.margin>
+      </ChoiceBox>
+      <ChoiceBox fx:id="birthdayDay" prefWidth="150.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </GridPane.margin>
+      </ChoiceBox>
+      <ChoiceBox fx:id="birthdayVisibility" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="5.0" right="5.0" />
+         </GridPane.margin>
+      </ChoiceBox>
    </children>
 </GridPane>
