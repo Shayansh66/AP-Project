@@ -58,7 +58,7 @@ public class UserController {
    public String deleteUser(int id) throws SQLException {
     if (isUserAlreadyExist(id)) {
         userDAO.deleteUser(id);
-        return "succsessful";
+        return "sucsessful";
     }  
     else 
     return "no user found with this id";
