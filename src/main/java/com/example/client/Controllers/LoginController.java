@@ -51,7 +51,8 @@ public class LoginController {
 
         if (!UserController.isValidEmail(email) || !UserController.isValidPassword(password)) {
             wrongInputLabel.setText("Please enter correct format!");
-        } else {
+        }
+        else {
             try {
                 URL url = new URL("http://localhost:8080/sessions/" + email + "/" + password);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();

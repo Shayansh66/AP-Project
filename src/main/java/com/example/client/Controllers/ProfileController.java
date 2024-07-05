@@ -15,7 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.java.com.example.server.models.Contact;
 import main.java.com.example.server.models.User;
@@ -23,7 +27,34 @@ import main.java.com.example.server.models.User;
 public class ProfileController {
 
     @FXML
+    private Label wrongInputLabel;
+
+    @FXML
     private Hyperlink contactsHyperlink;
+
+    @FXML
+    private Button applyButton;
+
+    @FXML
+    private TextArea headtitle;
+
+    @FXML
+    private TextField firstname;
+
+    @FXML
+    private TextField lastname;
+
+    @FXML
+    private TextField additionalname;
+
+    @FXML
+    private TextField country;
+
+    @FXML
+    private TextField city;
+
+    @FXML
+    private TextField profession;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -63,5 +94,47 @@ public class ProfileController {
         } else {
             throw new IOException("Failed to fetch contacts, response code: " + responseCode);
         }
+    }
+
+    public void applyUpdate(ActionEvent event) {
+        String headTitle = headtitle.getText();
+        String firstName = firstname.getText();
+        String lastName = lastname.getText();
+        String additionalName = additionalname.getText();
+        String countryLocation = country.getText();
+        String cityLocation = city.getText();
+        String theProfession = profession.getText();
+        
+        if (headTitle.length() > 220) {
+            wrongInputLabel.setText("head title must not be more than 220\ncharacters!");
+            return ;
+        }
+        else if (firstName.length() > 20) {
+            wrongInputLabel.setText("first name must not be more than 20\ncharacters");
+            return ;
+        }
+        else if (lastName.length() > 40) {
+            wrongInputLabel.setText("last name must not be more than 40 \ncharacters");
+            return ;
+        }
+        else if (additionalName.length() > 40) {
+            wrongInputLabel.setText("additional name must not be more\nthan 40characters");
+            return ;
+        }
+        else if (countryLocation.length() > 40) {
+            wrongInputLabel.setText("country must not be morethan 60 characters");
+            return ;
+        }
+        else if (cityLocation.length() > 40) {
+            wrongInputLabel.setText("city must not be morethan 60 characters");
+            return ;
+        }
+        else if (theProfession.length() > 40) {
+            wrongInputLabel.setText("profession must not be morethan 60 characters");
+            return ;
+        }
+
+        /******************************************************************** correct info */
+
     }
 }

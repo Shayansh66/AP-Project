@@ -67,15 +67,23 @@
                         <Image url="@../../../images/default_profile_image.jpeg" />
                      </image>
                   </ImageView>
-                  <Label text="First Name">
+                  <Label fx:id="wrongInputLabel" text=" " textFill="RED">
                      <VBox.margin>
-                        <Insets left="37.0" top="23.0" />
+                        <Insets left="10.0" />
                      </VBox.margin>
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="30.0" prefWidth="160.0">
+                  <Label text="First Name">
+                     <VBox.margin>
+                        <Insets left="37.0" top="15.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="firstname" prefHeight="30.0" prefWidth="160.0">
                      <VBox.margin>
                         <Insets left="37.0" right="37.0" top="4.0" />
                      </VBox.margin>
@@ -85,23 +93,23 @@
                         <Font size="10.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="37.0" top="9.0" />
+                        <Insets left="37.0" top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField layoutX="47.0" layoutY="256.0" prefHeight="30.0" prefWidth="160.0">
+                  <TextField fx:id="lastname" layoutX="47.0" layoutY="256.0" prefHeight="30.0" prefWidth="160.0">
                      <VBox.margin>
                         <Insets left="37.0" right="37.0" top="4.0" />
                      </VBox.margin>
                   </TextField>
                   <Label text="Additional Name">
                      <VBox.margin>
-                        <Insets left="37.0" top="9.0" />
+                        <Insets left="37.0" top="8.0" />
                      </VBox.margin>
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="47.0" layoutY="320.0" prefHeight="30.0" prefWidth="160.0">
+                  <TextField fx:id="additionalname" layoutX="47.0" layoutY="320.0" prefHeight="30.0" prefWidth="160.0">
                      <VBox.margin>
                         <Insets left="37.0" right="37.0" top="4.0" />
                      </VBox.margin>
@@ -111,10 +119,10 @@
                         <Font size="10.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="37.0" top="9.0" />
+                        <Insets left="37.0" top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="country">
                      <VBox.margin>
                         <Insets left="37.0" right="37.0" top="4.0" />
                      </VBox.margin>
@@ -124,10 +132,10 @@
                         <Font size="10.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="37.0" right="37.0" top="9.0" />
+                        <Insets left="37.0" right="37.0" top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="city">
                      <VBox.margin>
                         <Insets left="37.0" right="37.0" top="4.0" />
                      </VBox.margin>
@@ -137,10 +145,10 @@
                         <Font size="16.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="68.0" right="68.0" top="23.0" />
+                        <Insets left="68.0" right="68.0" top="15.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="profession">
                      <VBox.margin>
                         <Insets left="25.0" right="25.0" top="4.0" />
                      </VBox.margin>
@@ -161,7 +169,7 @@
                         <Font size="14.0" />
                      </font>
                   </Hyperlink>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Apply">
+                  <Button fx:id="applyButton" mnemonicParsing="false" onAction="#applyUpdate" prefHeight="30.0" prefWidth="65.0" text="Apply">
                      <VBox.margin>
                         <Insets left="77.0" right="77.0" top="11.0" />
                      </VBox.margin>
@@ -179,7 +187,7 @@
                      <HBox.margin>
                         <Insets left="12.0" right="12.0" />
                      </HBox.margin></ImageView>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Head Title">
+                  <TextArea fx:id="headtitle" prefHeight="200.0" prefWidth="200.0" promptText="Head Title">
                      <HBox.margin>
                         <Insets left="12.0" right="12.0" />
                      </HBox.margin>
@@ -195,14 +203,16 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="95.19998168945312" minHeight="10.0" prefHeight="44.799990844726565" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="187.2000183105469" minHeight="10.0" prefHeight="131.40000915527344" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="231.0" minHeight="10.0" prefHeight="52.79997558593749" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="224.4000244140625" minHeight="10.0" prefHeight="132.00001220703132" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="185.79998779296875" minHeight="10.0" prefHeight="92.40000000000003" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="187.2000183105469" minHeight="10.0" prefHeight="183.8" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="231.0" minHeight="10.0" prefHeight="65.79996337890628" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="224.4000244140625" minHeight="10.0" prefHeight="190.2000244140625" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="185.79998779296875" minHeight="10.0" prefHeight="90.19997558593747" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </GridPane.margin></Button>
                   <Hyperlink text="Jobs">
                      <GridPane.margin>
                         <Insets left="10.0" />
@@ -235,11 +245,26 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Hyperlink>
-                  <Label text="Skills" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                  <Button layoutX="30.0" layoutY="82.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button layoutX="30.0" layoutY="62.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="313.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Hyperlink text="Skills" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
                      <font>
                         <Font size="16.0" />
                      </font>
-                  </Label>
+                  </Hyperlink>
                </children>
             </GridPane>
          </center>
