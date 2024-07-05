@@ -29,26 +29,17 @@ public class ProfileController {
 
     public void showContacts(ActionEvent event) {
         try {
-            // Fetch logged-in user
+            
             User loggedInUser = Session.getInstance().getLoggedInUser();
             int userId = loggedInUser.getId();
 
-            // Make GET request to fetch contacts
             String response = getContactsByUserId(userId);
-
-            // Deserialize response into Contact objects
             List<Contact> contacts = Arrays.asList(objectMapper.readValue(response, Contact[].class));
 
-            // Here you can handle the contacts list to display in the UI
-
-
-            // Load the Contacts.fxml scene
             Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Contacts.fxml"));
-            Scene scene = new Scene(root);
+            ContactsController contact = new ContactsController();
+            contact.load(root, contacts.get(0));
 
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

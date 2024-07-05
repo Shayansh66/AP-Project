@@ -194,20 +194,52 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="95.19998168945312" minHeight="10.0" prefHeight="44.799990844726565" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="187.2000183105469" minHeight="10.0" prefHeight="131.40000915527344" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="231.0" minHeight="10.0" prefHeight="52.79997558593749" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="224.4000244140625" minHeight="10.0" prefHeight="132.00001220703132" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="185.79998779296875" minHeight="10.0" prefHeight="92.40000000000003" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="90.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Jobs" />
-                  <Label layoutX="10.0" layoutY="52.0" text="Educations" GridPane.columnIndex="1" />
-                  <Label layoutX="360.0" layoutY="52.0" text="Certifications" GridPane.rowIndex="2" />
-                  <Label layoutX="10.0" layoutY="252.0" text="Skills" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Label layoutX="10.0" layoutY="52.0" text="Organazations" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Button mnemonicParsing="false" text="Button" GridPane.rowIndex="1" />
+                  <Hyperlink text="Jobs">
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Hyperlink>
+                  <Hyperlink layoutX="20.0" layoutY="47.0" text="Educations" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Hyperlink>
+                  <Hyperlink layoutX="371.0" layoutY="47.0" text="Organazations" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Hyperlink>
+                  <Hyperlink layoutX="10.0" layoutY="47.0" text="Certifications" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Hyperlink>
+                  <Label text="Skills" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </GridPane>
          </center>

@@ -19,7 +19,7 @@ public class Linkedin extends Application {
     public void start(Stage stage) {
         Parent root;
         try {
-            root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Test.fxml"));
+            root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Profile.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             Image icon = new Image("/main/Resource/images/icon.jpg");
