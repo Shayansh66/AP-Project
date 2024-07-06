@@ -116,7 +116,7 @@ public class SignupController {
                 if (responseBody.equals("sucsessful")) {
                     // Successful signup
                     System.out.println("Signup sucsessful");
-                    Parrent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Login.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/main/Resource/com/example/client/Login.fxml"));
                     Scene scene = new Scene(root);
                     Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
                     stage.setScene(scene);
