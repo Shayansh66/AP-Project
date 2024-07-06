@@ -57,6 +57,14 @@ public class ProfileController {
     @FXML
     private TextField profession;
 
+    @FXML
+    private Button currentJob;
+
+    @FXML
+    private Button currentEducation;
+
+
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void showContacts(ActionEvent event) {

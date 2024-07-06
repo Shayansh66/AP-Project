@@ -202,18 +202,16 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="95.19998168945312" minHeight="10.0" prefHeight="44.799990844726565" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="187.2000183105469" minHeight="10.0" prefHeight="183.8" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="231.0" minHeight="10.0" prefHeight="65.79996337890628" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="224.4000244140625" minHeight="10.0" prefHeight="190.2000244140625" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="185.79998779296875" minHeight="10.0" prefHeight="90.19997558593747" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="113.59998779296875" minHeight="10.0" prefHeight="113.59998779296875" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="272.800048828125" minHeight="10.0" prefHeight="210.40002441406253" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="275.9999877929687" minHeight="10.0" prefHeight="256.79997558593743" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.rowIndex="1" GridPane.valignment="TOP">
+                  <Button fx:id="currentJob" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets left="20.0" top="5.0" />
                      </GridPane.margin></Button>
-                  <Hyperlink text="Jobs">
+                  <Hyperlink fx:id="jobsHyperlink" text="Experiance" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
@@ -221,7 +219,7 @@
                         <Font size="14.0" />
                      </font>
                   </Hyperlink>
-                  <Hyperlink layoutX="20.0" layoutY="47.0" text="Educations" GridPane.columnIndex="1">
+                  <Hyperlink layoutX="20.0" layoutY="47.0" text="Educations" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -229,7 +227,15 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Hyperlink>
-                  <Hyperlink layoutX="371.0" layoutY="47.0" text="Organazations" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Hyperlink layoutX="371.0" layoutY="47.0" text="Organazations" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </Hyperlink>
+                  <Hyperlink layoutX="10.0" layoutY="47.0" text="Certifications" GridPane.rowIndex="2" GridPane.valignment="TOP">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -237,30 +243,12 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Hyperlink>
-                  <Hyperlink layoutX="10.0" layoutY="47.0" text="Certifications" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Hyperlink>
-                  <Button layoutX="30.0" layoutY="82.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                  <Button fx:id="currentEducation" layoutX="30.0" layoutY="82.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets left="20.0" top="5.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button layoutX="30.0" layoutY="62.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.rowIndex="3" GridPane.valignment="TOP">
-                     <GridPane.margin>
-                        <Insets left="20.0" top="5.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Button layoutX="10.0" layoutY="313.0" mnemonicParsing="false" prefHeight="110.0" prefWidth="200.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP">
-                     <GridPane.margin>
-                        <Insets left="20.0" top="5.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Hyperlink text="Skills" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP">
+                  <Hyperlink text="Skills" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
                      <font>
                         <Font size="16.0" />
                      </font>
