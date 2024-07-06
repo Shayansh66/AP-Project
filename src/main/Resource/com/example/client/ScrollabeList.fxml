@@ -27,22 +27,22 @@
             </Label>
             <VBox alignment="CENTER" spacing="10.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <children>
-                  <Button prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
+                  <Button fx:id="object1" prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
+                  <Button fx:id="object2" prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="110.0" layoutY="285.0" prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
+                  <Button fx:id="object3" layoutX="110.0" layoutY="285.0" prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button layoutX="110.0" layoutY="366.0" prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
+                  <Button fx:id="object4" layoutX="110.0" layoutY="366.0" prefHeight="150.0" prefWidth="200.0" text="+" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>

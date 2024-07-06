@@ -37,7 +37,7 @@ public class ContactsController implements Initializable {
     private ChoiceBox birthdayVisibility;
     
     public void load(Parent root, Contact contact) {
-        
+         
         Scene scene = new Scene(root);
             
         emailTextField.setText(contact.getEmail());

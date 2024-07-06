@@ -35,7 +35,7 @@
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </GridPane.margin>
          <image>
-            <Image url="@../../../../../../../../../../Downloads/_20b4cd77-ad09-4e34-b415-72f00995ff57.jpeg" />
+            <Image url="@../../../images/_20b4cd77-ad09-4e34-b415-72f00995ff57.jpeg" />
          </image>
       </ImageView>
       <Label text="Sign Up" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
